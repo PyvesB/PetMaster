@@ -1,0 +1,12 @@
+#================== Pet Master 1.0 configuration ==================#
+#==================================================================#
+  
+# Enable or disable chat messages when right-clicking on a pet.
+chatMessage: true
+
+# Enable or disable hologram messages when right-clicking on a pet.
+hologramMessage: true
+
+# Duration of the hologram, in server ticks (20 ticks = 1 second).
+hologramDuration: 50
+  

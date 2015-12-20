@@ -1,0 +1,28 @@
+#============================================================#
+# +--------------------------------------------------------+ #
+# |                 Pet Master language file               | #
+# +--------------------------------------------------------+ #
+#============================================================#
+
+configuration-successfully-reloaded: "Configuration successfully reloaded."
+configuration-reload-failed: "Errors while reloading configuration. Please view logs for more details."
+no-permissions: "You do not have the permission to do this."
+
+petmaster-disabled: "PetMaster disabled till next reload or /petm enable."
+petmaster-enabled: "PetMaster enabled."
+petmaster-hologram: "Pet owned by "
+petmaster-chat: "Pet owned by "
+misused-command: "Misused command. Please type /petm."
+
+petmaster-command-disable: "Disable plugin till next reload."
+petmaster-command-enable: "Enable plugin (if previously disabled)."
+petmaster-command-reload: "Reload the plugin's configuration."
+petmaster-command-info: "Display various information about the plugin."
+
+version-command-name: "Name:"
+version-command-version: "Version:"
+version-command-website: "Website:"
+version-command-author: "Author:"
+version-command-description: "Description:"
+version-command-description-details: "Who's pet is this? Pet Master, a simple plugin to display the owner of a pet via an hologram or a chat message."
+version-command-enabled: "Plugin enabled:"

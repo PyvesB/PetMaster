@@ -1,0 +1,27 @@
+name: PetMaster
+main: com.hm.petmaster.PetMaster
+version: 1.0
+author: DarkPyves
+softdepend: [HolographicDisplays]
+load: POSTWORLD
+description: A simple plugin to display the owner of a pet via an hologram or a chat message.
+website: https://github.com/PyvesB/PetMaster
+commands:
+  petm:
+    description: Main Pet Master command, use it to list sub-commands. 
+    aliases: [petmaster]  
+    usage: /<command>
+permissions:
+  petmaster.use:
+    description: Allows to use the plugin.
+    default: false
+  petmaster.admin:
+    description: Allows to enable/disable/reload the plugin.
+    default: false
+  petmaster.*:
+    description: Star notation of permissions, includes all of them.
+    default: op
+    children:
+      petmaster.use: true
+      petmaster.admin: true
+    
