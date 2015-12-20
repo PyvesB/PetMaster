@@ -26,7 +26,7 @@ public enum Lang {
     VERSION_COMMAND_WEBSITE("version-command-website", "Website:"),
     VERSION_COMMAND_AUTHOR("version-command-author", "Author:"),
     VERSION_COMMAND_DESCRIPTION("version-command-description", "Description:"),
-    VERSION_COMMAND_DESCRIPTION_DETAILS("version-command-description-details", "Who's pet is this? Pet Master, a simple plugin to display the owner of a pet via an hologram or a chat message."),
+    VERSION_COMMAND_DESCRIPTION_DETAILS("version-command-description-details", "Whose pet is this? Pet Master, a simple plugin to display the owner of a pet via a hologram or a chat message."),
     VERSION_COMMAND_ENABLED("version-command-enabled", "Plugin enabled:");
  
     private String path;

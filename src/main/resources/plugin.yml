@@ -4,7 +4,7 @@ version: 1.0
 author: DarkPyves
 softdepend: [HolographicDisplays]
 load: POSTWORLD
-description: A simple plugin to display the owner of a pet via an hologram or a chat message.
+description: Whose pet is this? A simple plugin to display the owner of a pet via a hologram or a chat message.
 website: https://github.com/PyvesB/PetMaster
 commands:
   petm:

@@ -21,8 +21,9 @@ import com.hm.petmaster.listener.PlayerInteractListener;
 import com.hm.petmaster.metrics.MetricsLite;
 
 /**
- * A simple plugin to display the owner of a pet via an hologram or a chat message.
- * PetMaster is under GNU General Public License version 3.
+ * Whose pet is this? A simple plugin to display the owner of a pet via a
+ * hologram or a chat message. PetMaster is under GNU General Public License
+ * version 3.
  * 
  * @since December 2015.
  * @version 1.0
@@ -45,7 +46,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	// Additional classes related to plugin commands.
 	private HelpCommand helpCommand;
 	private InfoCommand infoCommand;
-	
 
 	/**
 	 * Constructor.

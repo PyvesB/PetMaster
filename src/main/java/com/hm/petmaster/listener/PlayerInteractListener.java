@@ -25,16 +25,21 @@ public class PlayerInteractListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void ballFiring(PlayerInteractEntityEvent event) {
+	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 
 		if (!(event.getRightClicked() instanceof Tameable))
 			return;
 
-		Player owner = (Player) ((Tameable) event.getRightClicked()).getOwner();
+		Player owner;
+
+		if (!(((Tameable) event.getRightClicked()).getOwner() instanceof Player))
+			return;
+
+		owner = (Player) ((Tameable) event.getRightClicked()).getOwner();
 
 		// Do not show information to the owner of the pet.
-		if (event.getPlayer().equals(owner))
-			return;
+		 if (event.getPlayer().equals(owner))
+		 return;
 
 		if (plugin.isUseHolographicDisplays() && plugin.isHoologramMessage()) {
 			Location eventLocation = event.getRightClicked().getLocation();
@@ -56,7 +61,8 @@ public class PlayerInteractListener implements Listener {
 		}
 
 		if (plugin.isChatMessage())
-			event.getPlayer().sendMessage(plugin.getChatHeader() + Lang.PETMASTER_CHAT + owner.getName());
+			event.getPlayer().sendMessage(
+					plugin.getChatHeader() + Lang.PETMASTER_CHAT + ChatColor.GOLD + owner.getName());
 
 	}
 
