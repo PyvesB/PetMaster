@@ -2,7 +2,8 @@ package com.hm.petmaster.listener;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,30 +25,27 @@ public class PlayerInteractListener implements Listener {
 		this.plugin = petMaster;
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 
-		if (!(event.getRightClicked() instanceof Tameable))
+		if (!(event.getRightClicked() instanceof Tameable) || ((Tameable) event.getRightClicked()).getOwner() == null)
 			return;
 
-		Player owner;
-
-		if (!(((Tameable) event.getRightClicked()).getOwner() instanceof Player))
-			return;
-
-		owner = (Player) ((Tameable) event.getRightClicked()).getOwner();
+		String owner = ((Tameable) event.getRightClicked()).getOwner().getName();
 
 		// Do not show information to the owner of the pet.
-		 if (event.getPlayer().equals(owner))
-		 return;
+		if (event.getPlayer().getName().equals(owner))
+			return;
 
-		if (plugin.isUseHolographicDisplays() && plugin.isHoologramMessage()) {
+		if (plugin.isUseHolographicDisplays() && plugin.isHologramMessage()) {
+			double offset = 1.55;
+			if(event.getRightClicked() instanceof Ocelot) offset = 1.42;
+			else if (event.getRightClicked() instanceof Horse) offset = 2.32;
 			Location eventLocation = event.getRightClicked().getLocation();
 			Location hologramLocation = new Location(eventLocation.getWorld(), eventLocation.getX(),
-					eventLocation.getY() + 1.6, eventLocation.getZ());
+					eventLocation.getY() + offset, eventLocation.getZ());
 			final Hologram hologram = HologramsAPI.createHologram(plugin, hologramLocation);
-			hologram.appendTextLine(ChatColor.GRAY + Lang.PETMASTER_HOLOGRAM.toString() + ChatColor.GOLD
-					+ owner.getName());
+			hologram.appendTextLine(ChatColor.GRAY + Lang.PETMASTER_HOLOGRAM.toString() + ChatColor.GOLD + owner);
 
 			// Runnable to delete hologram.
 			new BukkitRunnable() {
@@ -61,8 +59,7 @@ public class PlayerInteractListener implements Listener {
 		}
 
 		if (plugin.isChatMessage())
-			event.getPlayer().sendMessage(
-					plugin.getChatHeader() + Lang.PETMASTER_CHAT + ChatColor.GOLD + owner.getName());
+			event.getPlayer().sendMessage(plugin.getChatHeader() + Lang.PETMASTER_CHAT + ChatColor.GOLD + owner);
 
 	}
 

@@ -26,7 +26,7 @@ import com.hm.petmaster.metrics.MetricsLite;
  * version 3.
  * 
  * @since December 2015.
- * @version 1.0
+ * @version 1.0.1
  * @author DarkPyves
  */
 
@@ -215,7 +215,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		return chatMessage;
 	}
 
-	public boolean isHoologramMessage() {
+	public boolean isHologramMessage() {
 
 		return hologramMessage;
 	}
