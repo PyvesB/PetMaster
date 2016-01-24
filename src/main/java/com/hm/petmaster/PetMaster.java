@@ -22,11 +22,20 @@ import com.hm.petmaster.metrics.MetricsLite;
 
 /**
  * Whose pet is this? A simple plugin to display the owner of a pet via a
- * hologram or a chat message. PetMaster is under GNU General Public License
- * version 3.
+ * hologram or a chat message.
+ * 
+ * PetMaster is under GNU General Public License version 3. 
+ * 
+ * Please visit the plugin's GitHub for more information :
+ * https://github.com/PyvesB/PetMaster
+ * 
+ * Official plugin's server: hellominecraft.fr
+ * 
+ * Bukkit project page: dev.bukkit.org/bukkit-plugins/pet-master
+ * Spigot project page: spigotmc.org/resources/pet-master.15904
  * 
  * @since December 2015.
- * @version 1.0.1
+ * @version 1.0.2
  * @author DarkPyves
  */
 
@@ -58,6 +67,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	/**
 	 * Called when server is launched or reloaded.
 	 */
+	@Override
 	public void onEnable() {
 
 		loadLang();
@@ -141,6 +151,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	/**
 	 * Called when server is stopped or reloaded.
 	 */
+	@Override
 	public void onDisable() {
 
 		this.getLogger().info("PetMaster has been disabled.");
@@ -149,6 +160,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	/**
 	 * Called when a player or the console enters a command.
 	 */
+	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String args[]) {
 
 		if (!cmd.getName().equalsIgnoreCase("petm"))
