@@ -35,7 +35,7 @@ import com.hm.petmaster.metrics.MetricsLite;
  * Spigot project page: spigotmc.org/resources/pet-master.15904
  * 
  * @since December 2015.
- * @version 1.0.2
+ * @version 1.0.3
  * @author DarkPyves
  */
 
