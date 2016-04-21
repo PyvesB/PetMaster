@@ -20,10 +20,16 @@ public class HelpCommand {
 	public void getHelp(CommandSender sender) {
 
 		sender.sendMessage((new StringBuilder()).append(ChatColor.GOLD).append("-=-=-=-=-=-=-=-=-=-")
-				.append(ChatColor.GRAY).append("[").append(ChatColor.GOLD).append("\u265E").append("§lPet Master")
+				.append(ChatColor.GRAY).append("[").append(ChatColor.GOLD).append("\u265E").append("Â§lPet Master")
 				.append(ChatColor.GOLD).append("\u265E").append(ChatColor.GRAY).append("]").append(ChatColor.GOLD)
 				.append("-=-=-=-=-=-=-=-=-=-").toString());
 
+		sendJsonClickableMessage(
+				sender,
+				(new StringBuilder()).append(plugin.getChatHeader()).append(ChatColor.GOLD + "/petm setowner player")
+						.append(ChatColor.GRAY).append(" - " + Lang.PETMASTER_COMMAND_SETOWNER).toString(),
+				"/petm setowner player");
+		
 		sendJsonClickableMessage(
 				sender,
 				(new StringBuilder()).append(plugin.getChatHeader()).append(ChatColor.GOLD + "/petm disable")

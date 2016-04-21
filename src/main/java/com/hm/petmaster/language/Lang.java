@@ -17,6 +17,13 @@ public enum Lang {
     PETMASTER_HOLOGRAM("petmaster-hologram", "Pet owned by "),
     PETMASTER_CHAT("petmaster-chat", "Pet owned by "),
     MISUSED_COMMAND("misused-command","Misused command. Please type /petm."),
+    PLAYER_OFFLINE("player-offline", "The specified player is offline!"),
+    RIGHT_CLICK("right-click", "Right click on one of your pets to change its owner!"),
+    OWNER_CHANGED("owner-changed", "Say goodbye: this pet is no longer yours!"),
+    NEW_OWNER("new-owner", "Player PLAYER gave you ownership of his pet!"),
+    NOT_OWNER("not-owner", "You do not own this pet!"),
+    CANNOT_CHANGE_TO_YOURSELF("cannot-change-to-yourself", "You cannot change the owner to yourself!"),
+    PETMASTER_COMMAND_SETOWNER("petmaster-command-setowner", "Change the ownership of one of §l&7your pets."),
     PETMASTER_COMMAND_DISABLE("petmaster-command-disable", "Disable plugin till next reload."),
     PETMASTER_COMMAND_ENABLE("petmaster-command-enable", "Enable plugin (if previously disabled)."),
     PETMASTER_COMMAND_RELOAD("petmaster-command-reload", "Reload the plugin's configuration."),
@@ -26,7 +33,7 @@ public enum Lang {
     VERSION_COMMAND_WEBSITE("version-command-website", "Website:"),
     VERSION_COMMAND_AUTHOR("version-command-author", "Author:"),
     VERSION_COMMAND_DESCRIPTION("version-command-description", "Description:"),
-    VERSION_COMMAND_DESCRIPTION_DETAILS("version-command-description-details", "Whose pet is this? Pet Master, a simple plugin to display the owner of a pet via a hologram or a chat message."),
+    VERSION_COMMAND_DESCRIPTION_DETAILS("version-command-description-details", "Whose pet is this? Pet Master, a simple plugin to change or display the owner of a pet via a hologram or a chat message."),
     VERSION_COMMAND_ENABLED("version-command-enabled", "Plugin enabled:");
  
     private String path;

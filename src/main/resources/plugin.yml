@@ -1,10 +1,10 @@
 name: PetMaster
 main: com.hm.petmaster.PetMaster
-version: 1.0.3
+version: 1.1
 author: DarkPyves
 softdepend: [HolographicDisplays]
 load: POSTWORLD
-description: Whose pet is this? A simple plugin to display the owner of a pet via a hologram or a chat message.
+description: Whose pet is this? A simple plugin to change or display the owner of a pet via a hologram or a chat message.
 website: https://github.com/PyvesB/PetMaster
 commands:
   petm:
@@ -14,9 +14,12 @@ commands:
 permissions:
   petmaster.use:
     description: Allows to use the plugin.
-    default: false
+    default: true
+  petmaster.setowner:
+    description: Allows players to change the ownership of their own pets.
+    default: true
   petmaster.admin:
-    description: Allows to enable/disable/reload the plugin.
+    description: Allows to enable/disable/reload the plugin, or bypass ownership setting.
     default: false
   petmaster.*:
     description: Star notation of permissions, includes all of them.
@@ -24,4 +27,5 @@ permissions:
     children:
       petmaster.use: true
       petmaster.admin: true
+      petmaster.setowner: true
     

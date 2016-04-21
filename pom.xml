@@ -3,21 +3,24 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.hm.petmaster</groupId>
 	<artifactId>PetMaster</artifactId>
-	<version>1.0.3</version>
+	<version>1.1</version>
 	<url>https://github.com/PyvesB/PetMaster</url>
 	<name>PetMaster</name>
-	<description>A simple Minecraft plugin to display the owner of a pet via an hologram or a chat message.</description>
+	<description>A simple Minecraft plugin to change or display the owner of a pet via an hologram or a chat message.</description>
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/PyvesB/PetMaster/issues</url>
 	</issueManagement>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.5.1</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>

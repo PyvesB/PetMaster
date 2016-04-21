@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,21 +24,21 @@ import com.hm.petmaster.listener.PlayerInteractListener;
 import com.hm.petmaster.metrics.MetricsLite;
 
 /**
- * Whose pet is this? A simple plugin to display the owner of a pet via a
- * hologram or a chat message.
+ * Whose pet is this? A simple plugin to change or display the owner of a pet
+ * via a hologram or a chat message.
  * 
- * PetMaster is under GNU General Public License version 3. 
+ * PetMaster is under GNU General Public License version 3.
  * 
  * Please visit the plugin's GitHub for more information :
  * https://github.com/PyvesB/PetMaster
  * 
  * Official plugin's server: hellominecraft.fr
  * 
- * Bukkit project page: dev.bukkit.org/bukkit-plugins/pet-master
- * Spigot project page: spigotmc.org/resources/pet-master.15904
+ * Bukkit project page: dev.bukkit.org/bukkit-plugins/pet-master Spigot project
+ * page: spigotmc.org/resources/pet-master.15904
  * 
  * @since December 2015.
- * @version 1.0.3
+ * @version 1.1
  * @author DarkPyves
  */
 
@@ -48,6 +51,9 @@ public class PetMaster extends JavaPlugin implements Listener {
 	private boolean hologramMessage;
 	private boolean useHolographicDisplays;
 	private int hologramDuration;
+
+	// Contains pairs with name of previous owner and new owner.
+	private Map<String, Player> changeOwnershipMap;
 
 	// Plugin listeners.
 	private PlayerInteractListener playerInteractListener;
@@ -89,6 +95,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 		extractParametersFromConfig();
 
 		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
+
+		changeOwnershipMap = new HashMap<String, Player>();
 
 		helpCommand = new HelpCommand(this);
 		infoCommand = new InfoCommand(this);
@@ -166,7 +174,10 @@ public class PetMaster extends JavaPlugin implements Listener {
 		if (!cmd.getName().equalsIgnoreCase("petm"))
 			return false;
 
-		if (args.length == 0 || args.length == 1 && args[0].equalsIgnoreCase("help")) {
+		if (!sender.hasPermission("petmaster.use"))
+			sender.sendMessage(chatHeader + Lang.NO_PERMS);
+
+		else if (args.length == 0 || args.length == 1 && args[0].equalsIgnoreCase("help")) {
 
 			helpCommand.getHelp(sender);
 
@@ -188,9 +199,29 @@ public class PetMaster extends JavaPlugin implements Listener {
 				}
 			} else
 				sender.sendMessage(chatHeader + Lang.NO_PERMS);
-		}
+		} else if (args[0].equalsIgnoreCase("setowner") && sender instanceof Player) {
 
-		else if (sender.hasPermission("petmaster.admin")) {
+			if (args.length == 2) {
+				Player newOwner = null;
+				for (Player currentPlayer : Bukkit.getOnlinePlayers()) {
+					if (currentPlayer.getName().equalsIgnoreCase(args[1])) {
+						newOwner = currentPlayer;
+						break;
+					}
+				}
+				if (newOwner == null)
+					sender.sendMessage(chatHeader + Lang.PLAYER_OFFLINE);
+				else if (!sender.hasPermission("petmaster.setowner"))
+					sender.sendMessage(chatHeader + Lang.NO_PERMS);
+				else if (newOwner.getName().equals(((Player) sender).getName()))
+					sender.sendMessage(chatHeader + Lang.CANNOT_CHANGE_TO_YOURSELF);
+				else {
+					changeOwnershipMap.put(((Player) sender).getName(), newOwner);
+				}
+			} else
+				sender.sendMessage(chatHeader + Lang.MISUSED_COMMAND);
+
+		} else if (sender.hasPermission("petmaster.admin")) {
 
 			String action = args[0].toLowerCase();
 
@@ -245,6 +276,11 @@ public class PetMaster extends JavaPlugin implements Listener {
 	public int getHologramDuration() {
 
 		return hologramDuration;
+	}
+
+	public Map<String, Player> getChangeOwnershipMap() {
+
+		return changeOwnershipMap;
 	}
 
 }

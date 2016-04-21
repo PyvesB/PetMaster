@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Ocelot;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,19 +29,40 @@ public class PlayerInteractListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 
-		if (!(event.getRightClicked() instanceof Tameable) || ((Tameable) event.getRightClicked()).getOwner() == null)
+		if (!(event.getRightClicked() instanceof Tameable) || ((Tameable) event.getRightClicked()).getOwner() == null
+				|| !event.getPlayer().hasPermission("petmaster.use"))
 			return;
 
 		String owner = ((Tameable) event.getRightClicked()).getOwner().getName();
 
 		// Do not show information to the owner of the pet.
-		if (event.getPlayer().getName().equals(owner))
+		if (event.getPlayer().getName().equals(owner)
+				&& !plugin.getChangeOwnershipMap().containsKey(event.getPlayer().getName())) {
 			return;
+		}
 
+		// Change owner of the pet.
+		if (plugin.getChangeOwnershipMap().containsKey(event.getPlayer().getName())) {
+			Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
+			// Can only change ownership if current owner or bypass permission.
+			if (owner.equals(event.getPlayer().getName()) || event.getPlayer().hasPermission("petmaster.admin")) {
+				((Tameable) event.getRightClicked()).setOwner(newOwner);
+				event.getPlayer().sendMessage(plugin.getChatHeader() + Lang.OWNER_CHANGED);
+				newOwner.sendMessage(plugin.getChatHeader()
+						+ Lang.NEW_OWNER.toString().replaceAll("PLAYER", event.getPlayer().getName()));
+			} else {
+				event.getPlayer().sendMessage(plugin.getChatHeader() + Lang.NOT_OWNER);
+			}
+			return;
+		}
+
+		// Display owner of the pet.
 		if (plugin.isUseHolographicDisplays() && plugin.isHologramMessage()) {
 			double offset = 1.55;
-			if(event.getRightClicked() instanceof Ocelot) offset = 1.42;
-			else if (event.getRightClicked() instanceof Horse) offset = 2.32;
+			if (event.getRightClicked() instanceof Ocelot)
+				offset = 1.42;
+			else if (event.getRightClicked() instanceof Horse)
+				offset = 2.32;
 			Location eventLocation = event.getRightClicked().getLocation();
 			Location hologramLocation = new Location(eventLocation.getWorld(), eventLocation.getX(),
 					eventLocation.getY() + offset, eventLocation.getZ());
