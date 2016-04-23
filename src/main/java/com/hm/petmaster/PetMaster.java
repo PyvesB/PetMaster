@@ -21,6 +21,7 @@ import com.hm.petmaster.command.HelpCommand;
 import com.hm.petmaster.command.InfoCommand;
 import com.hm.petmaster.language.Lang;
 import com.hm.petmaster.listener.PlayerInteractListener;
+import com.hm.petmaster.listener.PlayerQuitListener;
 import com.hm.petmaster.metrics.MetricsLite;
 
 /**
@@ -57,6 +58,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 	// Plugin listeners.
 	private PlayerInteractListener playerInteractListener;
+	private PlayerQuitListener playerQuitListener;
 
 	// Additional classes related to plugin commands.
 	private HelpCommand helpCommand;
@@ -87,10 +89,12 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 
 		playerInteractListener = new PlayerInteractListener(this);
+		playerQuitListener = new PlayerQuitListener(this);
 
 		PluginManager pm = getServer().getPluginManager();
 
 		pm.registerEvents(playerInteractListener, this);
+		pm.registerEvents(playerQuitListener, this);
 
 		extractParametersFromConfig();
 
@@ -162,6 +166,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	@Override
 	public void onDisable() {
 
+		changeOwnershipMap.clear();
 		this.getLogger().info("PetMaster has been disabled.");
 	}
 
@@ -199,6 +204,21 @@ public class PetMaster extends JavaPlugin implements Listener {
 				}
 			} else
 				sender.sendMessage(chatHeader + Lang.NO_PERMS);
+
+		} else if (args[0].equalsIgnoreCase("disable")) {
+			if (sender.hasPermission("petmaster.admin")) {
+				disabled = true;
+				sender.sendMessage(chatHeader + Lang.PETMASTER_DISABLED);
+			} else
+				sender.sendMessage(chatHeader + Lang.NO_PERMS);
+
+		} else if (args[0].equalsIgnoreCase("enable")) {
+			if (sender.hasPermission("petmaster.admin")) {
+				disabled = false;
+				sender.sendMessage(chatHeader + Lang.PETMASTER_ENABLED);
+			} else
+				sender.sendMessage(chatHeader + Lang.NO_PERMS);
+
 		} else if (args[0].equalsIgnoreCase("setowner") && sender instanceof Player) {
 
 			if (args.length == 2) {
@@ -213,33 +233,18 @@ public class PetMaster extends JavaPlugin implements Listener {
 					sender.sendMessage(chatHeader + Lang.PLAYER_OFFLINE);
 				else if (!sender.hasPermission("petmaster.setowner"))
 					sender.sendMessage(chatHeader + Lang.NO_PERMS);
-				else if (newOwner.getName().equals(((Player) sender).getName()))
+				else if (!sender.hasPermission("petmaster.admin")
+						&& newOwner.getName().equals(((Player) sender).getName()))
 					sender.sendMessage(chatHeader + Lang.CANNOT_CHANGE_TO_YOURSELF);
 				else {
 					changeOwnershipMap.put(((Player) sender).getName(), newOwner);
+					sender.sendMessage(chatHeader + Lang.RIGHT_CLICK);
 				}
 			} else
 				sender.sendMessage(chatHeader + Lang.MISUSED_COMMAND);
 
-		} else if (sender.hasPermission("petmaster.admin")) {
-
-			String action = args[0].toLowerCase();
-
-			if (action.equals("disable")) {
-
-				disabled = true;
-				sender.sendMessage(chatHeader + Lang.PETMASTER_DISABLED);
-
-			} else if (action.equals("enable")) {
-
-				disabled = false;
-				sender.sendMessage(chatHeader + Lang.PETMASTER_ENABLED);
-
-			} else
-				sender.sendMessage(chatHeader + Lang.MISUSED_COMMAND);
-
 		} else
-			sender.sendMessage(chatHeader + Lang.NO_PERMS);
+			sender.sendMessage(chatHeader + Lang.MISUSED_COMMAND);
 
 		return true;
 	}

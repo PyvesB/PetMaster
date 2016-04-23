@@ -1,5 +1,6 @@
 package com.hm.petmaster.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Horse;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -29,8 +31,13 @@ public class PlayerInteractListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 
+		// On Minecraft versions from 1.9 onwards, this event is fired twice,
+		// one for each hand. Need additional check.
+		if (Integer.valueOf(Bukkit.getBukkitVersion().charAt(2) + "") >= 9 && event.getHand() != EquipmentSlot.HAND)
+			return;
+
 		if (!(event.getRightClicked() instanceof Tameable) || ((Tameable) event.getRightClicked()).getOwner() == null
-				|| !event.getPlayer().hasPermission("petmaster.use"))
+				|| !event.getPlayer().hasPermission("petmaster.use") || plugin.isDisabled())
 			return;
 
 		String owner = ((Tameable) event.getRightClicked()).getOwner().getName();
@@ -58,7 +65,7 @@ public class PlayerInteractListener implements Listener {
 
 		// Display owner of the pet.
 		if (plugin.isUseHolographicDisplays() && plugin.isHologramMessage()) {
-			double offset = 1.55;
+			double offset = 1.5;
 			if (event.getRightClicked() instanceof Ocelot)
 				offset = 1.42;
 			else if (event.getRightClicked() instanceof Horse)

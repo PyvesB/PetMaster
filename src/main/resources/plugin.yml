@@ -20,7 +20,7 @@ permissions:
     default: true
   petmaster.admin:
     description: Allows to enable/disable/reload the plugin, or bypass ownership setting.
-    default: false
+    default: op
   petmaster.*:
     description: Star notation of permissions, includes all of them.
     default: op
