@@ -1,6 +1,6 @@
 name: PetMaster
 main: com.hm.petmaster.PetMaster
-version: 1.1
+version: 1.1.1
 author: DarkPyves
 softdepend: [HolographicDisplays]
 load: POSTWORLD

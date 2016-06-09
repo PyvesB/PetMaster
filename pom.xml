@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.hm.petmaster</groupId>
 	<artifactId>PetMaster</artifactId>
-	<version>1.1</version>
+	<version>1.1.1</version>
 	<url>https://github.com/PyvesB/PetMaster</url>
 	<name>PetMaster</name>
 	<description>A simple Minecraft plugin to change or display the owner of a pet via an hologram or a chat message.</description>
@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.9.2-R0.1-SNAPSHOT</version>
+			<version>1.10-R0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>

@@ -33,7 +33,7 @@ public class PlayerInteractListener implements Listener {
 
 		// On Minecraft versions from 1.9 onwards, this event is fired twice,
 		// one for each hand. Need additional check.
-		if (Integer.valueOf(Bukkit.getBukkitVersion().charAt(2) + "") >= 9 && event.getHand() != EquipmentSlot.HAND)
+		if ((Integer.valueOf(Bukkit.getBukkitVersion().charAt(2) + "") >= 9 || Bukkit.getBukkitVersion().charAt(3) != '.') && event.getHand() != EquipmentSlot.HAND)
 			return;
 
 		if (!(event.getRightClicked() instanceof Tameable) || ((Tameable) event.getRightClicked()).getOwner() == null
