@@ -7,6 +7,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.hm.petmaster.PetMaster;
 
+/**
+ * Class used to empty the change ownership map when a player quits the server, to avoid memory leaks.
+ * 
+ * @author Pierre-Yves
+ *
+ */
 public class PlayerQuitListener implements Listener {
 
 	private PetMaster plugin;
@@ -19,6 +25,7 @@ public class PlayerQuitListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 
+		// Delete entry from map.
 		plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
 	}
 

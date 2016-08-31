@@ -3,10 +3,10 @@ package com.hm.petmaster.listener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,11 +17,20 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.hm.petmaster.PetMaster;
-import com.hm.petmaster.language.Lang;
 
+/**
+ * Class used to display holograms or change the owner of a pet.
+ * 
+ * @author Pyves
+ *
+ */
 public class PlayerInteractListener implements Listener {
 
 	private PetMaster plugin;
+	// Vertical offsets of the holograms for each mob type.
+	final static double DOG_OFFSET = 1.5;
+	final static double CAT_OFFSET = 1.42;
+	final static double HORSE_OFFSET = 2.32;
 
 	public PlayerInteractListener(PetMaster petMaster) {
 
@@ -33,7 +42,8 @@ public class PlayerInteractListener implements Listener {
 
 		// On Minecraft versions from 1.9 onwards, this event is fired twice,
 		// one for each hand. Need additional check.
-		if ((Integer.valueOf(Bukkit.getBukkitVersion().charAt(2) + "") >= 9 || Bukkit.getBukkitVersion().charAt(3) != '.') && event.getHand() != EquipmentSlot.HAND)
+		if ((Integer.valueOf(Bukkit.getBukkitVersion().charAt(2) + "") >= 9
+				|| Bukkit.getBukkitVersion().charAt(3) != '.') && event.getHand() != EquipmentSlot.HAND)
 			return;
 
 		if (!(event.getRightClicked() instanceof Tameable) || ((Tameable) event.getRightClicked()).getOwner() == null
@@ -50,46 +60,81 @@ public class PlayerInteractListener implements Listener {
 
 		// Change owner of the pet.
 		if (plugin.getChangeOwnershipMap().containsKey(event.getPlayer().getName())) {
-			Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
-			// Can only change ownership if current owner or bypass permission.
-			if (owner.equals(event.getPlayer().getName()) || event.getPlayer().hasPermission("petmaster.admin")) {
-				((Tameable) event.getRightClicked()).setOwner(newOwner);
-				event.getPlayer().sendMessage(plugin.getChatHeader() + Lang.OWNER_CHANGED);
-				newOwner.sendMessage(plugin.getChatHeader()
-						+ Lang.NEW_OWNER.toString().replaceAll("PLAYER", event.getPlayer().getName()));
-			} else {
-				event.getPlayer().sendMessage(plugin.getChatHeader() + Lang.NOT_OWNER);
-			}
+			changeOwner(event, owner);
 			return;
 		}
 
-		// Display owner of the pet.
-		if (plugin.isUseHolographicDisplays() && plugin.isHologramMessage()) {
-			double offset = 1.5;
-			if (event.getRightClicked() instanceof Ocelot)
-				offset = 1.42;
-			else if (event.getRightClicked() instanceof Horse)
-				offset = 2.32;
-			Location eventLocation = event.getRightClicked().getLocation();
-			Location hologramLocation = new Location(eventLocation.getWorld(), eventLocation.getX(),
-					eventLocation.getY() + offset, eventLocation.getZ());
-			final Hologram hologram = HologramsAPI.createHologram(plugin, hologramLocation);
-			hologram.appendTextLine(ChatColor.GRAY + Lang.PETMASTER_HOLOGRAM.toString() + ChatColor.GOLD + owner);
-
-			// Runnable to delete hologram.
-			new BukkitRunnable() {
-
-				@Override
-				public void run() {
-
-					hologram.delete();
-				}
-			}.runTaskLater(plugin, plugin.getHologramDuration());
+		// Display owner of the pet with a hologram.
+		if (plugin.isHologramMessage()) {
+			displayHologram(event, owner);
 		}
 
 		if (plugin.isChatMessage())
-			event.getPlayer().sendMessage(plugin.getChatHeader() + Lang.PETMASTER_CHAT + ChatColor.GOLD + owner);
+			event.getPlayer().sendMessage(plugin.getChatHeader()
+					+ plugin.getPluginLang().getString("petmaster-chat", "Pet owned by ") + ChatColor.GOLD + owner);
 
+	}
+
+	/**
+	 * Display a hologram, and automatically delete it after a given delay.
+	 * 
+	 * @param event
+	 * @param owner
+	 */
+	private void displayHologram(PlayerInteractEntityEvent event, String owner) {
+
+		double offset = HORSE_OFFSET;
+		if (event.getRightClicked() instanceof Ocelot)
+			offset = CAT_OFFSET;
+		else if (event.getRightClicked() instanceof Wolf)
+			offset = DOG_OFFSET;
+
+		Location eventLocation = event.getRightClicked().getLocation();
+		// Create location with offset.
+		Location hologramLocation = new Location(eventLocation.getWorld(), eventLocation.getX(),
+				eventLocation.getY() + offset, eventLocation.getZ());
+
+		final Hologram hologram = HologramsAPI.createHologram(plugin, hologramLocation);
+		hologram.appendTextLine(ChatColor.GRAY + plugin.getPluginLang().getString("petmaster-hologram", "Pet owned by ")
+				+ ChatColor.GOLD + owner);
+
+		// Runnable to delete hologram.
+		new BukkitRunnable() {
+
+			@Override
+			public void run() {
+
+				hologram.delete();
+			}
+		}.runTaskLater(plugin, plugin.getHologramDuration());
+	}
+
+	/**
+	 * Change the owner of a pet. User must have entered the /pet setowner command beforehand and must be the owner of
+	 * the pet unless he is admin.
+	 * 
+	 * @param event
+	 * @param owner
+	 */
+	private void changeOwner(PlayerInteractEntityEvent event, String owner) {
+
+		// Retrieve new owner from the map and delete corresponding entry.
+		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
+
+		// Can only change ownership if current owner or bypass permission.
+		if (owner.equals(event.getPlayer().getName()) || event.getPlayer().hasPermission("petmaster.admin")) {
+			// Change owner.
+			((Tameable) event.getRightClicked()).setOwner(newOwner);
+
+			event.getPlayer().sendMessage(plugin.getChatHeader()
+					+ plugin.getPluginLang().getString("owner-changed", "Say goodbye: this pet is no longer yours!"));
+			newOwner.sendMessage(plugin.getChatHeader()
+					+ plugin.getPluginLang().getString("new-owner", "Player PLAYER gave you ownership of his pet!")
+							.replace("PLAYER", event.getPlayer().getName()));
+		} else {
+			event.getPlayer().sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
+					.getString("not-owner", "You do not own this pet!").replace("PLAYER", event.getPlayer().getName()));
+		}
 	}
 
 }

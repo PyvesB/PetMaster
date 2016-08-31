@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.hm.petmaster</groupId>
 	<artifactId>PetMaster</artifactId>
-	<version>1.1.1</version>
+	<version>1.2</version>
 	<url>https://github.com/PyvesB/PetMaster</url>
 	<name>PetMaster</name>
-	<description>A simple Minecraft plugin to change or display the owner of a pet via an hologram or a chat message.</description>
+	<description>Whose pet is this? A plugin to change or display the owner of a pet via a hologram or a chat message.</description>
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/PyvesB/PetMaster/issues</url>
@@ -14,7 +14,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -26,21 +26,69 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.3</version>
+				<configuration>
+					<artifactSet>
+						<includes>
+							<include>org.mcstats.*:*</include>
+						</includes>
+					</artifactSet>
+					<relocations>
+						<relocation>
+							<pattern>org.mcstats</pattern>
+							<shadedPattern>com.hm.petmaster.metrics</shadedPattern>
+						</relocation>
+					</relocations>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>lang.yml</include>
+					<include>plugin.yml</include>
+					<include>config.yml</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 	<repositories>
 		<repository>
 			<id>bukkit-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
 		</repository>
+		<repository>
+			<id>Plugin Metrics</id>
+			<url>http://repo.mcstats.org/content/repositories/public/</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.10-R0.1-SNAPSHOT</version>
+			<version>1.10.2-R0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mcstats.bukkit</groupId>
+			<artifactId>metrics-lite</artifactId>
+			<version>R8-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

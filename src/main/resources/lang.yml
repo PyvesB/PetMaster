@@ -1,13 +1,17 @@
 #============================================================#
 # +--------------------------------------------------------+ #
-# |                 Pet Master language file               | #
+# |          Pet Master 1.2 English language file          | #
+# |                      By DarkPyves                      | #
 # +--------------------------------------------------------+ #
 #============================================================#
 
-configuration-successfully-reloaded: "Configuration successfully reloaded."
-configuration-reload-failed: "Errors while reloading configuration. Please view logs for more details."
 no-permissions: "You do not have the permission to do this."
 
+# Related to /petm reload.
+configuration-successfully-reloaded: "Configuration successfully reloaded."
+configuration-reload-failed: "Errors while reloading configuration. Please view logs for more details."
+
+# Related to other plugin commands.
 petmaster-disabled: "PetMaster disabled till next reload or /petm enable."
 petmaster-enabled: "PetMaster enabled."
 petmaster-hologram: "Pet owned by "
@@ -20,12 +24,20 @@ new-owner: "Player PLAYER gave you ownership of his pet!"
 not-owner: "You do not own this pet!"
 right-click: "Right click on one of your pets to change its owner!"
 
-petmaster-command-setowner: "Change the ownership of one of §l&7your pets."
-petmaster-command-disable: "Disable plugin till next reload."
-petmaster-command-enable: "Enable plugin (if previously disabled)."
+# Related to /petm help.
+petmaster-command-setowner: "Change the ownership of a pet."
+petmaster-command-disable: "Disable plugin."
+petmaster-command-enable: "Enable plugin."
 petmaster-command-reload: "Reload the plugin's configuration."
 petmaster-command-info: "Display various information about the plugin."
+petmaster-command-setowner-hover: "You can only change the ownership of your own pets, unless you're admin!"
+petmaster-command-disable-hover: "The plugin will not work until next reload or /petm enable."
+petmaster-command-enable-hover: "Plugin enabled by default. Use this if you entered /petm disable before!"
+petmaster-command-reload-hover: "Reload most settings in config.yml and lang.yml files."
+petmaster-command-info-hover: "Some extra info about the plugin and its awesome author!"
+petmaster-tip: "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!"
 
+# Related to /petm info.
 version-command-name: "Name:"
 version-command-version: "Version:"
 version-command-website: "Website:"
