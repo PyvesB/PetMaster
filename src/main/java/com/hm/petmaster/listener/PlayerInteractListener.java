@@ -53,7 +53,7 @@ public class PlayerInteractListener implements Listener {
 		Player owner = (Player) ((Tameable) event.getRightClicked()).getOwner();
 
 		// Do not show information to the owner of the pet.
-		if (event.getPlayer().getName().equals(owner)
+		if (event.getPlayer().getName().equals(owner.getName())
 				&& !plugin.getChangeOwnershipMap().containsKey(event.getPlayer().getName())) {
 			return;
 		}
@@ -70,8 +70,9 @@ public class PlayerInteractListener implements Listener {
 		}
 
 		if (plugin.isChatMessage())
-			event.getPlayer().sendMessage(plugin.getChatHeader()
-					+ plugin.getPluginLang().getString("petmaster-chat", "Pet owned by ") + ChatColor.GOLD + owner);
+			event.getPlayer().sendMessage(
+					plugin.getChatHeader() + plugin.getPluginLang().getString("petmaster-chat", "Pet owned by ")
+							+ ChatColor.GOLD + owner.getName());
 
 	}
 
@@ -128,7 +129,7 @@ public class PlayerInteractListener implements Listener {
 			((Tameable) event.getRightClicked()).setOwner(newOwner);
 
 			// Charge price.
-			if (plugin.getChangeOwnerPrice() > 0 && plugin.setUpEconomy()){
+			if (plugin.getChangeOwnerPrice() > 0 && plugin.setUpEconomy()) {
 				try {
 					plugin.getEconomy().depositPlayer(owner, plugin.getChangeOwnerPrice());
 				} catch (NoSuchMethodError e) {
@@ -139,12 +140,14 @@ public class PlayerInteractListener implements Listener {
 				// adapt message accordingly.
 				if (plugin.getChangeOwnerPrice() > 1)
 					owner.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
-							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !")
-									.replace("AMOUNT", plugin.getChangeOwnerPrice() + " " + plugin.getEconomy().currencyNamePlural())));
+							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
+									"AMOUNT", plugin.getChangeOwnerPrice() + " "
+											+ plugin.getEconomy().currencyNamePlural())));
 				else
 					owner.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
-							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !")
-									.replace("AMOUNT", plugin.getChangeOwnerPrice() + " " + plugin.getEconomy().currencyNameSingular())));
+							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
+									"AMOUNT", plugin.getChangeOwnerPrice() + " "
+											+ plugin.getEconomy().currencyNameSingular())));
 			}
 
 			event.getPlayer().sendMessage(plugin.getChatHeader()

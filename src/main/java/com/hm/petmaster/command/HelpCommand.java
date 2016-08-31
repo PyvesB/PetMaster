@@ -30,17 +30,17 @@ public class HelpCommand {
 
 		sendJsonClickableHoverableMessage(sender,
 				plugin.getChatHeader() + ChatColor.GOLD + "/petm info" + ChatColor.GRAY + " > "
-						+ plugin.getPluginLang().getString("petm-command-info",
+						+ plugin.getPluginLang().getString("petmaster-command-info",
 								"Display various information about the plugin."),
-				"/petm info", plugin.getPluginLang().getString("petm-command-info-hover",
+				"/petm info", plugin.getPluginLang().getString("petmaster-command-info-hover",
 						"Some extra info about the plugin and its awesome author!"));
 
 		if (sender.hasPermission("petmaster.admin"))
 			sendJsonClickableHoverableMessage(sender,
 					plugin.getChatHeader() + ChatColor.GOLD + "/petm reload" + ChatColor.GRAY + " > "
-							+ plugin.getPluginLang().getString("petm-command-reload",
+							+ plugin.getPluginLang().getString("petmaster-command-reload",
 									"Reload the plugin's configuration."),
-					"/petm reload", plugin.getPluginLang().getString("petm-command-reload-hover",
+					"/petm reload", plugin.getPluginLang().getString("petmaster-command-reload-hover",
 							"Reload most settings in config.yml and lang.yml files."));
 
 		if (sender.hasPermission("petmaster.admin"))
@@ -70,7 +70,7 @@ public class HelpCommand {
 
 		// Tip message.
 		sender.sendMessage(ChatColor.GRAY + ChatColor.translateAlternateColorCodes('&', plugin.getPluginLang()
-				.getString("petm-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!")));
+				.getString("petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!")));
 	}
 
 	/**
