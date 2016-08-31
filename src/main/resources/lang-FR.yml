@@ -46,3 +46,9 @@ version-command-author: 'Auteur :'
 version-command-description: 'Description :'
 version-command-description-details: Mais à  qui appartient cet animal de compagnie? Découvrez-le avec Pet Master!
 version-command-enabled: 'Plugin activé: '
+
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Parameters to appear in future versions        | #
+# +--------------------------------------------------------+ #
+#============================================================#

@@ -30,3 +30,9 @@ languageFileName: 'lang.yml'
 
 # Price of the /petm setowner command (requires Vault).
 changeOwnerPrice: 0
+
+#=============================OOO=============================#
+# III-----------------------------------------------------III #
+# |         Parameters to appear in future versions         | #
+# 3---------------------------------------------------------3 #
+#=============================ooo=============================#

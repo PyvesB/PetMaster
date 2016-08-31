@@ -46,3 +46,9 @@ version-command-author: "Author:"
 version-command-description: "Description:"
 version-command-description-details: "Whose pet is this? Pet Master, a simple plugin to change or display the owner of a pet via a hologram or a chat message."
 version-command-enabled: "Plugin enabled:"
+
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Parameters to appear in future versions        | #
+# +--------------------------------------------------------+ #
+#============================================================#
