@@ -16,14 +16,17 @@
 # Enable or disable chat messages when right-clicking on a pet.
 chatMessage: true
 
-# Enable or disable hologram messages when right-clicking on a pet.
+# Enable or disable hologram messages when right-clicking on a pet (requires Holographic Displays).
 hologramMessage: true
 
 # Duration of the hologram, in server ticks (20 ticks = 1 second).
 hologramDuration: 50
 
 # Check for update on plugin launch and notify when an OP joins the game.
-CheckForUpdate: true
+checkForUpdate: true
 
 # Name of the language file.
-LanguageFileName: 'lang.yml'
+languageFileName: 'lang.yml'
+
+# Price of the /petm setowner command (requires Vault).
+changeOwnerPrice: 0

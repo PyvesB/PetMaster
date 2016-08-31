@@ -50,7 +50,7 @@ public class PlayerInteractListener implements Listener {
 				|| !event.getPlayer().hasPermission("petmaster.use") || plugin.isDisabled())
 			return;
 
-		String owner = ((Tameable) event.getRightClicked()).getOwner().getName();
+		Player owner = (Player) ((Tameable) event.getRightClicked()).getOwner();
 
 		// Do not show information to the owner of the pet.
 		if (event.getPlayer().getName().equals(owner)
@@ -81,7 +81,7 @@ public class PlayerInteractListener implements Listener {
 	 * @param event
 	 * @param owner
 	 */
-	private void displayHologram(PlayerInteractEntityEvent event, String owner) {
+	private void displayHologram(PlayerInteractEntityEvent event, Player owner) {
 
 		double offset = HORSE_OFFSET;
 		if (event.getRightClicked() instanceof Ocelot)
@@ -96,7 +96,7 @@ public class PlayerInteractListener implements Listener {
 
 		final Hologram hologram = HologramsAPI.createHologram(plugin, hologramLocation);
 		hologram.appendTextLine(ChatColor.GRAY + plugin.getPluginLang().getString("petmaster-hologram", "Pet owned by ")
-				+ ChatColor.GOLD + owner);
+				+ ChatColor.GOLD + owner.getName());
 
 		// Runnable to delete hologram.
 		new BukkitRunnable() {
@@ -116,15 +116,36 @@ public class PlayerInteractListener implements Listener {
 	 * @param event
 	 * @param owner
 	 */
-	private void changeOwner(PlayerInteractEntityEvent event, String owner) {
+	@SuppressWarnings("deprecation")
+	private void changeOwner(PlayerInteractEntityEvent event, Player owner) {
 
 		// Retrieve new owner from the map and delete corresponding entry.
 		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
 
 		// Can only change ownership if current owner or bypass permission.
-		if (owner.equals(event.getPlayer().getName()) || event.getPlayer().hasPermission("petmaster.admin")) {
+		if (owner.getName().equals(event.getPlayer().getName()) || event.getPlayer().hasPermission("petmaster.admin")) {
 			// Change owner.
 			((Tameable) event.getRightClicked()).setOwner(newOwner);
+
+			// Charge price.
+			if (plugin.getChangeOwnerPrice() > 0 && plugin.setUpEconomy()){
+				try {
+					plugin.getEconomy().depositPlayer(owner, plugin.getChangeOwnerPrice());
+				} catch (NoSuchMethodError e) {
+					// Deprecated method, but was the only one existing prior to Vault 1.4.
+					plugin.getEconomy().depositPlayer(owner.getName(), plugin.getChangeOwnerPrice());
+				}
+				// If player has set different currency names depending on amount,
+				// adapt message accordingly.
+				if (plugin.getChangeOwnerPrice() > 1)
+					owner.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
+							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !")
+									.replace("AMOUNT", plugin.getChangeOwnerPrice() + " " + plugin.getEconomy().currencyNamePlural())));
+				else
+					owner.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
+							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !")
+									.replace("AMOUNT", plugin.getChangeOwnerPrice() + " " + plugin.getEconomy().currencyNameSingular())));
+			}
 
 			event.getPlayer().sendMessage(plugin.getChatHeader()
 					+ plugin.getPluginLang().getString("owner-changed", "Say goodbye: this pet is no longer yours!"));

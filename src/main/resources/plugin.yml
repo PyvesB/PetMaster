@@ -2,7 +2,7 @@ name: PetMaster
 main: com.hm.petmaster.PetMaster
 version: ${project.version}
 author: DarkPyves
-softdepend: [HolographicDisplays]
+softdepend: [HolographicDisplays, Vault]
 load: POSTWORLD
 description: Whose pet is this? A simple plugin to change or display the owner of a pet via a hologram or a chat message.
 website: https://github.com/PyvesB/PetMaster

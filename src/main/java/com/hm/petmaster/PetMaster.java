@@ -13,6 +13,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
@@ -24,6 +25,8 @@ import com.hm.petmaster.listener.PlayerQuitListener;
 import com.hm.petmaster.utils.FileManager;
 import com.hm.petmaster.utils.UpdateChecker;
 import com.hm.petmaster.utils.YamlManager;
+
+import net.milkbowl.vault.economy.Economy;
 
 /**
  * Whose pet is this? A plugin to change or display the owner of a pet via a hologram or a chat message.
@@ -44,12 +47,16 @@ import com.hm.petmaster.utils.YamlManager;
 
 public class PetMaster extends JavaPlugin implements Listener {
 
+	// Used for Vault plugin integration.
+	private Economy economy;
+
 	// Plugin options and various parameters.
 	private boolean disabled;
 	private boolean chatMessage;
 	private String chatHeader;
 	private boolean hologramMessage;
 	private int hologramDuration;
+	private int changeOwnerPrice;
 	private boolean successfulLoad;
 
 	// Fields related to file handling.
@@ -101,7 +108,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		pm.registerEvents(playerConnectListener, this);
 
 		// Check for available plugin update.
-		if (config.getBoolean("CheckForUpdate", true))
+		if (config.getBoolean("checkForUpdate", true))
 			updateChecker = new UpdateChecker(this);
 
 		extractParametersFromConfig(true);
@@ -165,7 +172,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 
 		try {
-			lang = fileManager.getNewConfig(config.getString("LanguageFileName", "lang.yml"));
+			lang = fileManager.getNewConfig(config.getString("languageFileName", "lang.yml"));
 		} catch (IOException e) {
 			logger.severe("Error while loading language file.");
 			e.printStackTrace();
@@ -188,7 +195,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 
 		try {
-			fileManager.backupFile(config.getString("LanguageFileName", "lang.yml"));
+			fileManager.backupFile(config.getString("languageFileName", "lang.yml"));
 		} catch (IOException e) {
 			logger.severe("Error while backing up language file.");
 			e.printStackTrace();
@@ -205,10 +212,11 @@ public class PetMaster extends JavaPlugin implements Listener {
 		chatMessage = this.getConfig().getBoolean("chatMessage", true);
 		hologramMessage = this.getConfig().getBoolean("hologramMessage", true);
 		hologramDuration = this.getConfig().getInt("hologramDuration", 50);
+		changeOwnerPrice = this.getConfig().getInt("changeOwnerPrice", 0);
 
 		// Set to null in case user changed the option and did a /petm reload. We do not recheck for update on /petm
 		// reload.
-		if (!config.getBoolean("CheckForUpdate", true)) {
+		if (!config.getBoolean("checkForUpdate", true)) {
 			updateChecker = null;
 		}
 	}
@@ -222,14 +230,19 @@ public class PetMaster extends JavaPlugin implements Listener {
 		boolean updateDone = false;
 
 		// Added in version 1.2:
-		if (!config.getKeys(false).contains("LanguageFileName")) {
-			config.set("LanguageFileName", "lang.yml", "Name of the language file.");
+		if (!config.getKeys(false).contains("languageFileName")) {
+			config.set("languageFileName", "lang.yml", "Name of the language file.");
 			updateDone = true;
 		}
 
-		if (!config.getKeys(false).contains("CheckForUpdate")) {
-			config.set("CheckForUpdate", true,
+		if (!config.getKeys(false).contains("checkForUpdate")) {
+			config.set("checkForUpdate", true,
 					"Check for update on plugin launch and notify when an OP joins the game.");
+			updateDone = true;
+		}
+
+		if (!config.getKeys(false).contains("changeOwnerPrice")) {
+			config.set("changeOwnerPrice", true, "# Price of the /petm setowner command (requires Vault).");
 			updateDone = true;
 		}
 
@@ -279,6 +292,16 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		if (!lang.getKeys(false).contains("petmaster-command-info-hover")) {
 			lang.set("petmaster-command-info-hover", "Some extra info about the plugin and its awesome author!");
+			updateDone = true;
+		}
+		
+		if (!lang.getKeys(false).contains("petmaster-tip")) {
+			lang.set("petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!");
+			updateDone = true;
+		}
+		
+		if (!lang.getKeys(false).contains("change-owner-price")) {
+			lang.set("change-owner-price", "You payed: AMOUNT !");
 			updateDone = true;
 		}
 
@@ -398,6 +421,31 @@ public class PetMaster extends JavaPlugin implements Listener {
 	}
 
 	/**
+	 * Try to hook up with Vault, and log if this is called on plugin initialisation.
+	 * 
+	 * @param log
+	 * @return true if Vault available, false otherwise
+	 */
+	public boolean setUpEconomy() {
+
+		if (economy != null)
+			return true;
+
+		try {
+			RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
+					.getRegistration(net.milkbowl.vault.economy.Economy.class);
+			if (economyProvider != null) {
+				economy = economyProvider.getProvider();
+			}
+
+			return (economy != null);
+		} catch (NoClassDefFoundError e) {
+			this.getLogger().warning("Attempt to hook up with Vault failed. Money reward ignored.");
+			return false;
+		}
+	}
+
+	/**
 	 * Various getters and setters.
 	 */
 
@@ -445,4 +493,15 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		return updateChecker;
 	}
+
+	public Economy getEconomy() {
+
+		return economy;
+	}
+
+	public int getChangeOwnerPrice() {
+
+		return changeOwnerPrice;
+	}
+
 }
