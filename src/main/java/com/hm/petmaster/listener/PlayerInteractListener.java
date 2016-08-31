@@ -3,6 +3,7 @@ package com.hm.petmaster.listener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
@@ -50,7 +51,7 @@ public class PlayerInteractListener implements Listener {
 				|| !event.getPlayer().hasPermission("petmaster.use") || plugin.isDisabled())
 			return;
 
-		Player owner = (Player) ((Tameable) event.getRightClicked()).getOwner();
+		AnimalTamer owner = ((Tameable) event.getRightClicked()).getOwner();
 
 		// Do not show information to the owner of the pet.
 		if (event.getPlayer().getName().equals(owner.getName())
@@ -82,7 +83,7 @@ public class PlayerInteractListener implements Listener {
 	 * @param event
 	 * @param owner
 	 */
-	private void displayHologram(PlayerInteractEntityEvent event, Player owner) {
+	private void displayHologram(PlayerInteractEntityEvent event, AnimalTamer owner) {
 
 		double offset = HORSE_OFFSET;
 		if (event.getRightClicked() instanceof Ocelot)
@@ -118,7 +119,7 @@ public class PlayerInteractListener implements Listener {
 	 * @param owner
 	 */
 	@SuppressWarnings("deprecation")
-	private void changeOwner(PlayerInteractEntityEvent event, Player owner) {
+	private void changeOwner(PlayerInteractEntityEvent event, AnimalTamer owner) {
 
 		// Retrieve new owner from the map and delete corresponding entry.
 		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
@@ -131,20 +132,20 @@ public class PlayerInteractListener implements Listener {
 			// Charge price.
 			if (plugin.getChangeOwnerPrice() > 0 && plugin.setUpEconomy()) {
 				try {
-					plugin.getEconomy().depositPlayer(owner, plugin.getChangeOwnerPrice());
+					plugin.getEconomy().depositPlayer(event.getPlayer(), plugin.getChangeOwnerPrice());
 				} catch (NoSuchMethodError e) {
 					// Deprecated method, but was the only one existing prior to Vault 1.4.
-					plugin.getEconomy().depositPlayer(owner.getName(), plugin.getChangeOwnerPrice());
+					plugin.getEconomy().depositPlayer(event.getPlayer().getName(), plugin.getChangeOwnerPrice());
 				}
 				// If player has set different currency names depending on amount,
 				// adapt message accordingly.
 				if (plugin.getChangeOwnerPrice() > 1)
-					owner.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
+					event.getPlayer().sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
 							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
 									"AMOUNT", plugin.getChangeOwnerPrice() + " "
 											+ plugin.getEconomy().currencyNamePlural())));
 				else
-					owner.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
+					event.getPlayer().sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
 							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
 									"AMOUNT", plugin.getChangeOwnerPrice() + " "
 											+ plugin.getEconomy().currencyNameSingular())));
