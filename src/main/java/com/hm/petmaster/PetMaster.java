@@ -96,6 +96,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		// Start enabling plugin.
 		long startTime = System.currentTimeMillis();
+		
+		this.getLogger().info("Registering listeners...");
 
 		playerInteractListener = new PlayerInteractListener(this);
 		playerQuitListener = new PlayerQuitListener(this);
@@ -107,11 +109,11 @@ public class PetMaster extends JavaPlugin implements Listener {
 		pm.registerEvents(playerQuitListener, this);
 		pm.registerEvents(playerConnectListener, this);
 
+		extractParametersFromConfig(true);
+
 		// Check for available plugin update.
 		if (config.getBoolean("checkForUpdate", true))
 			updateChecker = new UpdateChecker(this);
-
-		extractParametersFromConfig(true);
 
 		try {
 			MetricsLite metrics = new MetricsLite(this);
@@ -242,7 +244,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 
 		if (!config.getKeys(false).contains("changeOwnerPrice")) {
-			config.set("changeOwnerPrice", true, "# Price of the /petm setowner command (requires Vault).");
+			config.set("changeOwnerPrice", 0, "Price of the /petm setowner command (requires Vault).");
 			updateDone = true;
 		}
 

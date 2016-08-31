@@ -4,7 +4,7 @@
 # 1---------------------------------------------------------1 #
 #==============================o==============================#
 
-# Remember: nothing is displayed if you are the owner of the pet!
+# Remember: ownership information is not displayed if you are the owner of the pet!
 # Visit the GitHub for some additional documentation: github.com/PyvesB/PetMaster
 
 #=============================O=O=============================#
