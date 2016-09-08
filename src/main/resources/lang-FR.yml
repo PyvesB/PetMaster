@@ -8,7 +8,7 @@
 no-permissions: Vous n'avez pas la permission de faire cela.
 
 # Related to /petm reload.
-configuration-successfully-reloaded: Configuration rechargéé avec succès.
+configuration-successfully-reloaded: Configuration rechargée avec succès.
 configuration-reload-failed: Erreur(s) lors du rechargement des configurations. Merci de consulter les logs détaillés pour plus d'informations.
 
 # Related to other plugin commands.
@@ -20,15 +20,15 @@ misused-command: Mauvaise commande. Tapez /petm.
 player-offline: Le joueur spécifié est hors ligne !
 right-click: Faites clic-droit sur un animal pour changer son propriétaire !
 owner-changed: 'Dîtes adieu : votre animal ne vous appartient plus !'
-new-owner: Le joueur PLAYER  vous a donné un animal !
+new-owner: Le joueur PLAYER vous a donné un animal !
 not-owner: Cet animal ne vous appartient pas !
-cannot-change-to-yourself: Vous ne pouvez pas modifier le propriétaire en vous-même !
-change-owner-price: 'Vous avez dépensé: AMOUNT !'
+cannot-change-to-yourself: Vous êtes déjà le propriétaire !
+change-owner-price: 'Vous avez dépensé : AMOUNT !'
 
 # Related to /petm help.
 petmaster-command-setowner: Changez le propriétaire de l'un §l&7de vos animaux.
 petmaster-command-disable: Désactiver PM jusqu'au prochain &7redémarrage.
-petmaster-command-enable: Activer PM (si précèdemment désactivé).
+petmaster-command-enable: Activer PM (si précédemment désactivé).
 petmaster-command-reload: Recharger la configuration du plugin.
 petmaster-command-info: Afficher des informations à propos du plugin.
 petmaster-command-setowner-hover: Vous pouvez seulement changer le propriétaire de vos propres bêtes !
@@ -44,7 +44,7 @@ version-command-version: 'Version :'
 version-command-website: 'Site :'
 version-command-author: 'Auteur :'
 version-command-description: 'Description :'
-version-command-description-details: Mais à  qui appartient cet animal de compagnie? Découvrez-le avec Pet Master!
+version-command-description-details: Mais à qui appartient cet animal de compagnie ? Découvrez-le avec Pet Master !
 version-command-enabled: 'Plugin activé: '
 
 #============================================================#
