@@ -10,7 +10,7 @@ import com.hm.petmaster.PetMaster;
 /**
  * Class used to empty the change ownership map when a player quits the server, to avoid memory leaks.
  * 
- * @author Pierre-Yves
+ * @author Pyves
  *
  */
 public class PlayerQuitListener implements Listener {

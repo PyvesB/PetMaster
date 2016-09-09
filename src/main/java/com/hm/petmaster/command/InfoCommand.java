@@ -9,6 +9,7 @@ import com.hm.petmaster.PetMaster;
  * Class in charge of displaying the plugin's extra information (/petm info).
  * 
  * @author Pyves
+ * 
  */
 public class InfoCommand {
 

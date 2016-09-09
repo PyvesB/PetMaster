@@ -19,7 +19,7 @@ permissions:
     description: Allows players to change the ownership of their own pets.
     default: true
   petmaster.admin:
-    description: Allows to enable/disable/reload the plugin, or bypass ownership setting.
+    description: Allows to enable/disable/reload the plugin, bypass ownership setting or get notified by updates.
     default: op
   petmaster.*:
     description: Star notation of permissions, includes all of them.

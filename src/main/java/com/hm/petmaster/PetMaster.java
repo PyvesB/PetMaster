@@ -41,7 +41,7 @@ import net.milkbowl.vault.economy.Economy;
  * Spigot project page: spigotmc.org/resources/pet-master.15904
  * 
  * @since December 2015.
- * @version 1.2
+ * @version 1.2.1
  * @author DarkPyves
  */
 
@@ -96,7 +96,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		// Start enabling plugin.
 		long startTime = System.currentTimeMillis();
-		
+
 		this.getLogger().info("Registering listeners...");
 
 		playerInteractListener = new PlayerInteractListener(this);
@@ -136,7 +136,9 @@ public class PetMaster extends JavaPlugin implements Listener {
 		if (hologramMessage && !holographicDisplaysAvailable) {
 			successfulLoad = false;
 			hologramMessage = false;
-			this.getLogger().warning("HolographicDisplays was not found; disabling usage of holograms.");
+			chatMessage = true;
+			this.getLogger().warning(
+					"HolographicDisplays was not found; disabling usage of holograms and enabling chat messages.");
 		}
 
 		if (successfulLoad)
@@ -204,7 +206,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 			successfulLoad = false;
 		}
 
-		// Update configurations from previous versions of the plugin if server reload or restart.
+		// Update configurations from previous versions of the plugin if server reloads or restarts.
 		if (attemptUpdate) {
 			updateOldConfiguration();
 			updateOldLanguage();
@@ -216,7 +218,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		hologramDuration = this.getConfig().getInt("hologramDuration", 50);
 		changeOwnerPrice = this.getConfig().getInt("changeOwnerPrice", 0);
 
-		// Set to null in case user changed the option and did a /petm reload. We do not recheck for update on /petm
+		// Set to null in case user changed the option and did a /petm reload. Do not recheck for update on /petm
 		// reload.
 		if (!config.getBoolean("checkForUpdate", true)) {
 			updateChecker = null;
@@ -296,12 +298,12 @@ public class PetMaster extends JavaPlugin implements Listener {
 			lang.set("petmaster-command-info-hover", "Some extra info about the plugin and its awesome author!");
 			updateDone = true;
 		}
-		
+
 		if (!lang.getKeys(false).contains("petmaster-tip")) {
 			lang.set("petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!");
 			updateDone = true;
 		}
-		
+
 		if (!lang.getKeys(false).contains("change-owner-price")) {
 			lang.set("change-owner-price", "You payed: AMOUNT !");
 			updateDone = true;
@@ -442,14 +444,12 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 			return (economy != null);
 		} catch (NoClassDefFoundError e) {
-			this.getLogger().warning("Attempt to hook up with Vault failed. Money reward ignored.");
+			this.getLogger().warning("Attempt to hook up with Vault failed. Payment ignored.");
 			return false;
 		}
 	}
 
-	/**
-	 * Various getters and setters.
-	 */
+	// Various getters and setters. Names are self-explanatory.
 
 	public boolean isDisabled() {
 

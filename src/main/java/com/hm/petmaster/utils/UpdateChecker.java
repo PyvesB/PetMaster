@@ -10,11 +10,11 @@ import org.w3c.dom.NodeList;
 
 import com.hm.petmaster.PetMaster;
 
-
 /**
  * Class used to check for newer versions of the plugin.
  * 
  * @author Pyves
+ * 
  */
 public class UpdateChecker {
 

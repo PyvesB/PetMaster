@@ -11,6 +11,7 @@ import com.hm.petmaster.particle.PacketSender;
  * Class in charge of displaying the plugin's help (/petm help).
  * 
  * @author Pyves
+ * 
  */
 public class HelpCommand {
 
@@ -59,7 +60,7 @@ public class HelpCommand {
 
 		if (sender.hasPermission("petmaster.setowner"))
 			sendJsonClickableHoverableMessage(sender,
-					plugin.getChatHeader() + ChatColor.GOLD + "/petm setowner player" + ChatColor.GRAY + " > "
+					plugin.getChatHeader() + ChatColor.GOLD + "/petm setowner &oplayer&r" + ChatColor.GRAY + " > "
 							+ plugin.getPluginLang().getString("petmaster-command-setowner",
 									"Change the ownership of a pet."),
 					"/petm setowner player", plugin.getPluginLang().getString("petmaster-command-setowner-hover",

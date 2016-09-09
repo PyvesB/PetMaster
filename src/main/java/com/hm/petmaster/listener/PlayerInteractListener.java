@@ -38,7 +38,7 @@ public class PlayerInteractListener implements Listener {
 		this.plugin = petMaster;
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 
 		// On Minecraft versions from 1.9 onwards, this event is fired twice,
