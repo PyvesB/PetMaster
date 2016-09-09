@@ -31,7 +31,7 @@ The following steps are for the [Eclipse](https://eclipse.org/) development envi
 
 * Download or clone the repository on your computer. You can also create your own fork by clicking on the *Fork* icon on the top right of the page.
 * In Eclipse, go to *File* -> *Import...* -> *Maven* -> *Existing Maven Projects*.
-* In the *Root Directory* field, select the location where you downloaded the Advanced Achievements repository.
+* In the *Root Directory* field, select the location where you downloaded the Pet Master repository.
 * Tick the *pom.xml* box that appears in the *Projects* field and click *Finish*.
 * To compile the plugin, in the *Package Explorer* window, right click on the imported project, then *Run As* -> *Maven Install*.
 * The plugin will be generated in the *target* folder of the project.
