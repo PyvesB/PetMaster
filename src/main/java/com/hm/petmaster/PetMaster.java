@@ -213,10 +213,10 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 
 		// Extract options from the config.
-		chatMessage = this.getConfig().getBoolean("chatMessage", true);
-		hologramMessage = this.getConfig().getBoolean("hologramMessage", true);
-		hologramDuration = this.getConfig().getInt("hologramDuration", 50);
-		changeOwnerPrice = this.getConfig().getInt("changeOwnerPrice", 0);
+		chatMessage = config.getBoolean("chatMessage", true);
+		hologramMessage = config.getBoolean("hologramMessage", true);
+		hologramDuration = config.getInt("hologramDuration", 50);
+		changeOwnerPrice = config.getInt("changeOwnerPrice", 0);
 
 		// Set to null in case user changed the option and did a /petm reload. Do not recheck for update on /petm
 		// reload.
