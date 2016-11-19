@@ -15,7 +15,7 @@ import com.hm.petmaster.particle.PacketSender;
  */
 public class HelpCommand {
 
-	private PetMaster plugin;
+	private final PetMaster plugin;
 
 	public HelpCommand(PetMaster plugin) {
 
@@ -36,7 +36,7 @@ public class HelpCommand {
 				"/petm info", plugin.getPluginLang().getString("petmaster-command-info-hover",
 						"Some extra info about the plugin and its awesome author!"));
 
-		if (sender.hasPermission("petmaster.admin"))
+		if (sender.hasPermission("petmaster.admin")) {
 			sendJsonClickableHoverableMessage(sender,
 					plugin.getChatHeader() + ChatColor.GOLD + "/petm reload" + ChatColor.GRAY + " > "
 							+ plugin.getPluginLang().getString("petmaster-command-reload",
@@ -44,27 +44,27 @@ public class HelpCommand {
 					"/petm reload", plugin.getPluginLang().getString("petmaster-command-reload-hover",
 							"Reload most settings in config.yml and lang.yml files."));
 
-		if (sender.hasPermission("petmaster.admin"))
 			sendJsonClickableHoverableMessage(sender,
 					plugin.getChatHeader() + ChatColor.GOLD + "/petm enable" + ChatColor.GRAY + " > "
 							+ plugin.getPluginLang().getString("petmaster-command-enable", "Enable plugin."),
 					"/petm enable", plugin.getPluginLang().getString("petmaster-command-enable-hover",
 							"Plugin enabled by default. Use this if you entered /petm disable before!"));
 
-		if (sender.hasPermission("petmaster.admin"))
 			sendJsonClickableHoverableMessage(sender,
 					plugin.getChatHeader() + ChatColor.GOLD + "/petm disable" + ChatColor.GRAY + " > "
 							+ plugin.getPluginLang().getString("petmaster-command-disable", "Disable plugin."),
 					"/petm disable", plugin.getPluginLang().getString("petmaster-command-disable-hover",
 							"The plugin will not work until next reload or /petm enable."));
+		}
 
-		if (sender.hasPermission("petmaster.setowner"))
+		if (sender.hasPermission("petmaster.setowner")) {
 			sendJsonClickableHoverableMessage(sender,
 					plugin.getChatHeader() + ChatColor.GOLD + "/petm setowner &oplayer&r" + ChatColor.GRAY + " > "
 							+ plugin.getPluginLang().getString("petmaster-command-setowner",
 									"Change the ownership of a pet."),
 					"/petm setowner player", plugin.getPluginLang().getString("petmaster-command-setowner-hover",
 							"You can only change the ownership of your own pets, unless you're admin!"));
+		}
 
 		// Empty line.
 		sender.sendMessage(ChatColor.GOLD + " ");

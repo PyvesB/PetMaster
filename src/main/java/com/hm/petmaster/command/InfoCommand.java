@@ -13,7 +13,7 @@ import com.hm.petmaster.PetMaster;
  */
 public class InfoCommand {
 
-	private PetMaster plugin;
+	private final PetMaster plugin;
 
 	public InfoCommand(PetMaster plugin) {
 
@@ -41,13 +41,15 @@ public class InfoCommand {
 				+ plugin.getPluginLang().getString("version-command-description", "Description:") + " " + ChatColor.GRAY
 				+ plugin.getPluginLang().getString("version-command-description-details",
 						"Whose pet is this? A simple plugin to change or display the owner of a pet via a hologram or a chat message."));
-		if (plugin.isDisabled())
-			sender.sendMessage(plugin.getChatHeader() + ChatColor.GOLD
-					+ plugin.getPluginLang().getString("version-command-enabled", "Plugin enabled:") + " "
-					+ ChatColor.GRAY + "NO");
-		else
-			sender.sendMessage(plugin.getChatHeader() + ChatColor.GOLD
-					+ plugin.getPluginLang().getString("version-command-enabled", "Plugin enabled:") + " "
-					+ ChatColor.GRAY + "YES");
+		// Display whether PetMaster is enabled.
+		String state;
+		if (plugin.isDisabled()) {
+			state = "NO";
+		} else {
+			state = "YES";
+		}
+		sender.sendMessage(plugin.getChatHeader() + ChatColor.GOLD
+				+ plugin.getPluginLang().getString("version-command-enabled", "Plugin enabled:") + " " + ChatColor.GRAY
+				+ state);
 	}
 }

@@ -28,5 +28,4 @@ public class PlayerQuitListener implements Listener {
 		// Delete entry from map.
 		plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
 	}
-
 }

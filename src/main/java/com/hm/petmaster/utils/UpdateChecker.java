@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -42,7 +43,7 @@ public class UpdateChecker {
 	public UpdateChecker(PetMaster plugin) {
 
 		this.plugin = plugin;
-		updateCheckerFutureTask = new FutureTask<Boolean>(new Callable<Boolean>() {
+		updateCheckerFutureTask = new FutureTask<>(new Callable<Boolean>() {
 
 			@Override
 			public Boolean call() throws Exception {

@@ -27,11 +27,11 @@ import com.hm.petmaster.PetMaster;
  */
 public class PlayerInteractListener implements Listener {
 
-	private PetMaster plugin;
+	private final PetMaster plugin;
 	// Vertical offsets of the holograms for each mob type.
-	final static double DOG_OFFSET = 1.5;
-	final static double CAT_OFFSET = 1.42;
-	final static double HORSE_OFFSET = 2.32;
+	private static final double DOG_OFFSET = 1.5;
+	private static final double CAT_OFFSET = 1.42;
+	private static final double HORSE_OFFSET = 2.32;
 
 	public PlayerInteractListener(PetMaster petMaster) {
 
@@ -43,13 +43,15 @@ public class PlayerInteractListener implements Listener {
 
 		// On Minecraft versions from 1.9 onwards, this event is fired twice,
 		// one for each hand. Need additional check.
-		if ((Integer.parseInt(Bukkit.getBukkitVersion().charAt(2) + "") >= 9
-				|| Bukkit.getBukkitVersion().charAt(3) != '.') && event.getHand() != EquipmentSlot.HAND)
+		if ((Integer.parseInt(Character.toString(Bukkit.getBukkitVersion().charAt(2))) >= 9
+				|| Bukkit.getBukkitVersion().charAt(3) != '.') && event.getHand() != EquipmentSlot.HAND) {
 			return;
+		}
 
 		if (!(event.getRightClicked() instanceof Tameable) || ((Tameable) event.getRightClicked()).getOwner() == null
-				|| !event.getPlayer().hasPermission("petmaster.use") || plugin.isDisabled())
+				|| !event.getPlayer().hasPermission("petmaster.use") || plugin.isDisabled()) {
 			return;
+		}
 
 		AnimalTamer owner = ((Tameable) event.getRightClicked()).getOwner();
 
@@ -70,11 +72,11 @@ public class PlayerInteractListener implements Listener {
 			displayHologram(event, owner);
 		}
 
-		if (plugin.isChatMessage())
+		if (plugin.isChatMessage()) {
 			event.getPlayer().sendMessage(
 					plugin.getChatHeader() + plugin.getPluginLang().getString("petmaster-chat", "Pet owned by ")
 							+ ChatColor.GOLD + owner.getName());
-
+		}
 	}
 
 	/**
@@ -86,10 +88,11 @@ public class PlayerInteractListener implements Listener {
 	private void displayHologram(PlayerInteractEntityEvent event, AnimalTamer owner) {
 
 		double offset = HORSE_OFFSET;
-		if (event.getRightClicked() instanceof Ocelot)
+		if (event.getRightClicked() instanceof Ocelot) {
 			offset = CAT_OFFSET;
-		else if (event.getRightClicked() instanceof Wolf)
+		} else if (event.getRightClicked() instanceof Wolf) {
 			offset = DOG_OFFSET;
+		}
 
 		Location eventLocation = event.getRightClicked().getLocation();
 		// Create location with offset.
@@ -137,18 +140,18 @@ public class PlayerInteractListener implements Listener {
 					// Deprecated method, but was the only one existing prior to Vault 1.4.
 					plugin.getEconomy().depositPlayer(event.getPlayer().getName(), plugin.getChangeOwnerPrice());
 				}
-				// If player has set different currency names depending on amount,
-				// adapt message accordingly.
-				if (plugin.getChangeOwnerPrice() > 1)
+				// If player has set different currency names depending on amount, adapt message accordingly.
+				if (plugin.getChangeOwnerPrice() > 1) {
 					event.getPlayer().sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
 							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
 									"AMOUNT", plugin.getChangeOwnerPrice() + " "
 											+ plugin.getEconomy().currencyNamePlural())));
-				else
+				} else {
 					event.getPlayer().sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
 							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
 									"AMOUNT", plugin.getChangeOwnerPrice() + " "
 											+ plugin.getEconomy().currencyNameSingular())));
+				}
 			}
 
 			event.getPlayer().sendMessage(plugin.getChatHeader()
@@ -161,5 +164,4 @@ public class PlayerInteractListener implements Listener {
 					.getString("not-owner", "You do not own this pet!").replace("PLAYER", event.getPlayer().getName()));
 		}
 	}
-
 }

@@ -3,6 +3,7 @@ package com.hm.petmaster;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -62,7 +63,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	// Fields related to file handling.
 	private YamlManager config;
 	private YamlManager lang;
-	private FileManager fileManager;
+	private final FileManager fileManager;
 
 	// Contains pairs with name of previous owner and new owner.
 	private Map<String, Player> changeOwnershipMap;
@@ -112,8 +113,9 @@ public class PetMaster extends JavaPlugin implements Listener {
 		extractParametersFromConfig(true);
 
 		// Check for available plugin update.
-		if (config.getBoolean("checkForUpdate", true))
+		if (config.getBoolean("checkForUpdate", true)) {
 			updateChecker = new UpdateChecker(this);
+		}
 
 		try {
 			MetricsLite metrics = new MetricsLite(this);
@@ -125,7 +127,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
 
-		changeOwnershipMap = new HashMap<String, Player>();
+		changeOwnershipMap = new HashMap<>();
 
 		helpCommand = new HelpCommand(this);
 		infoCommand = new InfoCommand(this);
@@ -141,11 +143,12 @@ public class PetMaster extends JavaPlugin implements Listener {
 					"HolographicDisplays was not found; disabling usage of holograms and enabling chat messages.");
 		}
 
-		if (successfulLoad)
+		if (successfulLoad) {
 			this.getLogger().info("Plugin successfully enabled and ready to run! Took "
 					+ (System.currentTimeMillis() - startTime) + "ms.");
-		else
+		} else {
 			this.getLogger().severe("Error(s) while loading plugin. Please view previous logs for more information.");
+		}
 	}
 
 	/**
@@ -163,13 +166,12 @@ public class PetMaster extends JavaPlugin implements Listener {
 		try {
 			config = fileManager.getNewConfig("config.yml");
 		} catch (IOException e) {
-			logger.severe("Error while loading configuration file.");
-			e.printStackTrace();
+			this.getLogger().log(Level.SEVERE, "Error while loading configuration file: ", e);
 			successfulLoad = false;
 		} catch (InvalidConfigurationException e) {
 			logger.severe("Error while loading configuration file, disabling plugin.");
-			logger.severe("Verify your syntax using the following logs and by visiting yaml-online-parser.appspot.com");
-			e.printStackTrace();
+			logger.log(Level.SEVERE,
+					"Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
 			successfulLoad = false;
 			this.getServer().getPluginManager().disablePlugin(this);
 			return;
@@ -178,13 +180,12 @@ public class PetMaster extends JavaPlugin implements Listener {
 		try {
 			lang = fileManager.getNewConfig(config.getString("languageFileName", "lang.yml"));
 		} catch (IOException e) {
-			logger.severe("Error while loading language file.");
-			e.printStackTrace();
+			this.getLogger().log(Level.SEVERE, "Error while loading language file: ", e);
 			successfulLoad = false;
 		} catch (InvalidConfigurationException e) {
 			logger.severe("Error while loading language file, disabling plugin.");
-			logger.severe("Verify your syntax using the following logs and by visiting yaml-online-parser.appspot.com");
-			e.printStackTrace();
+			this.getLogger().log(Level.SEVERE,
+					"Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
 			successfulLoad = false;
 			this.getServer().getPluginManager().disablePlugin(this);
 			return;
@@ -193,16 +194,14 @@ public class PetMaster extends JavaPlugin implements Listener {
 		try {
 			fileManager.backupFile("config.yml");
 		} catch (IOException e) {
-			logger.severe("Error while backing up configuration file.");
-			e.printStackTrace();
+			this.getLogger().log(Level.SEVERE, "Error while backing up configuration file: ", e);
 			successfulLoad = false;
 		}
 
 		try {
 			fileManager.backupFile(config.getString("languageFileName", "lang.yml"));
 		} catch (IOException e) {
-			logger.severe("Error while backing up language file.");
-			e.printStackTrace();
+			this.getLogger().log(Level.SEVERE, "Error while backing up language file: ", e);
 			successfulLoad = false;
 		}
 
@@ -256,8 +255,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 				config.saveConfig();
 				config.reloadConfig();
 			} catch (IOException e) {
-				this.getLogger().severe("Error while saving changes to the configuration file.");
-				e.printStackTrace();
+				this.getLogger().log(Level.SEVERE, "Error while saving changes to the configuration file: ", e);
 				successfulLoad = false;
 			}
 		}
@@ -315,8 +313,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 				lang.saveConfig();
 				lang.reloadConfig();
 			} catch (IOException e) {
-				this.getLogger().severe("Error while saving changes to the language file.");
-				e.printStackTrace();
+				this.getLogger().log(Level.SEVERE, "Error while saving changes to the language file: ", e);
 				successfulLoad = false;
 			}
 		}
@@ -336,43 +333,39 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 * Called when a player or the console enters a command.
 	 */
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String args[]) {
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-		if (!cmd.getName().equalsIgnoreCase("petm"))
+		if (!"petm".equalsIgnoreCase(cmd.getName())) {
 			return false;
+		}
 
 		if (!sender.hasPermission("petmaster.use")) {
 			sender.sendMessage(
 					chatHeader + lang.getString("no-permissions", "You do not have the permission to do this."));
-
-		} else if (args.length == 0 || args.length == 1 && args[0].equalsIgnoreCase("help")) {
-
+		} else if (args.length == 0 || args.length == 1 && "help".equalsIgnoreCase(args[0])) {
 			helpCommand.getHelp(sender);
-
-		} else if (args[0].equalsIgnoreCase("info")) {
-
+		} else if ("info".equalsIgnoreCase(args[0])) {
 			infoCommand.getInfo(sender);
-
-		} else if (args[0].equalsIgnoreCase("reload")) {
+		} else if ("reload".equalsIgnoreCase(args[0])) {
 			if (sender.hasPermission("petmaster.admin")) {
-
 				this.reloadConfig();
 				extractParametersFromConfig(false);
 				if (successfulLoad) {
-					if (sender instanceof Player)
+					if (sender instanceof Player) {
 						sender.sendMessage(chatHeader + lang.getString("configuration-successfully-reloaded",
 								"Configuration successfully reloaded."));
+					}
 					this.getLogger().info("Configuration successfully reloaded.");
 				} else {
 					sender.sendMessage(chatHeader + lang.getString("configuration-reload-failed",
 							"Errors while reloading configuration. Please view logs for more details."));
 					this.getLogger().severe("Errors while reloading configuration. Please view logs for more details.");
 				}
-			} else
+			} else {
 				sender.sendMessage(
 						chatHeader + lang.getString("no-permissions", "You do not have the permission to do this."));
-
-		} else if (args[0].equalsIgnoreCase("disable")) {
+			}
+		} else if ("disable".equalsIgnoreCase(args[0])) {
 			if (sender.hasPermission("petmaster.admin")) {
 				disabled = true;
 				sender.sendMessage(chatHeader
@@ -380,17 +373,14 @@ public class PetMaster extends JavaPlugin implements Listener {
 			} else
 				sender.sendMessage(
 						chatHeader + lang.getString("no-permissions", "You do not have the permission to do this."));
-
-		} else if (args[0].equalsIgnoreCase("enable")) {
+		} else if ("enable".equalsIgnoreCase(args[0])) {
 			if (sender.hasPermission("petmaster.admin")) {
 				disabled = false;
 				sender.sendMessage(chatHeader + lang.getString("petmaster-enabled", "PetMaster enabled."));
 			} else
 				sender.sendMessage(
 						chatHeader + lang.getString("no-permissions", "You do not have the permission to do this."));
-
-		} else if (args[0].equalsIgnoreCase("setowner") && sender instanceof Player) {
-
+		} else if ("setowner".equalsIgnoreCase(args[0]) && sender instanceof Player) {
 			if (args.length == 2) {
 				Player newOwner = null;
 				for (Player currentPlayer : Bukkit.getOnlinePlayers()) {
@@ -399,28 +389,28 @@ public class PetMaster extends JavaPlugin implements Listener {
 						break;
 					}
 				}
-				if (newOwner == null)
+				if (newOwner == null) {
 					sender.sendMessage(
 							chatHeader + lang.getString("player-offline", "The specified player is offline!"));
-				else if (!sender.hasPermission("petmaster.setowner") || disabled)
+				} else if (!sender.hasPermission("petmaster.setowner") || disabled) {
 					sender.sendMessage(chatHeader
 							+ lang.getString("no-permissions", "You do not have the permission to do this."));
-				else if (!sender.hasPermission("petmaster.admin")
-						&& newOwner.getName().equals(((Player) sender).getName()))
+				} else if (!sender.hasPermission("petmaster.admin")
+						&& newOwner.getName().equals(((Player) sender).getName())) {
 					sender.sendMessage(chatHeader
 							+ lang.getString("cannot-change-to-yourself", "You cannot change the owner to yourself!"));
-				else {
+				} else {
 					changeOwnershipMap.put(((Player) sender).getName(), newOwner);
 					sender.sendMessage(chatHeader
 							+ lang.getString("right-click", "Right click on one of your pets to change its owner!"));
 				}
-			} else
+			} else {
 				sender.sendMessage(
 						chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
-
-		} else
+			}
+		} else {
 			sender.sendMessage(chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
-
+		}
 		return true;
 	}
 
@@ -432,8 +422,9 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 */
 	public boolean setUpEconomy() {
 
-		if (economy != null)
+		if (economy != null) {
 			return true;
+		}
 
 		try {
 			RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
@@ -441,15 +432,12 @@ public class PetMaster extends JavaPlugin implements Listener {
 			if (economyProvider != null) {
 				economy = economyProvider.getProvider();
 			}
-
-			return (economy != null);
+			return economy != null;
 		} catch (NoClassDefFoundError e) {
 			this.getLogger().warning("Attempt to hook up with Vault failed. Payment ignored.");
 			return false;
 		}
 	}
-
-	// Various getters and setters. Names are self-explanatory.
 
 	public boolean isDisabled() {
 
@@ -505,5 +493,4 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		return changeOwnerPrice;
 	}
-
 }

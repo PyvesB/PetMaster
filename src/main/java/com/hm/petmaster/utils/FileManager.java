@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringReader;
+
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import com.hm.petmaster.PetMaster;
@@ -47,29 +48,31 @@ public class FileManager {
 			this.prepareFile(fileName);
 		}
 
-		YamlManager yamlManager = new YamlManager(this.getConfigContent(fileName), file, this.getCommentsAmount(file),
+		return new YamlManager(this.getConfigContent(this.getConfigFile(fileName)), file, this.getCommentsAmount(file),
 				plugin);
-		return yamlManager;
 	}
 
 	/**
-	 * Retrieve a configuration file by using its name. We assume the file is situated in the data folder of the plugin.
+	 * Retrieves a configuration file by using its name. We assume the file is situated in the data folder of the
+	 * plugin.
 	 * 
 	 * @param file
 	 * @return config file
 	 */
 	private File getConfigFile(String file) {
 
-		if (file.isEmpty())
+		if (file.isEmpty()) {
 			return null;
+		}
 
 		File configFile;
 
 		if (file.contains("/")) {
-			if (file.startsWith("/"))
+			if (file.startsWith("/")) {
 				configFile = new File(plugin.getDataFolder() + file.replace("/", File.separator));
-			else
+			} else {
 				configFile = new File(plugin.getDataFolder() + File.separator + file.replace("/", File.separator));
+			}
 		} else {
 			configFile = new File(plugin.getDataFolder(), file);
 		}
@@ -78,7 +81,7 @@ public class FileManager {
 	}
 
 	/**
-	 * Create a new file and the folders if they don't exist. Copy file from plugin's resources.
+	 * Creates a new file and the folders if they don't exist. Copies file from plugin's resources.
 	 * 
 	 * @param resource
 	 * @throws IOException
@@ -87,18 +90,23 @@ public class FileManager {
 
 		File file = this.getConfigFile(resource);
 
-		if (file.exists())
+		if (file.exists()) {
 			return;
+		}
 
 		file.getParentFile().mkdirs();
-		file.createNewFile();
 
-		if (resource != null && !resource.isEmpty())
+		if (file.createNewFile()) {
+			plugin.getLogger().info("Successfully created " + resource + " file.");
+		}
+
+		if (resource != null && !resource.isEmpty()) {
 			this.copyResource(plugin.getResource(resource), file);
+		}
 	}
 
 	/**
-	 * Extract the configuration from the file and rework it in order to provide a workaround to save comments.
+	 * Extracts the configuration from the file and reworks it in order to provide a workaround to save comments.
 	 * 
 	 * @param file
 	 * @return Reader with saved comments
@@ -106,15 +114,17 @@ public class FileManager {
 	 */
 	public Reader getConfigContent(File file) throws IOException {
 
-		if (!file.exists())
+		if (!file.exists()) {
 			return null;
+		}
 		int commentNum = 0;
 
 		String addLine;
 		String currentLine;
 
 		StringBuilder whole = new StringBuilder("");
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
+		try (FileInputStream fileSteam = new FileInputStream(file);
+				BufferedReader reader = new BufferedReader(new InputStreamReader(fileSteam, "UTF-8"))) {
 			while ((currentLine = reader.readLine()) != null) {
 				// Rework comment line so it becomes a normal value in the config file.
 				// This workaround allows the comment to be saved in the Yaml file.
@@ -129,13 +139,12 @@ public class FileManager {
 			}
 
 			String config = whole.toString();
-			StringReader configStream = new StringReader(config);
-			return configStream;
+			return new StringReader(config);
 		}
 	}
 
 	/**
-	 * Return the total number of comments in the file.
+	 * Returns the total number of comments in the file.
 	 * 
 	 * @param file
 	 * @return number of comments
@@ -143,27 +152,23 @@ public class FileManager {
 	 */
 	private int getCommentsAmount(File file) throws IOException {
 
-		if (!file.exists())
+		if (!file.exists()) {
 			return 0;
+		}
 		int comments = 0;
 		String currentLine;
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			while ((currentLine = reader.readLine()) != null)
-				if (currentLine.startsWith("#"))
+				if (currentLine.startsWith("#")) {
 					comments++;
-
+				}
 			return comments;
 		}
 	}
 
-	public Reader getConfigContent(String filePath) throws IOException {
-
-		return this.getConfigContent(this.getConfigFile(filePath));
-	}
-
 	/**
-	 * Rework the configuration string in order to regenerate comments.
+	 * Reworks the configuration string in order to regenerate comments.
 	 * 
 	 * @param configString
 	 * @return String representing original config file.
@@ -182,16 +187,16 @@ public class FileManager {
 						.replace("_HYPHEN_", "-").replace("_VERT_", "|");
 
 				String normalComment;
-				if (comment.startsWith("# ' "))
+				if (comment.startsWith("# ' ")) {
 					normalComment = comment.substring(0, comment.length() - 1).replaceFirst("# ' ", "# ");
-				else
+				} else {
 					normalComment = comment;
-
-				if (lastLine == 0)
+				}
+				if (lastLine == 0) {
 					config.append(normalComment + "\n");
-				else if (lastLine == 1)
+				} else if (lastLine == 1) {
 					config.append("\n" + normalComment + "\n");
-
+				}
 				lastLine = 0;
 			} else {
 				config.append(line + "\n");
@@ -202,7 +207,7 @@ public class FileManager {
 	}
 
 	/**
-	 * Write a string into a file.
+	 * Writes a string into a file.
 	 * 
 	 * @param configString
 	 * @param file
@@ -212,14 +217,15 @@ public class FileManager {
 
 		String configuration = this.prepareConfigString(configString);
 
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"))) {
+		try (FileOutputStream fileSteam = new FileOutputStream(file);
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fileSteam, "UTF-8"))) {
 			writer.write(configuration);
 			writer.flush();
 		}
 	}
 
 	/**
-	 * Write a resource represented by an input stream into a file.
+	 * Writes a resource represented by an input stream into a file.
 	 * 
 	 * @param resource
 	 * @param file
@@ -231,13 +237,14 @@ public class FileManager {
 			int length;
 			byte[] buf = new byte[1024];
 
-			while ((length = resource.read(buf)) > 0)
+			while ((length = resource.read(buf)) > 0) {
 				out.write(buf, 0, length);
+			}
 		}
 	}
 
 	/**
-	 * Perform a backup of a file contained in the plugin's data folder; the backup simply has an additional .bak
+	 * Performs a backup of a file contained in the plugin's data folder; the backup simply has an additional .bak
 	 * extension.
 	 * 
 	 * @param name
@@ -250,7 +257,6 @@ public class FileManager {
 
 		// Do a backup only if a newer version of the file exists.
 		if (original.lastModified() > backup.lastModified() && original.exists()) {
-
 			try (FileInputStream inStream = new FileInputStream(original);
 					FileOutputStream outStream = new FileOutputStream(backup)) {
 				byte[] buffer = new byte[1024];
