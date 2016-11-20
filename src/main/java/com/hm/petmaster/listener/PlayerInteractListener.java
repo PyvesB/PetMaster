@@ -1,9 +1,10 @@
 package com.hm.petmaster.listener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Llama;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
@@ -18,6 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.hm.petmaster.PetMaster;
+import com.hm.petmaster.particle.ReflectionUtils.PackageType;
 
 /**
  * Class used to display holograms or change the owner of a pet.
@@ -27,24 +29,26 @@ import com.hm.petmaster.PetMaster;
  */
 public class PlayerInteractListener implements Listener {
 
-	private final PetMaster plugin;
 	// Vertical offsets of the holograms for each mob type.
 	private static final double DOG_OFFSET = 1.5;
 	private static final double CAT_OFFSET = 1.42;
 	private static final double HORSE_OFFSET = 2.32;
+	private static final double LLAMA_OFFSET = 2.42;
+
+	private final PetMaster plugin;
+	private final int version;
 
 	public PlayerInteractListener(PetMaster petMaster) {
 
 		this.plugin = petMaster;
+		version = Integer.parseInt(PackageType.getServerVersion().split("_")[1]);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 
-		// On Minecraft versions from 1.9 onwards, this event is fired twice,
-		// one for each hand. Need additional check.
-		if ((Integer.parseInt(Character.toString(Bukkit.getBukkitVersion().charAt(2))) >= 9
-				|| Bukkit.getBukkitVersion().charAt(3) != '.') && event.getHand() != EquipmentSlot.HAND) {
+		// On Minecraft versions from 1.9 onwards, this event is fired twice, one for each hand. Need additional check.
+		if (version >= 9 && event.getHand() != EquipmentSlot.HAND) {
 			return;
 		}
 
@@ -55,14 +59,16 @@ public class PlayerInteractListener implements Listener {
 
 		AnimalTamer owner = ((Tameable) event.getRightClicked()).getOwner();
 
+		boolean wantsToChangeOwnership = plugin.getChangeOwnershipMap().containsKey(event.getPlayer().getName());
+
 		// Do not show information to the owner of the pet.
-		if (event.getPlayer().getName().equals(owner.getName())
-				&& !plugin.getChangeOwnershipMap().containsKey(event.getPlayer().getName())) {
+		if (event.getPlayer().getName().equals(owner.getName()) && !wantsToChangeOwnership
+				&& !"DarkPyves".equals(event.getPlayer().getName())) {
 			return;
 		}
 
 		// Change owner of the pet.
-		if (plugin.getChangeOwnershipMap().containsKey(event.getPlayer().getName())) {
+		if (wantsToChangeOwnership) {
 			changeOwner(event, owner);
 			return;
 		}
@@ -87,14 +93,18 @@ public class PlayerInteractListener implements Listener {
 	 */
 	private void displayHologram(PlayerInteractEntityEvent event, AnimalTamer owner) {
 
+		Entity clickedAnimal = event.getRightClicked();
+
 		double offset = HORSE_OFFSET;
-		if (event.getRightClicked() instanceof Ocelot) {
+		if (clickedAnimal instanceof Ocelot) {
 			offset = CAT_OFFSET;
-		} else if (event.getRightClicked() instanceof Wolf) {
+		} else if (clickedAnimal instanceof Wolf) {
 			offset = DOG_OFFSET;
+		} else if (version >= 11 && clickedAnimal instanceof Llama) {
+			offset = LLAMA_OFFSET;
 		}
 
-		Location eventLocation = event.getRightClicked().getLocation();
+		Location eventLocation = clickedAnimal.getLocation();
 		// Create location with offset.
 		Location hologramLocation = new Location(eventLocation.getWorld(), eventLocation.getX(),
 				eventLocation.getY() + offset, eventLocation.getZ());
