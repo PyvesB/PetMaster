@@ -1,5 +1,6 @@
 package com.hm.petmaster.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.AnimalTamer;
@@ -19,6 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.hm.petmaster.PetMaster;
+import com.hm.petmaster.event.PlayerChangeAnimalOwnershipEvent;
 import com.hm.petmaster.particle.ReflectionUtils.PackageType;
 
 /**
@@ -129,18 +131,19 @@ public class PlayerInteractListener implements Listener {
 	 * the pet unless he is admin.
 	 * 
 	 * @param event
-	 * @param owner
+	 * @param oldOwner
 	 */
 	@SuppressWarnings("deprecation")
-	private void changeOwner(PlayerInteractEntityEvent event, AnimalTamer owner) {
+	private void changeOwner(PlayerInteractEntityEvent event, AnimalTamer oldOwner) {
 
 		// Retrieve new owner from the map and delete corresponding entry.
 		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
 
 		// Can only change ownership if current owner or bypass permission.
-		if (owner.getName().equals(event.getPlayer().getName()) || event.getPlayer().hasPermission("petmaster.admin")) {
+		if (oldOwner.getName().equals(event.getPlayer().getName()) || event.getPlayer().hasPermission("petmaster.admin")) {
 			// Change owner.
-			((Tameable) event.getRightClicked()).setOwner(newOwner);
+			Tameable tameableAnimal = (Tameable) event.getRightClicked();
+			tameableAnimal.setOwner(newOwner);
 
 			// Charge price.
 			if (plugin.getChangeOwnerPrice() > 0 && plugin.setUpEconomy()) {
@@ -169,6 +172,11 @@ public class PlayerInteractListener implements Listener {
 			newOwner.sendMessage(plugin.getChatHeader()
 					+ plugin.getPluginLang().getString("new-owner", "Player PLAYER gave you ownership of his pet!")
 							.replace("PLAYER", event.getPlayer().getName()));
+
+			// Create new event to allow other plugins to be aware of the ownership change.
+			PlayerChangeAnimalOwnershipEvent playerChangeAnimalOwnershipEvent = new PlayerChangeAnimalOwnershipEvent(
+					oldOwner, newOwner, tameableAnimal);
+			Bukkit.getServer().getPluginManager().callEvent(playerChangeAnimalOwnershipEvent);
 		} else {
 			event.getPlayer().sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
 					.getString("not-owner", "You do not own this pet!").replace("PLAYER", event.getPlayer().getName()));
