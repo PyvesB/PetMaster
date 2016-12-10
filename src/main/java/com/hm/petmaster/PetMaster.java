@@ -42,7 +42,7 @@ import net.milkbowl.vault.economy.Economy;
  * Spigot project page: spigotmc.org/resources/pet-master.15904
  * 
  * @since December 2015.
- * @version 1.3
+ * @version 1.3.1
  * @author DarkPyves
  */
 
