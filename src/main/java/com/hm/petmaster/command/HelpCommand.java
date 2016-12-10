@@ -93,7 +93,7 @@ public class HelpCommand {
 		// Send clickable and hoverable message if sender is a player and if no exception is caught.
 		if (sender instanceof Player) {
 			try {
-				PacketSender.sendChatPacket((Player) sender, json);
+				PacketSender.sendChatPacket((Player) sender, json, PacketSender.CHAT_MESSAGE_BYTE);
 			} catch (Exception ex) {
 				plugin.getLogger().severe(
 						"Errors while trying to display clickable and hoverable message in /petm help command. Displaying standard message instead.");
