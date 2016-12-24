@@ -12,8 +12,20 @@ commands:
     aliases: [petmaster]  
     usage: /<command>
 permissions:
-  petmaster.use:
-    description: Allows to use the plugin.
+  petmaster.showowner:
+    description: Allows players to see who owns pets that belong to other players.
+    default: true
+  petmaster.showowner.dog:
+    description: Allows players to see who owns dogs that belong to other players.
+    default: true
+  petmaster.showowner.cat:
+    description: Allows players to see who owns cats that belong to other players.
+    default: true
+  petmaster.showowner.horse:
+    description: Allows players to see who owns horses that belong to other players.
+    default: true
+  petmaster.showowner.llama:
+    description: Allows players to see who owns llamas that belong to other players.
     default: true
   petmaster.setowner:
     description: Allows players to change the ownership of their own pets.

@@ -34,6 +34,18 @@ languageFileName: 'lang.yml'
 # Price of the /petm setowner command (requires Vault).
 changeOwnerPrice: 0
 
+# Take dogs into account.
+displayDog: true
+
+# Take cats into account.
+displayCat: true
+
+# Take horses into account.
+displayHorse: true
+
+# Take llamas into account.
+displayLlama: true
+
 #=============================OOO=============================#
 # III-----------------------------------------------------III #
 # |         Parameters to appear in future versions         | #

@@ -53,11 +53,9 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 	// Plugin options and various parameters.
 	private boolean disabled;
-	private boolean chatMessage;
 	private String chatHeader;
+	private boolean chatMessage;
 	private boolean hologramMessage;
-	private int hologramDuration;
-	private int changeOwnerPrice;
 	private boolean successfulLoad;
 
 	// Fields related to file handling.
@@ -214,8 +212,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		// Extract options from the config.
 		chatMessage = config.getBoolean("chatMessage", true);
 		hologramMessage = config.getBoolean("hologramMessage", true);
-		hologramDuration = config.getInt("hologramDuration", 50);
-		changeOwnerPrice = config.getInt("changeOwnerPrice", 0);
+		playerInteractListener.extractParameters();
 
 		// Set to null in case user changed the option and did a /petm reload. Do not recheck for update on /petm
 		// reload.
@@ -246,6 +243,26 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		if (!config.getKeys(false).contains("changeOwnerPrice")) {
 			config.set("changeOwnerPrice", 0, "Price of the /petm setowner command (requires Vault).");
+			updateDone = true;
+		}
+
+		if (!config.getKeys(false).contains("displayDog")) {
+			config.set("displayDog", true, "Take dogs into account.");
+			updateDone = true;
+		}
+
+		if (!config.getKeys(false).contains("displayCat")) {
+			config.set("displayCat", true, "Take cats into account.");
+			updateDone = true;
+		}
+
+		if (!config.getKeys(false).contains("displayHorse")) {
+			config.set("displayHorse", true, "Take horses into account.");
+			updateDone = true;
+		}
+
+		if (!config.getKeys(false).contains("displayLlama")) {
+			config.set("displayLlama", true, "Take llamas into account.");
 			updateDone = true;
 		}
 
@@ -464,14 +481,14 @@ public class PetMaster extends JavaPlugin implements Listener {
 		return chatHeader;
 	}
 
-	public int getHologramDuration() {
-
-		return hologramDuration;
-	}
-
 	public Map<String, Player> getChangeOwnershipMap() {
 
 		return changeOwnershipMap;
+	}
+
+	public YamlManager getPluginConfig() {
+
+		return config;
 	}
 
 	public YamlManager getPluginLang() {
@@ -487,10 +504,5 @@ public class PetMaster extends JavaPlugin implements Listener {
 	public Economy getEconomy() {
 
 		return economy;
-	}
-
-	public int getChangeOwnerPrice() {
-
-		return changeOwnerPrice;
 	}
 }

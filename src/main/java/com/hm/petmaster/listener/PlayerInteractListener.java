@@ -40,10 +40,28 @@ public class PlayerInteractListener implements Listener {
 	private final PetMaster plugin;
 	private final int version;
 
+	private int hologramDuration;
+	private int changeOwnerPrice;
+	private boolean displayDog;
+	private boolean displayCat;
+	private boolean displayHorse;
+	private boolean displayLlama;
+
 	public PlayerInteractListener(PetMaster petMaster) {
 
 		this.plugin = petMaster;
 		version = Integer.parseInt(PackageType.getServerVersion().split("_")[1]);
+		extractParameters();
+	}
+
+	public void extractParameters() {
+
+		displayDog = plugin.getPluginConfig().getBoolean("displayDog", true);
+		displayCat = plugin.getPluginConfig().getBoolean("displayCat", true);
+		displayHorse = plugin.getPluginConfig().getBoolean("displayHorse", true);
+		displayLlama = plugin.getPluginConfig().getBoolean("displayLlama", true);
+		hologramDuration = plugin.getPluginConfig().getInt("hologramDuration", 50);
+		changeOwnerPrice = plugin.getPluginConfig().getInt("changeOwnerPrice", 0);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -55,7 +73,7 @@ public class PlayerInteractListener implements Listener {
 		}
 
 		if (!(event.getRightClicked() instanceof Tameable) || ((Tameable) event.getRightClicked()).getOwner() == null
-				|| !event.getPlayer().hasPermission("petmaster.use") || plugin.isDisabled()) {
+				|| plugin.isDisabled()) {
 			return;
 		}
 
@@ -75,15 +93,9 @@ public class PlayerInteractListener implements Listener {
 			return;
 		}
 
-		// Display owner of the pet with a hologram.
-		if (plugin.isHologramMessage()) {
-			displayHologram(event, owner);
-		}
-
-		if (plugin.isChatMessage()) {
-			event.getPlayer().sendMessage(
-					plugin.getChatHeader() + plugin.getPluginLang().getString("petmaster-chat", "Pet owned by ")
-							+ ChatColor.GOLD + owner.getName());
+		// Display owner of the pet with a hologram and/or a message.
+		if (event.getPlayer().hasPermission("petmaster.showowner")) {
+			displayHologramAndMessage(event, owner);
 		}
 	}
 
@@ -93,37 +105,57 @@ public class PlayerInteractListener implements Listener {
 	 * @param event
 	 * @param owner
 	 */
-	private void displayHologram(PlayerInteractEntityEvent event, AnimalTamer owner) {
+	private void displayHologramAndMessage(PlayerInteractEntityEvent event, AnimalTamer owner) {
 
-		Entity clickedAnimal = event.getRightClicked();
+		if (plugin.isHologramMessage()) {
+			Entity clickedAnimal = event.getRightClicked();
 
-		double offset = HORSE_OFFSET;
-		if (clickedAnimal instanceof Ocelot) {
-			offset = CAT_OFFSET;
-		} else if (clickedAnimal instanceof Wolf) {
-			offset = DOG_OFFSET;
-		} else if (version >= 11 && clickedAnimal instanceof Llama) {
-			offset = LLAMA_OFFSET;
+			double offset = HORSE_OFFSET;
+			if (clickedAnimal instanceof Ocelot) {
+				if (!displayCat || !event.getPlayer().hasPermission("petmaster.showowner.cat")) {
+					return;
+				}
+				offset = CAT_OFFSET;
+			} else if (clickedAnimal instanceof Wolf) {
+				if (!displayDog || !event.getPlayer().hasPermission("petmaster.showowner.dog")) {
+					return;
+				}
+				offset = DOG_OFFSET;
+			} else if (version >= 11 && clickedAnimal instanceof Llama) {
+				if (!displayLlama || !event.getPlayer().hasPermission("petmaster.showowner.llama")) {
+					return;
+				}
+				offset = LLAMA_OFFSET;
+			} else if (!displayHorse || !event.getPlayer().hasPermission("petmaster.showowner.horse")) {
+				return;
+			}
+
+			Location eventLocation = clickedAnimal.getLocation();
+			// Create location with offset.
+			Location hologramLocation = new Location(eventLocation.getWorld(), eventLocation.getX(),
+					eventLocation.getY() + offset, eventLocation.getZ());
+
+			final Hologram hologram = HologramsAPI.createHologram(plugin, hologramLocation);
+			hologram.appendTextLine(
+					ChatColor.GRAY + plugin.getPluginLang().getString("petmaster-hologram", "Pet owned by ")
+							+ ChatColor.GOLD + owner.getName());
+
+			// Runnable to delete hologram.
+			new BukkitRunnable() {
+
+				@Override
+				public void run() {
+
+					hologram.delete();
+				}
+			}.runTaskLater(plugin, hologramDuration);
 		}
 
-		Location eventLocation = clickedAnimal.getLocation();
-		// Create location with offset.
-		Location hologramLocation = new Location(eventLocation.getWorld(), eventLocation.getX(),
-				eventLocation.getY() + offset, eventLocation.getZ());
-
-		final Hologram hologram = HologramsAPI.createHologram(plugin, hologramLocation);
-		hologram.appendTextLine(ChatColor.GRAY + plugin.getPluginLang().getString("petmaster-hologram", "Pet owned by ")
-				+ ChatColor.GOLD + owner.getName());
-
-		// Runnable to delete hologram.
-		new BukkitRunnable() {
-
-			@Override
-			public void run() {
-
-				hologram.delete();
-			}
-		}.runTaskLater(plugin, plugin.getHologramDuration());
+		if (plugin.isChatMessage()) {
+			event.getPlayer().sendMessage(
+					plugin.getChatHeader() + plugin.getPluginLang().getString("petmaster-chat", "Pet owned by ")
+							+ ChatColor.GOLD + owner.getName());
+		}
 	}
 
 	/**
@@ -140,30 +172,29 @@ public class PlayerInteractListener implements Listener {
 		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
 
 		// Can only change ownership if current owner or bypass permission.
-		if (oldOwner.getName().equals(event.getPlayer().getName()) || event.getPlayer().hasPermission("petmaster.admin")) {
+		if (oldOwner.getName().equals(event.getPlayer().getName())
+				|| event.getPlayer().hasPermission("petmaster.admin")) {
 			// Change owner.
 			Tameable tameableAnimal = (Tameable) event.getRightClicked();
 			tameableAnimal.setOwner(newOwner);
 
 			// Charge price.
-			if (plugin.getChangeOwnerPrice() > 0 && plugin.setUpEconomy()) {
+			if (changeOwnerPrice > 0 && plugin.setUpEconomy()) {
 				try {
-					plugin.getEconomy().depositPlayer(event.getPlayer(), plugin.getChangeOwnerPrice());
+					plugin.getEconomy().depositPlayer(event.getPlayer(), changeOwnerPrice);
 				} catch (NoSuchMethodError e) {
 					// Deprecated method, but was the only one existing prior to Vault 1.4.
-					plugin.getEconomy().depositPlayer(event.getPlayer().getName(), plugin.getChangeOwnerPrice());
+					plugin.getEconomy().depositPlayer(event.getPlayer().getName(), changeOwnerPrice);
 				}
 				// If player has set different currency names depending on amount, adapt message accordingly.
-				if (plugin.getChangeOwnerPrice() > 1) {
+				if (changeOwnerPrice > 1) {
 					event.getPlayer().sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
 							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
-									"AMOUNT", plugin.getChangeOwnerPrice() + " "
-											+ plugin.getEconomy().currencyNamePlural())));
+									"AMOUNT", changeOwnerPrice + " " + plugin.getEconomy().currencyNamePlural())));
 				} else {
 					event.getPlayer().sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
 							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
-									"AMOUNT", plugin.getChangeOwnerPrice() + " "
-											+ plugin.getEconomy().currencyNameSingular())));
+									"AMOUNT", changeOwnerPrice + " " + plugin.getEconomy().currencyNameSingular())));
 				}
 			}
 
