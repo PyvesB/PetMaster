@@ -51,7 +51,6 @@ public class PlayerInteractListener implements Listener {
 
 		this.plugin = petMaster;
 		version = Integer.parseInt(PackageType.getServerVersion().split("_")[1]);
-		extractParameters();
 	}
 
 	public void extractParameters() {
