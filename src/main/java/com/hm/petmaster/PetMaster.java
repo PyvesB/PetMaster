@@ -495,11 +495,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 		return lang;
 	}
 
-	public UpdateChecker getUpdateChecker() {
-
-		return updateChecker;
-	}
-
 	public Economy getEconomy() {
 
 		return economy;
