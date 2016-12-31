@@ -19,9 +19,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.hm.mcshared.particle.ReflectionUtils.PackageType;
 import com.hm.petmaster.PetMaster;
 import com.hm.petmaster.event.PlayerChangeAnimalOwnershipEvent;
-import com.hm.petmaster.particle.ReflectionUtils.PackageType;
 
 /**
  * Class used to display holograms or change the owner of a pet.

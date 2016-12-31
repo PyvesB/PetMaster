@@ -13,19 +13,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
+import com.hm.mcshared.file.CommentedYamlConfiguration;
+import com.hm.mcshared.update.UpdateChecker;
 import com.hm.petmaster.command.HelpCommand;
 import com.hm.petmaster.command.InfoCommand;
-import com.hm.petmaster.listener.PlayerConnectListener;
 import com.hm.petmaster.listener.PlayerInteractListener;
 import com.hm.petmaster.listener.PlayerQuitListener;
-import com.hm.petmaster.utils.FileManager;
-import com.hm.petmaster.utils.UpdateChecker;
-import com.hm.petmaster.utils.YamlManager;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -59,9 +58,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 	private boolean successfulLoad;
 
 	// Fields related to file handling.
-	private YamlManager config;
-	private YamlManager lang;
-	private final FileManager fileManager;
+	private CommentedYamlConfiguration config;
+	private CommentedYamlConfiguration lang;
 
 	// Contains pairs with name of previous owner and new owner.
 	private Map<String, Player> changeOwnershipMap;
@@ -69,7 +67,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	// Plugin listeners.
 	private PlayerInteractListener playerInteractListener;
 	private PlayerQuitListener playerQuitListener;
-	private PlayerConnectListener playerConnectListener;
 
 	// Used to check for plugin updates.
 	private UpdateChecker updateChecker;
@@ -84,7 +81,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	public PetMaster() {
 
 		disabled = false;
-		fileManager = new FileManager(this);
 	}
 
 	/**
@@ -100,19 +96,22 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		playerInteractListener = new PlayerInteractListener(this);
 		playerQuitListener = new PlayerQuitListener(this);
-		playerConnectListener = new PlayerConnectListener(this);
 
 		PluginManager pm = getServer().getPluginManager();
 		// Register listeners.
 		pm.registerEvents(playerInteractListener, this);
 		pm.registerEvents(playerQuitListener, this);
-		pm.registerEvents(playerConnectListener, this);
 
 		extractParametersFromConfig(true);
 
 		// Check for available plugin update.
 		if (config.getBoolean("checkForUpdate", true)) {
-			updateChecker = new UpdateChecker(this);
+			updateChecker = new UpdateChecker(this, "https://raw.githubusercontent.com/PyvesB/PetMaster/master/pom.xml",
+					new String[] { "dev.bukkit.org/bukkit-plugins/pet-master/files",
+							"spigotmc.org/resources/pet-master.15904" },
+					"petmaster.admin", chatHeader);
+			pm.registerEvents(updateChecker, this);
+			updateChecker.launchUpdateCheckerTask();
 		}
 
 		try {
@@ -162,7 +161,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		logger.info("Backing up and loading configuration files...");
 
 		try {
-			config = fileManager.getNewConfig("config.yml");
+			config = new CommentedYamlConfiguration("config.yml", this);
 		} catch (IOException e) {
 			this.getLogger().log(Level.SEVERE, "Error while loading configuration file: ", e);
 			successfulLoad = false;
@@ -176,7 +175,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 
 		try {
-			lang = fileManager.getNewConfig(config.getString("languageFileName", "lang.yml"));
+			lang = new CommentedYamlConfiguration(config.getString("languageFileName", "lang.yml"), this);
 		} catch (IOException e) {
 			this.getLogger().log(Level.SEVERE, "Error while loading language file: ", e);
 			successfulLoad = false;
@@ -190,14 +189,14 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 
 		try {
-			fileManager.backupFile("config.yml");
+			config.backupConfiguration();
 		} catch (IOException e) {
 			this.getLogger().log(Level.SEVERE, "Error while backing up configuration file: ", e);
 			successfulLoad = false;
 		}
 
 		try {
-			fileManager.backupFile(config.getString("languageFileName", "lang.yml"));
+			lang.backupConfiguration();
 		} catch (IOException e) {
 			this.getLogger().log(Level.SEVERE, "Error while backing up language file: ", e);
 			successfulLoad = false;
@@ -214,10 +213,10 @@ public class PetMaster extends JavaPlugin implements Listener {
 		hologramMessage = config.getBoolean("hologramMessage", true);
 		playerInteractListener.extractParameters();
 
-		// Set to null in case user changed the option and did a /petm reload. Do not recheck for update on /petm
+		// Unregister events if user changed the option and did a /petm reload. Do not recheck for update on /petm
 		// reload.
 		if (!config.getBoolean("checkForUpdate", true)) {
-			updateChecker = null;
+			PlayerJoinEvent.getHandlerList().unregister(updateChecker);
 		}
 	}
 
@@ -269,9 +268,9 @@ public class PetMaster extends JavaPlugin implements Listener {
 		if (updateDone) {
 			// Changes in the configuration: save and do a fresh load.
 			try {
-				config.saveConfig();
-				config.reloadConfig();
-			} catch (IOException e) {
+				config.saveConfiguration();
+				config.loadConfiguration();
+			} catch (IOException | InvalidConfigurationException e) {
 				this.getLogger().log(Level.SEVERE, "Error while saving changes to the configuration file: ", e);
 				successfulLoad = false;
 			}
@@ -327,9 +326,9 @@ public class PetMaster extends JavaPlugin implements Listener {
 		if (updateDone) {
 			// Changes in the language file: save and do a fresh load.
 			try {
-				lang.saveConfig();
-				lang.reloadConfig();
-			} catch (IOException e) {
+				lang.saveConfiguration();
+				lang.loadConfiguration();
+			} catch (IOException | InvalidConfigurationException e) {
 				this.getLogger().log(Level.SEVERE, "Error while saving changes to the language file: ", e);
 				successfulLoad = false;
 			}
@@ -486,12 +485,12 @@ public class PetMaster extends JavaPlugin implements Listener {
 		return changeOwnershipMap;
 	}
 
-	public YamlManager getPluginConfig() {
+	public CommentedYamlConfiguration getPluginConfig() {
 
 		return config;
 	}
 
-	public YamlManager getPluginLang() {
+	public CommentedYamlConfiguration getPluginLang() {
 
 		return lang;
 	}
