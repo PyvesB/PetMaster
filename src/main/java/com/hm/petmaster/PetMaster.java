@@ -17,7 +17,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.MetricsLite;
 
 import com.hm.mcshared.file.CommentedYamlConfiguration;
 import com.hm.mcshared.update.UpdateChecker;
@@ -112,14 +111,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 					"petmaster.admin", chatHeader);
 			pm.registerEvents(updateChecker, this);
 			updateChecker.launchUpdateCheckerTask();
-		}
-
-		try {
-			MetricsLite metrics = new MetricsLite(this);
-			metrics.start();
-		} catch (IOException e) {
-			this.getLogger().severe("Error while sending Metrics statistics.");
-			successfulLoad = false;
 		}
 
 		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";

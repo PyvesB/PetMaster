@@ -20,7 +20,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.6.0</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -29,19 +29,14 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.4.3</version>
+				<version>3.0.0</version>
 				<configuration>
 					<artifactSet>
 						<includes>
-							<include>org.mcstats.*:*</include>
 							<include>com.hm.mcshared:*</include>
 						</includes>
 					</artifactSet>
 					<relocations>
-						<relocation>
-							<pattern>org.mcstats</pattern>
-							<shadedPattern>com.hm.petmaster.metrics</shadedPattern>
-						</relocation>
 						<relocation>
 							<pattern>com.hm.mcshared</pattern>
 							<shadedPattern>com.hm.mcshared</shadedPattern>
@@ -81,10 +76,6 @@
 			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
 		<repository>
-			<id>Plugin Metrics</id>
-			<url>http://repo.mcstats.org/content/repositories/public/</url>
-		</repository>
-		<repository>
 			<id>MCShared-mvn-repo</id>
 			<url>https://raw.github.com/PyvesB/MCShared/mvn-repo/</url>
 		</repository>
@@ -93,7 +84,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.11-R0.1-SNAPSHOT</version>
+			<version>1.11.2-R0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -104,12 +95,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mcstats.bukkit</groupId>
-			<artifactId>metrics-lite</artifactId>
-			<version>R8-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.gmail.filoghost.holographicdisplays</groupId>
 			<artifactId>holographicdisplays</artifactId>
 			<version>2.1.7</version>
@@ -117,7 +102,7 @@
 		<dependency>
 			<groupId>com.hm.mcshared</groupId>
 			<artifactId>MCShared</artifactId>
-			<version>1.0</version>
+			<version>1.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
