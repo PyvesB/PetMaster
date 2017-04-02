@@ -13,7 +13,7 @@ commands:
     usage: /<command>
 permissions:
   petmaster.showowner:
-    description: Allows players to see who owns pets that belong to other players.
+    description: Allows players to see who owns pets that belong to other players. If false, the more specialised showowner permissions will be ignored.
     default: true
   petmaster.showowner.dog:
     description: Allows players to see who owns dogs that belong to other players.
