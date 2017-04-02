@@ -16,7 +16,6 @@ public class InfoCommand {
 	private final PetMaster plugin;
 
 	public InfoCommand(PetMaster plugin) {
-
 		this.plugin = plugin;
 	}
 
@@ -24,7 +23,6 @@ public class InfoCommand {
 	 * Display information about the plugin.
 	 */
 	public void getInfo(CommandSender sender) {
-
 		sender.sendMessage(plugin.getChatHeader() + ChatColor.GOLD
 				+ plugin.getPluginLang().getString("version-command-name", "Name:") + " " + ChatColor.GRAY
 				+ plugin.getDescription().getName());

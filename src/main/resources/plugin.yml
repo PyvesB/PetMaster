@@ -37,7 +37,6 @@ permissions:
     description: Star notation of permissions, includes all of them.
     default: op
     children:
-      petmaster.use: true
       petmaster.admin: true
       petmaster.setowner: true
     

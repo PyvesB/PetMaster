@@ -18,13 +18,11 @@ public class PlayerQuitListener implements Listener {
 	private PetMaster plugin;
 
 	public PlayerQuitListener(PetMaster plugin) {
-
 		this.plugin = plugin;
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
-
 		// Delete entry from map.
 		plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
 	}

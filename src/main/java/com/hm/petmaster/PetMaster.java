@@ -43,8 +43,10 @@ import net.milkbowl.vault.economy.Economy;
  * @version 1.4
  * @author DarkPyves
  */
-
 public class PetMaster extends JavaPlugin implements Listener {
+
+	// Contains pairs with name of previous owner and new owner.
+	private final Map<String, Player> changeOwnershipMap;
 
 	// Used for Vault plugin integration.
 	private Economy economy;
@@ -59,9 +61,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	// Fields related to file handling.
 	private CommentedYamlConfiguration config;
 	private CommentedYamlConfiguration lang;
-
-	// Contains pairs with name of previous owner and new owner.
-	private Map<String, Player> changeOwnershipMap;
 
 	// Plugin listeners.
 	private PlayerInteractListener playerInteractListener;
@@ -78,7 +77,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 * Constructor.
 	 */
 	public PetMaster() {
-
+		changeOwnershipMap = new HashMap<>();
 		disabled = false;
 	}
 
@@ -87,7 +86,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 */
 	@Override
 	public void onEnable() {
-
 		// Start enabling plugin.
 		long startTime = System.currentTimeMillis();
 
@@ -114,8 +112,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 
 		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
-
-		changeOwnershipMap = new HashMap<>();
 
 		helpCommand = new HelpCommand(this);
 		infoCommand = new InfoCommand(this);
@@ -145,7 +141,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 * @param attemptUpdate
 	 */
 	private void extractParametersFromConfig(boolean attemptUpdate) {
-
 		successfulLoad = true;
 		Logger logger = this.getLogger();
 
@@ -216,7 +211,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 * to 1.2 are not supported.
 	 */
 	private void updateOldConfiguration() {
-
 		boolean updateDone = false;
 
 		// Added in version 1.2:
@@ -273,7 +267,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 * are not supported.
 	 */
 	private void updateOldLanguage() {
-
 		boolean updateDone = false;
 
 		// Added in version 1.2:
@@ -331,7 +324,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 */
 	@Override
 	public void onDisable() {
-
 		changeOwnershipMap.clear();
 		this.getLogger().info("PetMaster has been disabled.");
 	}
@@ -341,15 +333,11 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-
 		if (!"petm".equalsIgnoreCase(cmd.getName())) {
 			return false;
 		}
 
-		if (!sender.hasPermission("petmaster.use")) {
-			sender.sendMessage(
-					chatHeader + lang.getString("no-permissions", "You do not have the permission to do this."));
-		} else if (args.length == 0 || args.length == 1 && "help".equalsIgnoreCase(args[0])) {
+		if (args.length == 0 || args.length == 1 && "help".equalsIgnoreCase(args[0])) {
 			helpCommand.getHelp(sender);
 		} else if ("info".equalsIgnoreCase(args[0])) {
 			infoCommand.getInfo(sender);
@@ -428,7 +416,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 * @return true if Vault available, false otherwise
 	 */
 	public boolean setUpEconomy() {
-
 		if (economy != null) {
 			return true;
 		}
@@ -447,47 +434,38 @@ public class PetMaster extends JavaPlugin implements Listener {
 	}
 
 	public boolean isDisabled() {
-
 		return disabled;
 	}
 
 	public void setSuccessfulLoad(boolean successfulLoad) {
-
 		this.successfulLoad = successfulLoad;
 	}
 
 	public boolean isChatMessage() {
-
 		return chatMessage;
 	}
 
 	public boolean isHologramMessage() {
-
 		return hologramMessage;
 	}
 
 	public String getChatHeader() {
-
 		return chatHeader;
 	}
 
 	public Map<String, Player> getChangeOwnershipMap() {
-
 		return changeOwnershipMap;
 	}
 
 	public CommentedYamlConfiguration getPluginConfig() {
-
 		return config;
 	}
 
 	public CommentedYamlConfiguration getPluginLang() {
-
 		return lang;
 	}
 
 	public Economy getEconomy() {
-
 		return economy;
 	}
 }

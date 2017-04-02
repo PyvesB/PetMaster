@@ -18,12 +18,10 @@ public class HelpCommand {
 	private final PetMaster plugin;
 
 	public HelpCommand(PetMaster plugin) {
-
 		this.plugin = plugin;
 	}
 
 	public void getHelp(CommandSender sender) {
-
 		// Header.
 		sender.sendMessage(ChatColor.GOLD + "------------------ " + ChatColor.GRAY + ChatColor.GOLD + "\u265E"
 				+ ChatColor.translateAlternateColorCodes('&', " &lPet Master ") + ChatColor.GOLD + "\u265E"
@@ -84,7 +82,6 @@ public class HelpCommand {
 	 * @param hover
 	 */
 	public void sendJsonClickableHoverableMessage(CommandSender sender, String message, String command, String hover) {
-
 		// Build the json format string.
 		String json = "{\"text\":\"" + message + "\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\""
 				+ command + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":[{\"text\":\"" + hover

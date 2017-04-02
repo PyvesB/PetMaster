@@ -48,13 +48,11 @@ public class PlayerInteractListener implements Listener {
 	private boolean displayLlama;
 
 	public PlayerInteractListener(PetMaster petMaster) {
-
 		this.plugin = petMaster;
 		version = Integer.parseInt(PackageType.getServerVersion().split("_")[1]);
 	}
 
 	public void extractParameters() {
-
 		displayDog = plugin.getPluginConfig().getBoolean("displayDog", true);
 		displayCat = plugin.getPluginConfig().getBoolean("displayCat", true);
 		displayHorse = plugin.getPluginConfig().getBoolean("displayHorse", true);
@@ -65,7 +63,6 @@ public class PlayerInteractListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
-
 		// On Minecraft versions from 1.9 onwards, this event is fired twice, one for each hand. Need additional check.
 		if (version >= 9 && event.getHand() != EquipmentSlot.HAND) {
 			return;
@@ -105,7 +102,6 @@ public class PlayerInteractListener implements Listener {
 	 * @param owner
 	 */
 	private void displayHologramAndMessage(PlayerInteractEntityEvent event, AnimalTamer owner) {
-
 		if (plugin.isHologramMessage()) {
 			Entity clickedAnimal = event.getRightClicked();
 
@@ -166,7 +162,6 @@ public class PlayerInteractListener implements Listener {
 	 */
 	@SuppressWarnings("deprecation")
 	private void changeOwner(PlayerInteractEntityEvent event, AnimalTamer oldOwner) {
-
 		// Retrieve new owner from the map and delete corresponding entry.
 		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
 
