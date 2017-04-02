@@ -1,51 +1,51 @@
 #============================================================#
 # +--------------------------------------------------------+ #
-# |         Pet Master 1.3.1 French language file          | #
-# |                      By DarkPyves                      | #
+# |         Pet Master 1.4.1 French language file          | #
+# |                       By Niasio                        | #
 # +--------------------------------------------------------+ #
 #============================================================#
 
-no-permissions: Vous n'avez pas la permission de faire cela.
+no-permissions: "Vous n'avez pas la permission de faire cela."
 
 # Related to /petm reload.
-configuration-successfully-reloaded: Configuration rechargée avec succès.
-configuration-reload-failed: Erreur(s) lors du rechargement des configurations. Merci de consulter les logs détaillés pour plus d'informations.
+configuration-successfully-reloaded: "Configuration rechargée avec succès."
+configuration-reload-failed: "Erreur(s) lors du rechargement des configurations. Merci de consulter les logs détaillés pour plus d'informations."
 
 # Related to other plugin commands.
-petmaster-disabled: PetMaster désactivé jusqu'au prochain reload /petm enable.
-petmaster-enabled: PetMaster activé.
-petmaster-hologram: 'Animal de '
-petmaster-chat: 'Animal de '
-misused-command: Mauvaise commande. Tapez /petm.
-player-offline: Le joueur spécifié est hors ligne !
-right-click: Faites clic-droit sur un animal pour changer son propriétaire !
-owner-changed: 'Dîtes adieu : votre animal ne vous appartient plus !'
-new-owner: Le joueur PLAYER vous a donné un animal !
-not-owner: Cet animal ne vous appartient pas !
-cannot-change-to-yourself: Vous êtes déjà le propriétaire !
-change-owner-price: 'Vous avez dépensé : AMOUNT !'
+petmaster-disabled: "PetMaster désactivé jusqu'au prochain reload /petm enable."
+petmaster-enabled: "PetMaster activé."
+petmaster-hologram: "Animal de "
+petmaster-chat: "Animal de "
+misused-command: "Mauvaise commande. Tapez /petm."
+player-offline: "Le joueur spécifié est hors ligne !"
+cannot-change-to-yourself: "Vous êtes déjà le propriétaire !"
+owner-changed: "Dîtes adieu : votre animal ne vous appartient plus !"
+change-owner-price: "Vous avez dépensé : AMOUNT !"
+new-owner: "Le joueur PLAYER vous a donné un animal !"
+not-owner: "Cet animal ne vous appartient pas !"
+right-click: "Faites clic-droit sur un animal pour changer son propriétaire !"
 
 # Related to /petm help.
-petmaster-command-setowner: Changez le propriétaire de l'un §l&7de vos animaux.
-petmaster-command-disable: Désactiver PM jusqu'au prochain &7redémarrage.
-petmaster-command-enable: Activer PM (si précédemment désactivé).
-petmaster-command-reload: Recharger la configuration du plugin.
-petmaster-command-info: Afficher des informations à propos du plugin.
-petmaster-command-setowner-hover: Vous pouvez seulement changer le propriétaire de vos propres bêtes !
-petmaster-command-disable-hover: Plugin désactivé jusqu'au prochain redémarrage ou /petm enable.
-petmaster-command-enable-hover: Plugin activé par défaut. A utiliser si /petm disable a été employé !
-petmaster-command-reload-hover: Recharger la plupart des paramètres dans config.yml et lang.yml.
-petmaster-command-info-hover: Des infos supplémentaires sur le plugin !
-petmaster-tip: '&lASTUCE&r &7&n&oCliquez&r &8ou &7&n&opassez votre curseur&r &8sur les commandes !'
+petmaster-command-setowner: "Changez le propriétaire de l'un §l&7de vos animaux."
+petmaster-command-disable: "Désactiver PM jusqu'au prochain &7redémarrage."
+petmaster-command-enable: "Activer PM (si précédemment désactivé)."
+petmaster-command-reload: "Recharger la configuration du plugin."
+petmaster-command-info: "Afficher des informations à propos du plugin."
+petmaster-command-setowner-hover: "Vous pouvez seulement changer le propriétaire de vos propres bêtes !"
+petmaster-command-disable-hover: "Plugin désactivé jusqu'au prochain redémarrage ou /petm enable."
+petmaster-command-enable-hover: "Plugin activé par défaut. A utiliser si /petm disable a été employé !"
+petmaster-command-reload-hover: "Recharger la plupart des paramètres dans config.yml et lang.yml."
+petmaster-command-info-hover: "Des infos supplémentaires sur le plugin !"
+petmaster-tip: "&lASTUCE&r &7&n&oCliquez&r &8ou &7&n&opassez votre curseur&r &8sur les commandes !"
 
 # Related to /petm info.
-version-command-name: 'Nom :'
-version-command-version: 'Version :'
-version-command-website: 'Site :'
-version-command-author: 'Auteur :'
-version-command-description: 'Description :'
-version-command-description-details: Mais à qui appartient cet animal de compagnie ? Découvrez-le avec Pet Master !
-version-command-enabled: 'Plugin activé: '
+version-command-name: "Nom :"
+version-command-version: "Version :"
+version-command-website: "Site :"
+version-command-author: "Auteur :"
+version-command-description: "Description :"
+version-command-description-details: "Mais à qui appartient cet animal de compagnie ? Découvrez-le avec Pet Master !"
+version-command-enabled: "Plugin activé: "
 
 #============================================================#
 # +--------------------------------------------------------+ #
