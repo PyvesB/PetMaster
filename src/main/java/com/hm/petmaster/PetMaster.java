@@ -101,6 +101,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		extractParametersFromConfig(true);
 
+		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
+
 		// Check for available plugin update.
 		if (config.getBoolean("checkForUpdate", true)) {
 			updateChecker = new UpdateChecker(this, "https://raw.githubusercontent.com/PyvesB/PetMaster/master/pom.xml",
@@ -110,8 +112,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 			pm.registerEvents(updateChecker, this);
 			updateChecker.launchUpdateCheckerTask();
 		}
-
-		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
 
 		helpCommand = new HelpCommand(this);
 		infoCommand = new InfoCommand(this);
