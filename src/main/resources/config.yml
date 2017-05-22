@@ -46,6 +46,9 @@ displayHorse: true
 # Take llamas into account.
 displayLlama: true
 
+# Take parrots into account.
+displayParrot: true
+
 #=============================OOO=============================#
 # III-----------------------------------------------------III #
 # |         Parameters to appear in future versions         | #

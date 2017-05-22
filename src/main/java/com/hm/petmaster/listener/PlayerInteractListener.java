@@ -7,6 +7,7 @@ import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Llama;
 import org.bukkit.entity.Ocelot;
+import org.bukkit.entity.Parrot;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
@@ -36,6 +37,7 @@ public class PlayerInteractListener implements Listener {
 	private static final double CAT_OFFSET = 1.42;
 	private static final double HORSE_OFFSET = 2.32;
 	private static final double LLAMA_OFFSET = 2.42;
+	private static final double PARROT_OFFSET = 1.3;
 
 	private final PetMaster plugin;
 	private final int version;
@@ -46,6 +48,7 @@ public class PlayerInteractListener implements Listener {
 	private boolean displayCat;
 	private boolean displayHorse;
 	private boolean displayLlama;
+	private boolean displayParrot;
 
 	public PlayerInteractListener(PetMaster petMaster) {
 		this.plugin = petMaster;
@@ -57,6 +60,7 @@ public class PlayerInteractListener implements Listener {
 		displayCat = plugin.getPluginConfig().getBoolean("displayCat", true);
 		displayHorse = plugin.getPluginConfig().getBoolean("displayHorse", true);
 		displayLlama = plugin.getPluginConfig().getBoolean("displayLlama", true);
+		displayParrot = plugin.getPluginConfig().getBoolean("displayParrot", true);
 		hologramDuration = plugin.getPluginConfig().getInt("hologramDuration", 50);
 		changeOwnerPrice = plugin.getPluginConfig().getInt("changeOwnerPrice", 0);
 	}
@@ -121,6 +125,11 @@ public class PlayerInteractListener implements Listener {
 					return;
 				}
 				offset = LLAMA_OFFSET;
+			} else if (version >= 12 && clickedAnimal instanceof Parrot) {
+				if (!displayParrot || !event.getPlayer().hasPermission("petmaster.showowner.parrot")) {
+					return;
+				}
+				offset = PARROT_OFFSET;
 			} else if (!displayHorse || !event.getPlayer().hasPermission("petmaster.showowner.horse")) {
 				return;
 			}

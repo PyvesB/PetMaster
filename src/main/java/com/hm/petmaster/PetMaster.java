@@ -250,6 +250,11 @@ public class PetMaster extends JavaPlugin implements Listener {
 			updateDone = true;
 		}
 
+		if (!config.getKeys(false).contains("displayParrot")) {
+			config.set("displayParrot", true, "Take parrots into account.");
+			updateDone = true;
+		}
+
 		if (updateDone) {
 			// Changes in the configuration: save and do a fresh load.
 			try {
