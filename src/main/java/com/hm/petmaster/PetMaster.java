@@ -40,7 +40,7 @@ import net.milkbowl.vault.economy.Economy;
  * Spigot project page: spigotmc.org/resources/pet-master.15904
  * 
  * @since December 2015.
- * @version 1.4.2
+ * @version 1.5
  * @author DarkPyves
  */
 public class PetMaster extends JavaPlugin implements Listener {
@@ -213,7 +213,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	private void updateOldConfiguration() {
 		boolean updateDone = false;
 
-		// Added in version 1.2:
 		if (!config.getKeys(false).contains("languageFileName")) {
 			config.set("languageFileName", "lang.yml", "Name of the language file.");
 			updateDone = true;
@@ -274,7 +273,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	private void updateOldLanguage() {
 		boolean updateDone = false;
 
-		// Added in version 1.2:
 		if (!lang.getKeys(false).contains("petmaster-command-setowner-hover")) {
 			lang.set("petmaster-command-setowner-hover",
 					"You can only change the ownership of your own pets, unless you're admin!");
