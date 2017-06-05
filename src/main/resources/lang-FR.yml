@@ -16,6 +16,7 @@ petmaster-disabled: PetMaster désactivé jusqu'au prochain reload /petm enable.
 petmaster-enabled: PetMaster activé.
 petmaster-hologram: 'Animal de '
 petmaster-chat: 'Animal de '
+petmaster-action-bar: 'Animal de '
 misused-command: Mauvaise commande. Tapez /petm.
 player-offline: Le joueur spécifié est hors ligne !
 right-click: Faites clic-droit sur un animal pour changer son propriétaire !

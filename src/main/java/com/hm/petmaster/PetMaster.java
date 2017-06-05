@@ -56,6 +56,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	private String chatHeader;
 	private boolean chatMessage;
 	private boolean hologramMessage;
+	private boolean actionBarMessage;
 	private boolean successfulLoad;
 
 	// Fields related to file handling.
@@ -122,9 +123,9 @@ public class PetMaster extends JavaPlugin implements Listener {
 		if (hologramMessage && !holographicDisplaysAvailable) {
 			successfulLoad = false;
 			hologramMessage = false;
-			chatMessage = true;
+			actionBarMessage = true;
 			this.getLogger().warning(
-					"HolographicDisplays was not found; disabling usage of holograms and enabling chat messages.");
+					"HolographicDisplays was not found; disabling usage of holograms and enabling action bar messages.");
 		}
 
 		if (successfulLoad) {
@@ -195,8 +196,9 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 
 		// Extract options from the config.
-		chatMessage = config.getBoolean("chatMessage", true);
+		chatMessage = config.getBoolean("chatMessage", false);
 		hologramMessage = config.getBoolean("hologramMessage", true);
+		actionBarMessage = config.getBoolean("actionBarMessage", true);
 		playerInteractListener.extractParameters();
 
 		// Unregister events if user changed the option and did a /petm reload. Do not recheck for update on /petm
@@ -254,6 +256,11 @@ public class PetMaster extends JavaPlugin implements Listener {
 			updateDone = true;
 		}
 
+		if (!config.getKeys(false).contains("actionBarMessage")) {
+			config.set("actionBarMessage", false, "Enable or disable action bar messages when right-clicking on a pet.");
+			updateDone = true;
+		}
+
 		if (updateDone) {
 			// Changes in the configuration: save and do a fresh load.
 			try {
@@ -307,6 +314,11 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		if (!lang.getKeys(false).contains("change-owner-price")) {
 			lang.set("change-owner-price", "You payed: AMOUNT !");
+			updateDone = true;
+		}
+
+		if (!lang.getKeys(false).contains("petmaster-action-bar")) {
+			lang.set("petmaster-action-bar", "Pet owned by ");
 			updateDone = true;
 		}
 
@@ -450,6 +462,10 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 	public boolean isHologramMessage() {
 		return hologramMessage;
+	}
+
+	public boolean isActionBarMessage() {
+		return actionBarMessage;
 	}
 
 	public String getChatHeader() {

@@ -21,6 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.hm.mcshared.event.PlayerChangeAnimalOwnershipEvent;
+import com.hm.mcshared.particle.PacketSender;
 import com.hm.mcshared.particle.ReflectionUtils.PackageType;
 import com.hm.petmaster.PetMaster;
 
@@ -159,6 +160,17 @@ public class PlayerInteractListener implements Listener {
 			event.getPlayer().sendMessage(
 					plugin.getChatHeader() + plugin.getPluginLang().getString("petmaster-chat", "Pet owned by ")
 							+ ChatColor.GOLD + owner.getName());
+		}
+
+		if (plugin.isActionBarMessage()) {
+			String actionBarJsonMessage = "{\"text\":\"&o" + ChatColor.GRAY
+					+ plugin.getPluginLang().getString("petmaster-action-bar", "Pet owned by ") + ChatColor.GOLD
+					+ owner.getName() + "\"}";
+			try {
+				PacketSender.sendActionBarPacket(event.getPlayer(), actionBarJsonMessage);
+			} catch (Exception e) {
+				plugin.getLogger().warning("Errors while trying to display action bar message for pet ownership.");
+			}
 		}
 	}
 

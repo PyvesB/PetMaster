@@ -17,10 +17,13 @@
 #=============================o=o=============================#
   
 # Enable or disable chat messages when right-clicking on a pet.
-chatMessage: true
+chatMessage: false
 
 # Enable or disable hologram messages when right-clicking on a pet (requires Holographic Displays).
 hologramMessage: true
+
+# Enable or disable action bar messages when right-clicking on a pet.
+actionBarMessage: true
 
 # Duration of the hologram, in server ticks (20 ticks = 1 second).
 hologramDuration: 50
