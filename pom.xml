@@ -97,7 +97,9 @@
 		<dependency>
 			<groupId>com.gmail.filoghost.holographicdisplays</groupId>
 			<artifactId>holographicdisplays</artifactId>
-			<version>2.1.7</version>
+			<version>2.2.5</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/HolographicDisplays.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.hm.mcshared</groupId>
