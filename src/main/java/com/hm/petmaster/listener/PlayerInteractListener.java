@@ -80,22 +80,19 @@ public class PlayerInteractListener implements Listener {
 
 		AnimalTamer owner = ((Tameable) event.getRightClicked()).getOwner();
 
-		boolean wantsToChangeOwnership = plugin.getChangeOwnershipMap().containsKey(event.getPlayer().getName());
+		// Retrieve new owner from the map and delete corresponding entry.
+		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
 
 		// Do not show information to the owner of the pet.
-		if (event.getPlayer().getName().equals(owner.getName()) && !wantsToChangeOwnership
-				&& !"DarkPyves".equals(event.getPlayer().getName())) {
+		if (event.getPlayer().getName().equals(owner.getName()) && newOwner == null) {
 			return;
 		}
 
-		// Change owner of the pet.
-		if (wantsToChangeOwnership) {
-			changeOwner(event, owner);
-			return;
-		}
-
-		// Display owner of the pet with a hologram and/or a message.
-		if (event.getPlayer().hasPermission("petmaster.showowner")) {
+		if (newOwner != null) {
+			// Change owner of the pet.
+			changeOwner(event, owner, newOwner);
+		} else if (event.getPlayer().hasPermission("petmaster.showowner")) {
+			// Display owner of the pet with a hologram and/or a message.
 			displayHologramAndMessage(event, owner);
 		}
 	}
@@ -180,12 +177,10 @@ public class PlayerInteractListener implements Listener {
 	 * 
 	 * @param event
 	 * @param oldOwner
+	 * @param newOwner
 	 */
 	@SuppressWarnings("deprecation")
-	private void changeOwner(PlayerInteractEntityEvent event, AnimalTamer oldOwner) {
-		// Retrieve new owner from the map and delete corresponding entry.
-		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
-
+	private void changeOwner(PlayerInteractEntityEvent event, AnimalTamer oldOwner, Player newOwner) {
 		// Can only change ownership if current owner or bypass permission.
 		if (oldOwner.getName().equals(event.getPlayer().getName())
 				|| event.getPlayer().hasPermission("petmaster.admin")) {
