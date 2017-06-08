@@ -38,7 +38,7 @@ public class PlayerInteractListener implements Listener {
 	private static final double CAT_OFFSET = 1.42;
 	private static final double HORSE_OFFSET = 2.32;
 	private static final double LLAMA_OFFSET = 2.42;
-	private static final double PARROT_OFFSET = 1.3;
+	private static final double PARROT_OFFSET = 1.15;
 
 	private final PetMaster plugin;
 	private final int version;
