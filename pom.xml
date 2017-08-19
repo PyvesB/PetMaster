@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.hm.petmaster</groupId>
 	<artifactId>PetMaster</artifactId>
-	<version>1.6.1</version>
+	<version>1.6.2</version>
 	<url>https://github.com/PyvesB/PetMaster</url>
 	<name>PetMaster</name>
 	<description>Whose pet is this? A plugin to change or display the owner of a pet via a hologram or a chat message.</description>
