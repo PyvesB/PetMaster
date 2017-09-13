@@ -260,6 +260,11 @@ public class PetMaster extends JavaPlugin implements Listener {
 			config.set("actionBarMessage", false, "Enable or disable action bar messages when right-clicking on a pet.");
 			updateDone = true;
 		}
+		
+		if (!config.getKeys(false).contains("displayToOwner")) {
+			config.set("displayToOwner", false, "Enable or disable showing ownership information for a player's own pets.");
+			updateDone = true;
+		}
 
 		if (updateDone) {
 			// Changes in the configuration: save and do a fresh load.

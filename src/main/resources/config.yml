@@ -34,6 +34,9 @@ checkForUpdate: true
 # Name of the language file.
 languageFileName: 'lang.yml'
 
+# Enable or disable showing ownership information for a player's own pets.
+displayToOwner: false
+
 # Price of the /petm setowner command (requires Vault).
 changeOwnerPrice: 0
 

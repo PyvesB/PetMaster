@@ -43,13 +43,14 @@ public class PlayerInteractListener implements Listener {
 	private final PetMaster plugin;
 	private final int version;
 
-	private int hologramDuration;
-	private int changeOwnerPrice;
 	private boolean displayDog;
 	private boolean displayCat;
 	private boolean displayHorse;
 	private boolean displayLlama;
 	private boolean displayParrot;
+	private boolean displayToOwner;
+	private int hologramDuration;
+	private int changeOwnerPrice;
 
 	public PlayerInteractListener(PetMaster petMaster) {
 		this.plugin = petMaster;
@@ -62,6 +63,7 @@ public class PlayerInteractListener implements Listener {
 		displayHorse = plugin.getPluginConfig().getBoolean("displayHorse", true);
 		displayLlama = plugin.getPluginConfig().getBoolean("displayLlama", true);
 		displayParrot = plugin.getPluginConfig().getBoolean("displayParrot", true);
+		displayToOwner = plugin.getPluginConfig().getBoolean("displayToOwner", false);
 		hologramDuration = plugin.getPluginConfig().getInt("hologramDuration", 50);
 		changeOwnerPrice = plugin.getPluginConfig().getInt("changeOwnerPrice", 0);
 	}
@@ -83,8 +85,8 @@ public class PlayerInteractListener implements Listener {
 		// Retrieve new owner from the map and delete corresponding entry.
 		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
 
-		// Do not show information to the owner of the pet.
-		if (event.getPlayer().getName().equals(owner.getName()) && newOwner == null) {
+		// Do not show information to the owner of the pet unless displayToOwner is enabled.
+		if (event.getPlayer().getName().equals(owner.getName()) && newOwner == null && !displayToOwner) {
 			return;
 		}
 
