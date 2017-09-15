@@ -39,6 +39,9 @@ displayToOwner: false
 # Price of the /petm setowner command (requires Vault).
 changeOwnerPrice: 0
 
+# Price of the /petm free command (requires Vault).
+freePetPrice: 0
+
 # Take dogs into account.
 displayDog: true
 

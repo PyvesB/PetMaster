@@ -26,6 +26,7 @@ new-owner: "Player PLAYER gave you ownership of his pet!"
 not-owner: "You do not own this pet!"
 right-click: "Right click on one of your pets to change its owner!"
 pet-freed: "Say goodbye: this pet returned to the wild!"
+not-enough-money: "You do not have the required amount: AMOUNT !"
 
 # Related to /petm help.
 petmaster-command-setowner: "Change the ownership of a pet."

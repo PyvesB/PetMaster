@@ -52,6 +52,7 @@ public class PlayerInteractListener implements Listener {
 	private boolean displayToOwner;
 	private int hologramDuration;
 	private int changeOwnerPrice;
+	private int freePetPrice;
 
 	public PlayerInteractListener(PetMaster petMaster) {
 		this.plugin = petMaster;
@@ -67,6 +68,7 @@ public class PlayerInteractListener implements Listener {
 		displayToOwner = plugin.getPluginConfig().getBoolean("displayToOwner", false);
 		hologramDuration = plugin.getPluginConfig().getInt("hologramDuration", 50);
 		changeOwnerPrice = plugin.getPluginConfig().getInt("changeOwnerPrice", 0);
+		freePetPrice = plugin.getPluginConfig().getInt("freePetPrice", 0);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -112,45 +114,22 @@ public class PlayerInteractListener implements Listener {
 	 * @param oldOwner
 	 * @param newOwner
 	 */
-	@SuppressWarnings("deprecation")
 	private void changeOwner(PlayerInteractEntityEvent event, AnimalTamer oldOwner, Player newOwner) {
-		Tameable tameableAnimal = (Tameable) event.getRightClicked();
-		// Change owner.
-		tameableAnimal.setOwner(newOwner);
+		if (chargePrice(event.getPlayer(), changeOwnerPrice)) {
+			Tameable tameableAnimal = (Tameable) event.getRightClicked();
+			// Change owner.
+			tameableAnimal.setOwner(newOwner);
+			event.getPlayer().sendMessage(plugin.getChatHeader()
+					+ plugin.getPluginLang().getString("owner-changed", "Say goodbye: this pet is no longer yours!"));
+			newOwner.sendMessage(plugin.getChatHeader()
+					+ plugin.getPluginLang().getString("new-owner", "Player PLAYER gave you ownership of his pet!")
+							.replace("PLAYER", event.getPlayer().getName()));
 
-		// Charge player for changing ownership.
-		if (changeOwnerPrice > 0 && plugin.setUpEconomy()) {
-			try {
-				plugin.getEconomy().depositPlayer(event.getPlayer(), changeOwnerPrice);
-			} catch (NoSuchMethodError e) {
-				// Deprecated method, but was the only one existing prior to Vault 1.4.
-				plugin.getEconomy().depositPlayer(event.getPlayer().getName(), changeOwnerPrice);
-			}
-			// If player has set different currency names depending on amount, adapt message accordingly.
-			if (changeOwnerPrice > 1) {
-				event.getPlayer()
-						.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
-								plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
-										"AMOUNT", changeOwnerPrice + " " + plugin.getEconomy().currencyNamePlural())));
-			} else {
-				event.getPlayer()
-						.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
-								plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
-										"AMOUNT",
-										changeOwnerPrice + " " + plugin.getEconomy().currencyNameSingular())));
-			}
+			// Create new event to allow other plugins to be aware of the ownership change.
+			PlayerChangeAnimalOwnershipEvent playerChangeAnimalOwnershipEvent = new PlayerChangeAnimalOwnershipEvent(
+					oldOwner, newOwner, tameableAnimal);
+			Bukkit.getServer().getPluginManager().callEvent(playerChangeAnimalOwnershipEvent);
 		}
-
-		event.getPlayer().sendMessage(plugin.getChatHeader()
-				+ plugin.getPluginLang().getString("owner-changed", "Say goodbye: this pet is no longer yours!"));
-		newOwner.sendMessage(plugin.getChatHeader()
-				+ plugin.getPluginLang().getString("new-owner", "Player PLAYER gave you ownership of his pet!")
-						.replace("PLAYER", event.getPlayer().getName()));
-
-		// Create new event to allow other plugins to be aware of the ownership change.
-		PlayerChangeAnimalOwnershipEvent playerChangeAnimalOwnershipEvent = new PlayerChangeAnimalOwnershipEvent(
-				oldOwner, newOwner, tameableAnimal);
-		Bukkit.getServer().getPluginManager().callEvent(playerChangeAnimalOwnershipEvent);
 	}
 
 	/**
@@ -160,25 +139,27 @@ public class PlayerInteractListener implements Listener {
 	 * @param oldOwner
 	 */
 	private void freePet(PlayerInteractEntityEvent event, AnimalTamer oldOwner) {
-		Tameable tameableAnimal = (Tameable) event.getRightClicked();
-		// Free pet.
-		tameableAnimal.setTamed(false);
-		// Make freed pet stand up.
-		if (version >= 12 && tameableAnimal instanceof Sittable) {
-			((Sittable) tameableAnimal).setSitting(false);
-		} else if (tameableAnimal instanceof Wolf) {
-			((Wolf) tameableAnimal).setSitting(false);
-		} else if (tameableAnimal instanceof Ocelot) {
-			((Ocelot) tameableAnimal).setSitting(false);
+		if (chargePrice(event.getPlayer(), freePetPrice)) {
+			Tameable tameableAnimal = (Tameable) event.getRightClicked();
+			// Free pet.
+			tameableAnimal.setTamed(false);
+			// Make freed pet stand up.
+			if (version >= 12 && tameableAnimal instanceof Sittable) {
+				((Sittable) tameableAnimal).setSitting(false);
+			} else if (tameableAnimal instanceof Wolf) {
+				((Wolf) tameableAnimal).setSitting(false);
+			} else if (tameableAnimal instanceof Ocelot) {
+				((Ocelot) tameableAnimal).setSitting(false);
+			}
+
+			event.getPlayer().sendMessage(plugin.getChatHeader()
+					+ plugin.getPluginLang().getString("pet-freed", "Say goodbye: this pet returned to the wild!"));
+
+			// Create new event to allow other plugins to be aware of the freeing.
+			PlayerChangeAnimalOwnershipEvent playerChangeAnimalOwnershipEvent = new PlayerChangeAnimalOwnershipEvent(
+					oldOwner, null, tameableAnimal);
+			Bukkit.getServer().getPluginManager().callEvent(playerChangeAnimalOwnershipEvent);
 		}
-
-		event.getPlayer().sendMessage(plugin.getChatHeader()
-				+ plugin.getPluginLang().getString("pet-freed", "Say goodbye: this pet returned to the wild!"));
-
-		// Create new event to allow other plugins to be aware of the freeing.
-		PlayerChangeAnimalOwnershipEvent playerChangeAnimalOwnershipEvent = new PlayerChangeAnimalOwnershipEvent(
-				oldOwner, null, tameableAnimal);
-		Bukkit.getServer().getPluginManager().callEvent(playerChangeAnimalOwnershipEvent);
 	}
 
 	/**
@@ -253,5 +234,50 @@ public class PlayerInteractListener implements Listener {
 				plugin.getLogger().warning("Errors while trying to display action bar message for pet ownership.");
 			}
 		}
+	}
+
+	/**
+	 * Charges a player if he has enough money and displays relevant messages.
+	 * 
+	 * @param player
+	 * @param price
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	private boolean chargePrice(Player player, int price) {
+		// Charge player for changing ownership.
+		if (price > 0 && plugin.setUpEconomy()) {
+			String priceWithCurrency;
+			// If server has set different currency names depending on amount, adapt message accordingly.
+			if (price > 1) {
+				priceWithCurrency = price + " " + plugin.getEconomy().currencyNamePlural();
+			} else {
+				priceWithCurrency = price + " " + plugin.getEconomy().currencyNameSingular();
+			}
+			double balance;
+			try {
+				balance = plugin.getEconomy().getBalance(player);
+			} catch (NoSuchMethodError e) {
+				// Deprecated method, but was the only one existing prior to Vault 1.4.
+				balance = plugin.getEconomy().getBalance(player.getName());
+			}
+			if (balance < price) {
+				player.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
+						plugin.getPluginLang()
+								.getString("not-enough-money", "You do not have the required amount: AMOUNT !")
+								.replace("AMOUNT", priceWithCurrency)));
+				return false;
+			}
+			try {
+				plugin.getEconomy().withdrawPlayer(player, price);
+			} catch (NoSuchMethodError e) {
+				// Deprecated method, but was the only one existing prior to Vault 1.4.
+				plugin.getEconomy().withdrawPlayer(player.getName(), price);
+			}
+			player.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
+					plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace("AMOUNT",
+							priceWithCurrency)));
+		}
+		return true;
 	}
 }

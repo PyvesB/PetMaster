@@ -273,6 +273,11 @@ public class PetMaster extends JavaPlugin implements Listener {
 			updateDone = true;
 		}
 
+		if (!config.getKeys(false).contains("freePetPrice")) {
+			config.set("freePetPrice", 0, "Price of the /petm free command (requires Vault).");
+			updateDone = true;
+		}
+
 		if (updateDone) {
 			// Changes in the configuration: save and do a fresh load.
 			try {
@@ -343,9 +348,14 @@ public class PetMaster extends JavaPlugin implements Listener {
 			lang.set("petmaster-command-free-hover", "You can only free your own pets, unless you're admin!");
 			updateDone = true;
 		}
-		
+
 		if (!lang.getKeys(false).contains("pet-freed")) {
 			lang.set("pet-freed", "Say goodbye: this pet returned to the wild!");
+			updateDone = true;
+		}
+
+		if (!lang.getKeys(false).contains("not-enough-money")) {
+			lang.set("not-enough-money", "You do not have the required amount: AMOUNT !");
 			updateDone = true;
 		}
 
