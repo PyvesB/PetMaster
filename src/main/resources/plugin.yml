@@ -33,8 +33,11 @@ permissions:
   petmaster.setowner:
     description: Allows players to change the ownership of their own pets.
     default: true
+  petmaster.free:
+    description: Allows players to free their own pets.
+    default: true
   petmaster.admin:
-    description: Allows to enable/disable/reload the plugin, bypass ownership setting or get notified by updates.
+    description: Allows to enable/disable/reload the plugin, change the ownership/free pets of other players, get notified by updates.
     default: op
   petmaster.*:
     description: Star notation of permissions, includes all of them.

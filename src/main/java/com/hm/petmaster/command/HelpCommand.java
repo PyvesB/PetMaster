@@ -33,6 +33,14 @@ public class HelpCommand {
 								"Display various information about the plugin."),
 				"/petm info", plugin.getPluginLang().getString("petmaster-command-info-hover",
 						"Some extra info about the plugin and its awesome author!"));
+		
+		if (sender.hasPermission("petmaster.free")) {
+			sendJsonClickableHoverableMessage(sender,
+					plugin.getChatHeader() + ChatColor.GOLD + "/petm free" + ChatColor.GRAY + " > "
+							+ plugin.getPluginLang().getString("petmaster-command-free", "Free a pet."),
+					"/petm free", plugin.getPluginLang().getString("petmaster-command-free-hover",
+							"You can only free your own pets, unless you're admin!"));
+		}
 
 		if (sender.hasPermission("petmaster.admin")) {
 			sendJsonClickableHoverableMessage(sender,

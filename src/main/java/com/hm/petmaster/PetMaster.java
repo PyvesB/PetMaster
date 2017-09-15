@@ -2,7 +2,9 @@ package com.hm.petmaster;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,6 +49,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 	// Contains pairs with name of previous owner and new owner.
 	private final Map<String, Player> changeOwnershipMap;
+	// Contains names of owners wanting to free their pets.
+	private final Set<String> freePetSet;
 
 	// Used for Vault plugin integration.
 	private Economy economy;
@@ -79,6 +83,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 */
 	public PetMaster() {
 		changeOwnershipMap = new HashMap<>();
+		freePetSet = new HashSet<>();
 		disabled = false;
 	}
 
@@ -257,12 +262,14 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 
 		if (!config.getKeys(false).contains("actionBarMessage")) {
-			config.set("actionBarMessage", false, "Enable or disable action bar messages when right-clicking on a pet.");
+			config.set("actionBarMessage", false,
+					"Enable or disable action bar messages when right-clicking on a pet.");
 			updateDone = true;
 		}
-		
+
 		if (!config.getKeys(false).contains("displayToOwner")) {
-			config.set("displayToOwner", false, "Enable or disable showing ownership information for a player's own pets.");
+			config.set("displayToOwner", false,
+					"Enable or disable showing ownership information for a player's own pets.");
 			updateDone = true;
 		}
 
@@ -327,6 +334,21 @@ public class PetMaster extends JavaPlugin implements Listener {
 			updateDone = true;
 		}
 
+		if (!lang.getKeys(false).contains("petmaster-command-free")) {
+			lang.set("petmaster-command-free", "Free a pet.");
+			updateDone = true;
+		}
+
+		if (!lang.getKeys(false).contains("petmaster-command-free-hover")) {
+			lang.set("petmaster-command-free-hover", "You can only free your own pets, unless you're admin!");
+			updateDone = true;
+		}
+		
+		if (!lang.getKeys(false).contains("pet-freed")) {
+			lang.set("pet-freed", "Say goodbye: this pet returned to the wild!");
+			updateDone = true;
+		}
+
 		if (updateDone) {
 			// Changes in the language file: save and do a fresh load.
 			try {
@@ -345,6 +367,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	@Override
 	public void onDisable() {
 		changeOwnershipMap.clear();
+		freePetSet.clear();
 		this.getLogger().info("PetMaster has been disabled.");
 	}
 
@@ -395,36 +418,57 @@ public class PetMaster extends JavaPlugin implements Listener {
 			} else
 				sender.sendMessage(
 						chatHeader + lang.getString("no-permissions", "You do not have the permission to do this."));
-		} else if ("setowner".equalsIgnoreCase(args[0]) && sender instanceof Player) {
-			if (args.length == 2) {
-				Player newOwner = null;
-				for (Player currentPlayer : Bukkit.getOnlinePlayers()) {
-					if (currentPlayer.getName().equalsIgnoreCase(args[1])) {
-						newOwner = currentPlayer;
-						break;
+		} else {
+			String playerName = ((Player) sender).getName();
+			if ("setowner".equalsIgnoreCase(args[0]) && sender instanceof Player) {
+				if (args.length == 2) {
+					Player newOwner = null;
+					for (Player currentPlayer : Bukkit.getOnlinePlayers()) {
+						if (currentPlayer.getName().equalsIgnoreCase(args[1])) {
+							newOwner = currentPlayer;
+							break;
+						}
 					}
-				}
-				if (newOwner == null) {
-					sender.sendMessage(
-							chatHeader + lang.getString("player-offline", "The specified player is offline!"));
-				} else if (!sender.hasPermission("petmaster.setowner") || disabled) {
-					sender.sendMessage(chatHeader
-							+ lang.getString("no-permissions", "You do not have the permission to do this."));
-				} else if (!sender.hasPermission("petmaster.admin")
-						&& newOwner.getName().equals(((Player) sender).getName())) {
-					sender.sendMessage(chatHeader
-							+ lang.getString("cannot-change-to-yourself", "You cannot change the owner to yourself!"));
+					if (newOwner == null) {
+						sender.sendMessage(
+								chatHeader + lang.getString("player-offline", "The specified player is offline!"));
+					} else if (!sender.hasPermission("petmaster.setowner") || disabled) {
+						sender.sendMessage(chatHeader
+								+ lang.getString("no-permissions", "You do not have the permission to do this."));
+					} else if (!sender.hasPermission("petmaster.admin") && newOwner.getName().equals(playerName)) {
+						sender.sendMessage(chatHeader + lang.getString("cannot-change-to-yourself",
+								"You cannot change the owner to yourself!"));
+					} else {
+						changeOwnershipMap.put(playerName, newOwner);
+						sender.sendMessage(chatHeader + lang.getString("right-click",
+								"Right click on one of your pets to change its owner!"));
+						// Cancel previous pending operation.
+						freePetSet.remove(playerName);
+					}
 				} else {
-					changeOwnershipMap.put(((Player) sender).getName(), newOwner);
-					sender.sendMessage(chatHeader
-							+ lang.getString("right-click", "Right click on one of your pets to change its owner!"));
+					sender.sendMessage(
+							chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
+				}
+			} else if ("free".equalsIgnoreCase(args[0]) && sender instanceof Player) {
+				if (args.length == 1) {
+					if (!sender.hasPermission("petmaster.free") || disabled) {
+						sender.sendMessage(chatHeader
+								+ lang.getString("no-permissions", "You do not have the permission to do this."));
+					} else {
+						freePetSet.add(playerName);
+						sender.sendMessage(chatHeader + lang.getString("right-click",
+								"Right click on one of your pets to change its owner!"));
+						// Cancel previous pending operation.
+						changeOwnershipMap.remove(playerName);
+					}
+				} else {
+					sender.sendMessage(
+							chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
 				}
 			} else {
 				sender.sendMessage(
 						chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
 			}
-		} else {
-			sender.sendMessage(chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
 		}
 		return true;
 	}
@@ -479,6 +523,10 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 	public Map<String, Player> getChangeOwnershipMap() {
 		return changeOwnershipMap;
+	}
+
+	public Set<String> getFreePetSet() {
+		return freePetSet;
 	}
 
 	public CommentedYamlConfiguration getPluginConfig() {

@@ -9,6 +9,7 @@ import org.bukkit.entity.Llama;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Parrot;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sittable;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
@@ -26,7 +27,7 @@ import com.hm.mcshared.particle.ReflectionUtils.PackageType;
 import com.hm.petmaster.PetMaster;
 
 /**
- * Class used to display holograms or change the owner of a pet.
+ * Class used to display holograms, change the owner of a pet or free a pet.
  * 
  * @author Pyves
  *
@@ -80,23 +81,104 @@ public class PlayerInteractListener implements Listener {
 			return;
 		}
 
-		AnimalTamer owner = ((Tameable) event.getRightClicked()).getOwner();
-
+		AnimalTamer currentOwner = ((Tameable) event.getRightClicked()).getOwner();
+		// Has the player clicked on one of his own pets?
+		boolean isOwner = event.getPlayer().getName().equals(currentOwner.getName());
 		// Retrieve new owner from the map and delete corresponding entry.
 		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
+		// Has the player requested to free one of his pets?
+		boolean freePet = plugin.getFreePetSet().remove(event.getPlayer().getName());
 
-		// Do not show information to the owner of the pet unless displayToOwner is enabled.
-		if (event.getPlayer().getName().equals(owner.getName()) && newOwner == null && !displayToOwner) {
+		// Cannot change ownership or free pet if not owner and no bypass permission.
+		if ((newOwner != null || freePet) && !isOwner && !event.getPlayer().hasPermission("petmaster.admin")) {
+			event.getPlayer().sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
+					.getString("not-owner", "You do not own this pet!").replace("PLAYER", event.getPlayer().getName()));
 			return;
 		}
 
 		if (newOwner != null) {
-			// Change owner of the pet.
-			changeOwner(event, owner, newOwner);
-		} else if (event.getPlayer().hasPermission("petmaster.showowner")) {
-			// Display owner of the pet with a hologram and/or a message.
-			displayHologramAndMessage(event, owner);
+			changeOwner(event, currentOwner, newOwner);
+		} else if (freePet) {
+			freePet(event, currentOwner);
+		} else if ((displayToOwner || !isOwner) && event.getPlayer().hasPermission("petmaster.showowner")) {
+			displayHologramAndMessage(event, currentOwner);
 		}
+	}
+
+	/**
+	 * Change the owner of a pet.
+	 * 
+	 * @param event
+	 * @param oldOwner
+	 * @param newOwner
+	 */
+	@SuppressWarnings("deprecation")
+	private void changeOwner(PlayerInteractEntityEvent event, AnimalTamer oldOwner, Player newOwner) {
+		Tameable tameableAnimal = (Tameable) event.getRightClicked();
+		// Change owner.
+		tameableAnimal.setOwner(newOwner);
+
+		// Charge player for changing ownership.
+		if (changeOwnerPrice > 0 && plugin.setUpEconomy()) {
+			try {
+				plugin.getEconomy().depositPlayer(event.getPlayer(), changeOwnerPrice);
+			} catch (NoSuchMethodError e) {
+				// Deprecated method, but was the only one existing prior to Vault 1.4.
+				plugin.getEconomy().depositPlayer(event.getPlayer().getName(), changeOwnerPrice);
+			}
+			// If player has set different currency names depending on amount, adapt message accordingly.
+			if (changeOwnerPrice > 1) {
+				event.getPlayer()
+						.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
+								plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
+										"AMOUNT", changeOwnerPrice + " " + plugin.getEconomy().currencyNamePlural())));
+			} else {
+				event.getPlayer()
+						.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
+								plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
+										"AMOUNT",
+										changeOwnerPrice + " " + plugin.getEconomy().currencyNameSingular())));
+			}
+		}
+
+		event.getPlayer().sendMessage(plugin.getChatHeader()
+				+ plugin.getPluginLang().getString("owner-changed", "Say goodbye: this pet is no longer yours!"));
+		newOwner.sendMessage(plugin.getChatHeader()
+				+ plugin.getPluginLang().getString("new-owner", "Player PLAYER gave you ownership of his pet!")
+						.replace("PLAYER", event.getPlayer().getName()));
+
+		// Create new event to allow other plugins to be aware of the ownership change.
+		PlayerChangeAnimalOwnershipEvent playerChangeAnimalOwnershipEvent = new PlayerChangeAnimalOwnershipEvent(
+				oldOwner, newOwner, tameableAnimal);
+		Bukkit.getServer().getPluginManager().callEvent(playerChangeAnimalOwnershipEvent);
+	}
+
+	/**
+	 * Free a pet; it will no longer be tamed.
+	 * 
+	 * @param event
+	 * @param oldOwner
+	 */
+	private void freePet(PlayerInteractEntityEvent event, AnimalTamer oldOwner) {
+		Tameable tameableAnimal = (Tameable) event.getRightClicked();
+		// Free pet.
+		tameableAnimal.setTamed(false);
+		// Make freed pet stand up.
+		if (version >= 12 && tameableAnimal instanceof Sittable) {
+			((Sittable) tameableAnimal).setSitting(false);
+		} else if (tameableAnimal instanceof Wolf) {
+			((Wolf) tameableAnimal).setSitting(false);
+		} else if (tameableAnimal instanceof Ocelot) {
+			((Ocelot) tameableAnimal).setSitting(false);
+		}
+
+		event.getPlayer().sendMessage(plugin.getChatHeader()
+				+ plugin.getPluginLang().getString("pet-freed", "Say goodbye: this pet returned to the wild!"));
+
+		// Create new event to allow other plugins to be aware of the freeing.
+		PlayerChangeAnimalOwnershipEvent playerChangeAnimalOwnershipEvent = new PlayerChangeAnimalOwnershipEvent(
+				oldOwner, null, tameableAnimal);
+		Bukkit.getServer().getPluginManager().callEvent(playerChangeAnimalOwnershipEvent);
 	}
 
 	/**
@@ -170,59 +252,6 @@ public class PlayerInteractListener implements Listener {
 			} catch (Exception e) {
 				plugin.getLogger().warning("Errors while trying to display action bar message for pet ownership.");
 			}
-		}
-	}
-
-	/**
-	 * Change the owner of a pet. User must have entered the /pet setowner command beforehand and must be the owner of
-	 * the pet unless he is admin.
-	 * 
-	 * @param event
-	 * @param oldOwner
-	 * @param newOwner
-	 */
-	@SuppressWarnings("deprecation")
-	private void changeOwner(PlayerInteractEntityEvent event, AnimalTamer oldOwner, Player newOwner) {
-		// Can only change ownership if current owner or bypass permission.
-		if (oldOwner.getName().equals(event.getPlayer().getName())
-				|| event.getPlayer().hasPermission("petmaster.admin")) {
-			// Change owner.
-			Tameable tameableAnimal = (Tameable) event.getRightClicked();
-			tameableAnimal.setOwner(newOwner);
-
-			// Charge price.
-			if (changeOwnerPrice > 0 && plugin.setUpEconomy()) {
-				try {
-					plugin.getEconomy().depositPlayer(event.getPlayer(), changeOwnerPrice);
-				} catch (NoSuchMethodError e) {
-					// Deprecated method, but was the only one existing prior to Vault 1.4.
-					plugin.getEconomy().depositPlayer(event.getPlayer().getName(), changeOwnerPrice);
-				}
-				// If player has set different currency names depending on amount, adapt message accordingly.
-				if (changeOwnerPrice > 1) {
-					event.getPlayer().sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
-							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
-									"AMOUNT", changeOwnerPrice + " " + plugin.getEconomy().currencyNamePlural())));
-				} else {
-					event.getPlayer().sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
-							plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace(
-									"AMOUNT", changeOwnerPrice + " " + plugin.getEconomy().currencyNameSingular())));
-				}
-			}
-
-			event.getPlayer().sendMessage(plugin.getChatHeader()
-					+ plugin.getPluginLang().getString("owner-changed", "Say goodbye: this pet is no longer yours!"));
-			newOwner.sendMessage(plugin.getChatHeader()
-					+ plugin.getPluginLang().getString("new-owner", "Player PLAYER gave you ownership of his pet!")
-							.replace("PLAYER", event.getPlayer().getName()));
-
-			// Create new event to allow other plugins to be aware of the ownership change.
-			PlayerChangeAnimalOwnershipEvent playerChangeAnimalOwnershipEvent = new PlayerChangeAnimalOwnershipEvent(
-					oldOwner, newOwner, tameableAnimal);
-			Bukkit.getServer().getPluginManager().callEvent(playerChangeAnimalOwnershipEvent);
-		} else {
-			event.getPlayer().sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-					.getString("not-owner", "You do not own this pet!").replace("PLAYER", event.getPlayer().getName()));
 		}
 	}
 }

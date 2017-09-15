@@ -4,8 +4,7 @@
 # 1---------------------------------------------------------1 #
 #==============================o==============================#
 
-# Remember: ownership information is not displayed if you are the owner of the pet!
-# For horses, it is recommended that the player right-clicks on the horse while sneaking.
+# For horses or llamas, it is recommended that the player right-clicks on the horse while sneaking.
 # Only spaces, no tabs. To check your file, use: yaml-online-parser.appspot.com
 # Default config.yml file: github.com/PyvesB/PetMaster/blob/master/src/main/resources/config.yml
 # Visit the GitHub for some additional documentation: github.com/PyvesB/PetMaster
