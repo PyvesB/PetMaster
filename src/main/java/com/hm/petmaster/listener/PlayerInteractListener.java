@@ -120,9 +120,9 @@ public class PlayerInteractListener implements Listener {
 			// Change owner.
 			tameableAnimal.setOwner(newOwner);
 			event.getPlayer().sendMessage(plugin.getChatHeader()
-					+ plugin.getPluginLang().getString("owner-changed", "Say goodbye: this pet is no longer yours!"));
+					+ plugin.getPluginLang().getString("owner-changed", "This pet was given to a new owner!"));
 			newOwner.sendMessage(plugin.getChatHeader()
-					+ plugin.getPluginLang().getString("new-owner", "Player PLAYER gave you ownership of his pet!")
+					+ plugin.getPluginLang().getString("new-owner", "Player PLAYER gave you ownership of a pet!")
 							.replace("PLAYER", event.getPlayer().getName()));
 
 			// Create new event to allow other plugins to be aware of the ownership change.

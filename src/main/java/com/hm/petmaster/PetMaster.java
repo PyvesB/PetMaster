@@ -451,7 +451,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 					} else {
 						changeOwnershipMap.put(playerName, newOwner);
 						sender.sendMessage(chatHeader + lang.getString("right-click",
-								"Right click on one of your pets to change its owner!"));
+								"Right click on a pet to change its owner!"));
 						// Cancel previous pending operation.
 						freePetSet.remove(playerName);
 					}
@@ -467,7 +467,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 					} else {
 						freePetSet.add(playerName);
 						sender.sendMessage(chatHeader + lang.getString("right-click",
-								"Right click on one of your pets to change its owner!"));
+								"Right click on a pet to change its owner!"));
 						// Cancel previous pending operation.
 						changeOwnershipMap.remove(playerName);
 					}
