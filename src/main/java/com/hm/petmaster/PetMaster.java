@@ -47,6 +47,8 @@ import net.milkbowl.vault.economy.Economy;
  */
 public class PetMaster extends JavaPlugin implements Listener {
 
+	private static final String[] NO_COMMENTS = new String[] {};
+
 	// Contains pairs with name of previous owner and new owner.
 	private final Map<String, Player> changeOwnershipMap;
 	// Contains names of owners wanting to free their pets.
@@ -62,6 +64,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	private boolean hologramMessage;
 	private boolean actionBarMessage;
 	private boolean successfulLoad;
+	private boolean updatePerformed;
 
 	// Fields related to file handling.
 	private CommentedYamlConfiguration config;
@@ -218,67 +221,25 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 * to 1.2 are not supported.
 	 */
 	private void updateOldConfiguration() {
-		boolean updateDone = false;
+		updatePerformed = false;
 
-		if (!config.getKeys(false).contains("languageFileName")) {
-			config.set("languageFileName", "lang.yml", "Name of the language file.");
-			updateDone = true;
-		}
+		updateSetting(lang, "languageFileName", "lang.yml", new String[] { "Name of the language file." });
+		updateSetting(lang, "checkForUpdate", true,
+				new String[] { "Check for update on plugin launch and notify when an OP joins the game." });
+		updateSetting(lang, "changeOwnerPrice", 0,
+				new String[] { "Price of the /petm setowner command (requires Vault)." });
+		updateSetting(lang, "displayDog", true, new String[] { "Take dogs into account." });
+		updateSetting(lang, "displayCat", true, new String[] { "Take cats into account." });
+		updateSetting(lang, "displayHorse", true, new String[] { "Take horses into account." });
+		updateSetting(lang, "displayLlama", true, new String[] { "Take llamas into account." });
+		updateSetting(lang, "displayParrot", true, new String[] { "Take parrots into account." });
+		updateSetting(lang, "actionBarMessage", false,
+				new String[] { "Enable or disable action bar messages when right-clicking on a pet." });
+		updateSetting(lang, "displayToOwner", false,
+				new String[] { "Enable or disable showing ownership information for a player's own pets." });
+		updateSetting(lang, "freePetPrice", 0, new String[] { "Price of the /petm free command (requires Vault)." });
 
-		if (!config.getKeys(false).contains("checkForUpdate")) {
-			config.set("checkForUpdate", true,
-					"Check for update on plugin launch and notify when an OP joins the game.");
-			updateDone = true;
-		}
-
-		if (!config.getKeys(false).contains("changeOwnerPrice")) {
-			config.set("changeOwnerPrice", 0, "Price of the /petm setowner command (requires Vault).");
-			updateDone = true;
-		}
-
-		if (!config.getKeys(false).contains("displayDog")) {
-			config.set("displayDog", true, "Take dogs into account.");
-			updateDone = true;
-		}
-
-		if (!config.getKeys(false).contains("displayCat")) {
-			config.set("displayCat", true, "Take cats into account.");
-			updateDone = true;
-		}
-
-		if (!config.getKeys(false).contains("displayHorse")) {
-			config.set("displayHorse", true, "Take horses into account.");
-			updateDone = true;
-		}
-
-		if (!config.getKeys(false).contains("displayLlama")) {
-			config.set("displayLlama", true, "Take llamas into account.");
-			updateDone = true;
-		}
-
-		if (!config.getKeys(false).contains("displayParrot")) {
-			config.set("displayParrot", true, "Take parrots into account.");
-			updateDone = true;
-		}
-
-		if (!config.getKeys(false).contains("actionBarMessage")) {
-			config.set("actionBarMessage", false,
-					"Enable or disable action bar messages when right-clicking on a pet.");
-			updateDone = true;
-		}
-
-		if (!config.getKeys(false).contains("displayToOwner")) {
-			config.set("displayToOwner", false,
-					"Enable or disable showing ownership information for a player's own pets.");
-			updateDone = true;
-		}
-
-		if (!config.getKeys(false).contains("freePetPrice")) {
-			config.set("freePetPrice", 0, "Price of the /petm free command (requires Vault).");
-			updateDone = true;
-		}
-
-		if (updateDone) {
+		if (updatePerformed) {
 			// Changes in the configuration: save and do a fresh load.
 			try {
 				config.saveConfiguration();
@@ -295,71 +256,29 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 * are not supported.
 	 */
 	private void updateOldLanguage() {
-		boolean updateDone = false;
+		updatePerformed = false;
 
-		if (!lang.getKeys(false).contains("petmaster-command-setowner-hover")) {
-			lang.set("petmaster-command-setowner-hover",
-					"You can only change the ownership of your own pets, unless you're admin!");
-			updateDone = true;
-		}
+		updateSetting(lang, "petmaster-command-setowner-hover",
+				"You can only change the ownership of your own pets, unless you're admin!", NO_COMMENTS);
+		updateSetting(lang, "petmaster-command-disable-hover",
+				"The plugin will not work until next reload or /petm enable.", NO_COMMENTS);
+		updateSetting(lang, "petmaster-command-enable-hover",
+				"Plugin enabled by default. Use this if you entered /petm disable before!", NO_COMMENTS);
+		updateSetting(lang, "petmaster-command-reload-hover", "Reload most settings in config.yml and lang.yml files.",
+				NO_COMMENTS);
+		updateSetting(lang, "petmaster-command-info-hover", "Some extra info about the plugin and its awesome author!",
+				NO_COMMENTS);
+		updateSetting(lang, "petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!",
+				NO_COMMENTS);
+		updateSetting(lang, "change-owner-price", "You payed: AMOUNT !", NO_COMMENTS);
+		updateSetting(lang, "petmaster-action-bar", "Pet owned by ", NO_COMMENTS);
+		updateSetting(lang, "petmaster-command-free", "Free a pet.", NO_COMMENTS);
+		updateSetting(lang, "petmaster-command-free-hover", "You can only free your own pets, unless you're admin!",
+				NO_COMMENTS);
+		updateSetting(lang, "pet-freed", "Say goodbye: this pet returned to the wild!", NO_COMMENTS);
+		updateSetting(lang, "not-enough-money", "You do not have the required amount: AMOUNT !", NO_COMMENTS);
 
-		if (!lang.getKeys(false).contains("petmaster-command-disable-hover")) {
-			lang.set("petmaster-command-disable-hover", "The plugin will not work until next reload or /petm enable.");
-			updateDone = true;
-		}
-
-		if (!lang.getKeys(false).contains("petmaster-command-enable-hover")) {
-			lang.set("petmaster-command-enable-hover",
-					"Plugin enabled by default. Use this if you entered /petm disable before!");
-			updateDone = true;
-		}
-
-		if (!lang.getKeys(false).contains("petmaster-command-reload-hover")) {
-			lang.set("petmaster-command-reload-hover", "Reload most settings in config.yml and lang.yml files.");
-			updateDone = true;
-		}
-
-		if (!lang.getKeys(false).contains("petmaster-command-info-hover")) {
-			lang.set("petmaster-command-info-hover", "Some extra info about the plugin and its awesome author!");
-			updateDone = true;
-		}
-
-		if (!lang.getKeys(false).contains("petmaster-tip")) {
-			lang.set("petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!");
-			updateDone = true;
-		}
-
-		if (!lang.getKeys(false).contains("change-owner-price")) {
-			lang.set("change-owner-price", "You payed: AMOUNT !");
-			updateDone = true;
-		}
-
-		if (!lang.getKeys(false).contains("petmaster-action-bar")) {
-			lang.set("petmaster-action-bar", "Pet owned by ");
-			updateDone = true;
-		}
-
-		if (!lang.getKeys(false).contains("petmaster-command-free")) {
-			lang.set("petmaster-command-free", "Free a pet.");
-			updateDone = true;
-		}
-
-		if (!lang.getKeys(false).contains("petmaster-command-free-hover")) {
-			lang.set("petmaster-command-free-hover", "You can only free your own pets, unless you're admin!");
-			updateDone = true;
-		}
-
-		if (!lang.getKeys(false).contains("pet-freed")) {
-			lang.set("pet-freed", "Say goodbye: this pet returned to the wild!");
-			updateDone = true;
-		}
-
-		if (!lang.getKeys(false).contains("not-enough-money")) {
-			lang.set("not-enough-money", "You do not have the required amount: AMOUNT !");
-			updateDone = true;
-		}
-
-		if (updateDone) {
+		if (updatePerformed) {
 			// Changes in the language file: save and do a fresh load.
 			try {
 				lang.saveConfiguration();
@@ -450,8 +369,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 								"You cannot change the owner to yourself!"));
 					} else {
 						changeOwnershipMap.put(playerName, newOwner);
-						sender.sendMessage(chatHeader + lang.getString("right-click",
-								"Right click on a pet to change its owner!"));
+						sender.sendMessage(chatHeader
+								+ lang.getString("right-click", "Right click on a pet to change its owner!"));
 						// Cancel previous pending operation.
 						freePetSet.remove(playerName);
 					}
@@ -466,8 +385,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 								+ lang.getString("no-permissions", "You do not have the permission to do this."));
 					} else {
 						freePetSet.add(playerName);
-						sender.sendMessage(chatHeader + lang.getString("right-click",
-								"Right click on a pet to change its owner!"));
+						sender.sendMessage(chatHeader
+								+ lang.getString("right-click", "Right click on a pet to change its owner!"));
 						// Cancel previous pending operation.
 						changeOwnershipMap.remove(playerName);
 					}
@@ -481,6 +400,21 @@ public class PetMaster extends JavaPlugin implements Listener {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Updates the configuration file to include a new setting with its default value and its comments.
+	 * 
+	 * @param file
+	 * @param name
+	 * @param value
+	 * @param comments
+	 */
+	private void updateSetting(CommentedYamlConfiguration file, String name, Object value, String[] comments) {
+		if (!file.getKeys(false).contains(name)) {
+			file.set(name, value, comments);
+			updatePerformed = true;
+		}
 	}
 
 	/**
