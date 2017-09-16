@@ -148,46 +148,14 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		logger.info("Backing up and loading configuration files...");
 
-		try {
-			config = new CommentedYamlConfiguration("config.yml", this);
-		} catch (IOException e) {
-			this.getLogger().log(Level.SEVERE, "Error while loading configuration file: ", e);
-			successfulLoad = false;
-		} catch (InvalidConfigurationException e) {
-			logger.severe("Error while loading configuration file, disabling plugin.");
-			logger.log(Level.SEVERE,
-					"Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
-			successfulLoad = false;
-			this.getServer().getPluginManager().disablePlugin(this);
+		config = loadAndBackupYamlConfiguration("config.yml");
+		if (config == null) {
 			return;
 		}
 
-		try {
-			lang = new CommentedYamlConfiguration(config.getString("languageFileName", "lang.yml"), this);
-		} catch (IOException e) {
-			this.getLogger().log(Level.SEVERE, "Error while loading language file: ", e);
-			successfulLoad = false;
-		} catch (InvalidConfigurationException e) {
-			logger.severe("Error while loading language file, disabling plugin.");
-			this.getLogger().log(Level.SEVERE,
-					"Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
-			successfulLoad = false;
-			this.getServer().getPluginManager().disablePlugin(this);
+		lang = loadAndBackupYamlConfiguration(config.getString("languageFileName", "lang.yml"));
+		if (lang == null) {
 			return;
-		}
-
-		try {
-			config.backupConfiguration();
-		} catch (IOException e) {
-			this.getLogger().log(Level.SEVERE, "Error while backing up configuration file: ", e);
-			successfulLoad = false;
-		}
-
-		try {
-			lang.backupConfiguration();
-		} catch (IOException e) {
-			this.getLogger().log(Level.SEVERE, "Error while backing up language file: ", e);
-			successfulLoad = false;
 		}
 
 		// Update configurations from previous versions of the plugin if server reloads or restarts.
@@ -207,6 +175,37 @@ public class PetMaster extends JavaPlugin implements Listener {
 		if (!config.getBoolean("checkForUpdate", true)) {
 			PlayerJoinEvent.getHandlerList().unregister(updateChecker);
 		}
+	}
+
+	/**
+	 * Loads and backs up file fileName.
+	 * 
+	 * @param fileName
+	 * @return the loaded CommentedYamlConfiguration
+	 */
+	private CommentedYamlConfiguration loadAndBackupYamlConfiguration(String fileName) {
+		CommentedYamlConfiguration yamlConfiguration = null;
+		try {
+			yamlConfiguration = new CommentedYamlConfiguration(fileName, this);
+		} catch (IOException e) {
+			this.getLogger().log(Level.SEVERE, "Error while loading " + fileName + " file: ", e);
+			successfulLoad = false;
+		} catch (InvalidConfigurationException e) {
+			this.getLogger().severe("Error while loading " + fileName + " file, disabling plugin.");
+			this.getLogger().log(Level.SEVERE,
+					"Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
+			successfulLoad = false;
+			this.getServer().getPluginManager().disablePlugin(this);
+		}
+
+		if (yamlConfiguration != null)
+			try {
+				yamlConfiguration.backupConfiguration();
+			} catch (IOException e) {
+				this.getLogger().log(Level.SEVERE, "Error while backing up configuration file: ", e);
+				successfulLoad = false;
+			}
+		return yamlConfiguration;
 	}
 
 	/**
