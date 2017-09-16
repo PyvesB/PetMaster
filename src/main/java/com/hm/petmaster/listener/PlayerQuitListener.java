@@ -23,7 +23,8 @@ public class PlayerQuitListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		// Delete entry from map.
-		plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
+		// Delete pending requests.
+		plugin.getSetOwnerCommand().collectPendingSetOwnershipRequest(event.getPlayer());
+		plugin.getFreeCommand().collectPendingFreeRequest(event.getPlayer());
 	}
 }

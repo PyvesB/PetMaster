@@ -79,7 +79,7 @@ public class PlayerInteractListener implements Listener {
 		}
 
 		if (!(event.getRightClicked() instanceof Tameable) || ((Tameable) event.getRightClicked()).getOwner() == null
-				|| plugin.isDisabled()) {
+				|| !plugin.getEnableDisableCommand().isEnabled()) {
 			return;
 		}
 
@@ -87,9 +87,9 @@ public class PlayerInteractListener implements Listener {
 		// Has the player clicked on one of his own pets?
 		boolean isOwner = event.getPlayer().getName().equals(currentOwner.getName());
 		// Retrieve new owner from the map and delete corresponding entry.
-		Player newOwner = plugin.getChangeOwnershipMap().remove(event.getPlayer().getName());
+		Player newOwner = plugin.getSetOwnerCommand().collectPendingSetOwnershipRequest(event.getPlayer());
 		// Has the player requested to free one of his pets?
-		boolean freePet = plugin.getFreePetSet().remove(event.getPlayer().getName());
+		boolean freePet = plugin.getFreeCommand().collectPendingFreeRequest(event.getPlayer());
 
 		// Cannot change ownership or free pet if not owner and no bypass permission.
 		if ((newOwner != null || freePet) && !isOwner && !event.getPlayer().hasPermission("petmaster.admin")) {

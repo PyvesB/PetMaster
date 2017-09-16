@@ -1,10 +1,6 @@
 package com.hm.petmaster;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,8 +18,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.hm.mcshared.file.CommentedYamlConfiguration;
 import com.hm.mcshared.update.UpdateChecker;
+import com.hm.petmaster.command.EnableDisableCommand;
+import com.hm.petmaster.command.FreeCommand;
 import com.hm.petmaster.command.HelpCommand;
 import com.hm.petmaster.command.InfoCommand;
+import com.hm.petmaster.command.ReloadCommand;
+import com.hm.petmaster.command.SetOwnerCommand;
 import com.hm.petmaster.listener.PlayerInteractListener;
 import com.hm.petmaster.listener.PlayerQuitListener;
 
@@ -49,16 +49,10 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 	private static final String[] NO_COMMENTS = new String[] {};
 
-	// Contains pairs with name of previous owner and new owner.
-	private final Map<String, Player> changeOwnershipMap;
-	// Contains names of owners wanting to free their pets.
-	private final Set<String> freePetSet;
-
 	// Used for Vault plugin integration.
 	private Economy economy;
 
 	// Plugin options and various parameters.
-	private boolean disabled;
 	private String chatHeader;
 	private boolean chatMessage;
 	private boolean hologramMessage;
@@ -80,15 +74,10 @@ public class PetMaster extends JavaPlugin implements Listener {
 	// Additional classes related to plugin commands.
 	private HelpCommand helpCommand;
 	private InfoCommand infoCommand;
-
-	/**
-	 * Constructor.
-	 */
-	public PetMaster() {
-		changeOwnershipMap = new HashMap<>();
-		freePetSet = new HashSet<>();
-		disabled = false;
-	}
+	private SetOwnerCommand setOwnerCommand;
+	private FreeCommand freeCommand;
+	private EnableDisableCommand enableDisableCommand;
+	private ReloadCommand reloadCommand;
 
 	/**
 	 * Called when server is launched or reloaded.
@@ -124,6 +113,10 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 		helpCommand = new HelpCommand(this);
 		infoCommand = new InfoCommand(this);
+		setOwnerCommand = new SetOwnerCommand(this);
+		freeCommand = new FreeCommand(this);
+		enableDisableCommand = new EnableDisableCommand(this);
+		reloadCommand = new ReloadCommand(this);
 
 		boolean holographicDisplaysAvailable = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 
@@ -149,7 +142,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 * 
 	 * @param attemptUpdate
 	 */
-	private void extractParametersFromConfig(boolean attemptUpdate) {
+	public void extractParametersFromConfig(boolean attemptUpdate) {
 		successfulLoad = true;
 		Logger logger = this.getLogger();
 
@@ -295,8 +288,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 */
 	@Override
 	public void onDisable() {
-		changeOwnershipMap.clear();
-		freePetSet.clear();
 		this.getLogger().info("PetMaster has been disabled.");
 	}
 
@@ -314,90 +305,17 @@ public class PetMaster extends JavaPlugin implements Listener {
 		} else if ("info".equalsIgnoreCase(args[0])) {
 			infoCommand.getInfo(sender);
 		} else if ("reload".equalsIgnoreCase(args[0])) {
-			if (sender.hasPermission("petmaster.admin")) {
-				this.reloadConfig();
-				extractParametersFromConfig(false);
-				if (successfulLoad) {
-					if (sender instanceof Player) {
-						sender.sendMessage(chatHeader + lang.getString("configuration-successfully-reloaded",
-								"Configuration successfully reloaded."));
-					}
-					this.getLogger().info("Configuration successfully reloaded.");
-				} else {
-					sender.sendMessage(chatHeader + lang.getString("configuration-reload-failed",
-							"Errors while reloading configuration. Please view logs for more details."));
-					this.getLogger().severe("Errors while reloading configuration. Please view logs for more details.");
-				}
-			} else {
-				sender.sendMessage(
-						chatHeader + lang.getString("no-permissions", "You do not have the permission to do this."));
-			}
+			reloadCommand.reload(sender);
 		} else if ("disable".equalsIgnoreCase(args[0])) {
-			if (sender.hasPermission("petmaster.admin")) {
-				disabled = true;
-				sender.sendMessage(chatHeader
-						+ lang.getString("petmaster-disabled", "PetMaster disabled till next reload or /petm enable."));
-			} else
-				sender.sendMessage(
-						chatHeader + lang.getString("no-permissions", "You do not have the permission to do this."));
+			enableDisableCommand.setState(sender, false);
 		} else if ("enable".equalsIgnoreCase(args[0])) {
-			if (sender.hasPermission("petmaster.admin")) {
-				disabled = false;
-				sender.sendMessage(chatHeader + lang.getString("petmaster-enabled", "PetMaster enabled."));
-			} else
-				sender.sendMessage(
-						chatHeader + lang.getString("no-permissions", "You do not have the permission to do this."));
+			enableDisableCommand.setState(sender, true);
+		} else if ("setowner".equalsIgnoreCase(args[0]) && sender instanceof Player) {
+			setOwnerCommand.setOwner(((Player) sender), args);
+		} else if ("free".equalsIgnoreCase(args[0]) && sender instanceof Player) {
+			freeCommand.freePet(((Player) sender), args);
 		} else {
-			String playerName = ((Player) sender).getName();
-			if ("setowner".equalsIgnoreCase(args[0]) && sender instanceof Player) {
-				if (args.length == 2) {
-					Player newOwner = null;
-					for (Player currentPlayer : Bukkit.getOnlinePlayers()) {
-						if (currentPlayer.getName().equalsIgnoreCase(args[1])) {
-							newOwner = currentPlayer;
-							break;
-						}
-					}
-					if (newOwner == null) {
-						sender.sendMessage(
-								chatHeader + lang.getString("player-offline", "The specified player is offline!"));
-					} else if (!sender.hasPermission("petmaster.setowner") || disabled) {
-						sender.sendMessage(chatHeader
-								+ lang.getString("no-permissions", "You do not have the permission to do this."));
-					} else if (!sender.hasPermission("petmaster.admin") && newOwner.getName().equals(playerName)) {
-						sender.sendMessage(chatHeader + lang.getString("cannot-change-to-yourself",
-								"You cannot change the owner to yourself!"));
-					} else {
-						changeOwnershipMap.put(playerName, newOwner);
-						sender.sendMessage(chatHeader
-								+ lang.getString("right-click", "Right click on a pet to change its owner!"));
-						// Cancel previous pending operation.
-						freePetSet.remove(playerName);
-					}
-				} else {
-					sender.sendMessage(
-							chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
-				}
-			} else if ("free".equalsIgnoreCase(args[0]) && sender instanceof Player) {
-				if (args.length == 1) {
-					if (!sender.hasPermission("petmaster.free") || disabled) {
-						sender.sendMessage(chatHeader
-								+ lang.getString("no-permissions", "You do not have the permission to do this."));
-					} else {
-						freePetSet.add(playerName);
-						sender.sendMessage(chatHeader
-								+ lang.getString("right-click", "Right click on a pet to change its owner!"));
-						// Cancel previous pending operation.
-						changeOwnershipMap.remove(playerName);
-					}
-				} else {
-					sender.sendMessage(
-							chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
-				}
-			} else {
-				sender.sendMessage(
-						chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
-			}
+			sender.sendMessage(chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
 		}
 		return true;
 	}
@@ -441,12 +359,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 	}
 
-	public boolean isDisabled() {
-		return disabled;
-	}
-
-	public void setSuccessfulLoad(boolean successfulLoad) {
-		this.successfulLoad = successfulLoad;
+	public boolean isSuccessfulLoad() {
+		return successfulLoad;
 	}
 
 	public boolean isChatMessage() {
@@ -465,14 +379,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 		return chatHeader;
 	}
 
-	public Map<String, Player> getChangeOwnershipMap() {
-		return changeOwnershipMap;
-	}
-
-	public Set<String> getFreePetSet() {
-		return freePetSet;
-	}
-
 	public CommentedYamlConfiguration getPluginConfig() {
 		return config;
 	}
@@ -483,5 +389,17 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 	public Economy getEconomy() {
 		return economy;
+	}
+
+	public SetOwnerCommand getSetOwnerCommand() {
+		return setOwnerCommand;
+	}
+
+	public FreeCommand getFreeCommand() {
+		return freeCommand;
+	}
+
+	public EnableDisableCommand getEnableDisableCommand() {
+		return enableDisableCommand;
 	}
 }

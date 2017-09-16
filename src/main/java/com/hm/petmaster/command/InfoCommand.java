@@ -41,10 +41,10 @@ public class InfoCommand {
 						"Whose pet is this? A simple plugin to change or display the owner of a pet via a hologram or a chat message."));
 		// Display whether PetMaster is enabled.
 		String state;
-		if (plugin.isDisabled()) {
-			state = "NO";
-		} else {
+		if (plugin.getEnableDisableCommand().isEnabled()) {
 			state = "YES";
+		} else {
+			state = "NO";
 		}
 		sender.sendMessage(plugin.getChatHeader() + ChatColor.GOLD
 				+ plugin.getPluginLang().getString("version-command-enabled", "Plugin enabled:") + " " + ChatColor.GRAY
