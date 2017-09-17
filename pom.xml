@@ -6,7 +6,7 @@
 	<version>1.6.2</version>
 	<url>https://github.com/PyvesB/PetMaster</url>
 	<name>PetMaster</name>
-	<description>Whose pet is this? A plugin to change or display the owner of a pet via a hologram or a chat message.</description>
+	<description>Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!</description>
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/PyvesB/PetMaster/issues</url>
@@ -16,11 +16,12 @@
 	</properties>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.0</version>
+				<version>3.7.0</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -29,7 +30,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.1.0</version>
 				<configuration>
 					<artifactSet>
 						<includes>
@@ -84,7 +85,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.12-pre6-SNAPSHOT</version>
+			<version>1.12.1-R0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -97,7 +98,7 @@
 		<dependency>
 			<groupId>com.gmail.filoghost.holographicdisplays</groupId>
 			<artifactId>holographicdisplays</artifactId>
-			<version>2.2.5</version>
+			<version>2.1.7</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/libs/HolographicDisplaysAPI.jar</systemPath>
 		</dependency>
