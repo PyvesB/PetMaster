@@ -36,10 +36,10 @@ languageFileName: 'lang.yml'
 # Enable or disable showing ownership information for a player's own pets.
 displayToOwner: false
 
-# Price of the /petm setowner command (requires Vault).
+# Price of the /petm setowner command (requires Vault, not charged if petmaster.admin permission).
 changeOwnerPrice: 0
 
-# Price of the /petm free command (requires Vault).
+# Price of the /petm free command (requires Vault, not charged if petmaster.admin permission).
 freePetPrice: 0
 
 # Take dogs into account.

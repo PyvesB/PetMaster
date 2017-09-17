@@ -263,7 +263,7 @@ public class PlayerInteractListener implements Listener {
 	@SuppressWarnings("deprecation")
 	private boolean chargePrice(Player player, int price) {
 		// Charge player for changing ownership.
-		if (price > 0 && plugin.setUpEconomy()) {
+		if (price > 0 && !player.hasPermission("petmaster.admin") && plugin.setUpEconomy()) {
 			String priceWithCurrency;
 			// If server has set different currency names depending on amount, adapt message accordingly.
 			if (price > 1) {
