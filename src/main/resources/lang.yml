@@ -6,6 +6,8 @@
 #============================================================#
 
 no-permissions: "You do not have the permission to do this."
+currently-disabled: "The plugin is currently disabled, you cannot use this command."
+misused-command: "Misused command. Please type /petm."
 
 # Related to /petm reload.
 configuration-successfully-reloaded: "Configuration successfully reloaded."
@@ -17,7 +19,6 @@ petmaster-enabled: "PetMaster enabled."
 petmaster-hologram: "Pet owned by "
 petmaster-chat: "Pet owned by "
 petmaster-action-bar: "Pet owned by "
-misused-command: "Misused command. Please type /petm."
 player-offline: "The specified player is offline!"
 cannot-change-to-yourself: "You cannot change the owner to yourself!"
 owner-changed: "This pet was given to a new owner!"
@@ -26,7 +27,7 @@ new-owner: "Player PLAYER gave you ownership of a pet!"
 not-owner: "You do not own this pet!"
 right-click: "Right click on a pet to change its owner!"
 pet-freed: "Say goodbye: this pet returned to the wild!"
-not-enough-money: "You do not have the required amount: AMOUNT !"
+not-enough-money: "You do not have the required amount: AMOUNT!"
 
 # Related to /petm help.
 petmaster-command-setowner: "Change the ownership of a pet."

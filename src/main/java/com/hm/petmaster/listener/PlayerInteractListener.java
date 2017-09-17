@@ -281,7 +281,7 @@ public class PlayerInteractListener implements Listener {
 			if (balance < price) {
 				player.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
 						plugin.getPluginLang()
-								.getString("not-enough-money", "You do not have the required amount: AMOUNT !")
+								.getString("not-enough-money", "You do not have the required amount: AMOUNT!")
 								.replace("AMOUNT", priceWithCurrency)));
 				return false;
 			}
@@ -292,7 +292,7 @@ public class PlayerInteractListener implements Listener {
 				plugin.getEconomy().withdrawPlayer(player.getName(), price);
 			}
 			player.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
-					plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT !").replace("AMOUNT",
+					plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT!").replace("AMOUNT",
 							priceWithCurrency)));
 		}
 		return true;

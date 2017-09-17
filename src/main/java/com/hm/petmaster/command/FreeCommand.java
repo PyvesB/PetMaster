@@ -26,9 +26,12 @@ public class FreeCommand {
 
 	public void freePet(Player player, String[] args) {
 		if (args.length == 1) {
-			if (!player.hasPermission("petmaster.free") || !plugin.getEnableDisableCommand().isEnabled()) {
+			if (!player.hasPermission("petmaster.free")) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("no-permissions",
 						"You do not have the permission to do this."));
+			} else if (!plugin.getEnableDisableCommand().isEnabled()) {
+				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("currently-disabled",
+						"The plugin is currently disabled, you cannot use this command."));
 			} else {
 				freePetSet.add(player.getName());
 				player.sendMessage(plugin.getChatHeader()

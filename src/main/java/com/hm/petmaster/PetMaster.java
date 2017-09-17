@@ -241,13 +241,14 @@ public class PetMaster extends JavaPlugin implements Listener {
 				NO_COMMENTS);
 		updateSetting(lang, "petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!",
 				NO_COMMENTS);
-		updateSetting(lang, "change-owner-price", "You payed: AMOUNT !", NO_COMMENTS);
+		updateSetting(lang, "change-owner-price", "You payed: AMOUNT!", NO_COMMENTS);
 		updateSetting(lang, "petmaster-action-bar", "Pet owned by ", NO_COMMENTS);
 		updateSetting(lang, "petmaster-command-free", "Free a pet.", NO_COMMENTS);
 		updateSetting(lang, "petmaster-command-free-hover", "You can only free your own pets, unless you're admin!",
 				NO_COMMENTS);
 		updateSetting(lang, "pet-freed", "Say goodbye: this pet returned to the wild!", NO_COMMENTS);
-		updateSetting(lang, "not-enough-money", "You do not have the required amount: AMOUNT !", NO_COMMENTS);
+		updateSetting(lang, "not-enough-money", "You do not have the required amount: AMOUNT!", NO_COMMENTS);
+		updateSetting(lang, "currently-disabled", "The plugin is currently disabled, you cannot use this command.", NO_COMMENTS);
 
 		if (updatePerformed) {
 			// Changes in the language file: save and do a fresh load.
