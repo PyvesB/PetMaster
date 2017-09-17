@@ -4,7 +4,7 @@ version: ${project.version}
 author: DarkPyves
 softdepend: [HolographicDisplays, Vault]
 load: POSTWORLD
-description: Whose pet is this? A plugin to change or display the owner of a pet via a hologram or a chat message.
+description: Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!
 website: https://github.com/PyvesB/PetMaster
 commands:
   petm:

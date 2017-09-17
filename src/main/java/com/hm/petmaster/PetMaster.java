@@ -28,7 +28,7 @@ import com.hm.petmaster.listener.PlayerQuitListener;
 import net.milkbowl.vault.economy.Economy;
 
 /**
- * Whose pet is this? A plugin to change or display the owner of a pet via a hologram or a chat message.
+ * Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!
  * 
  * PetMaster is under GNU General Public License version 3. Please visit the plugin's GitHub for more information :
  * https://github.com/PyvesB/PetMaster
@@ -248,7 +248,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 				NO_COMMENTS);
 		updateSetting(lang, "pet-freed", "Say goodbye: this pet returned to the wild!", NO_COMMENTS);
 		updateSetting(lang, "not-enough-money", "You do not have the required amount: AMOUNT!", NO_COMMENTS);
-		updateSetting(lang, "currently-disabled", "The plugin is currently disabled, you cannot use this command.", NO_COMMENTS);
+		updateSetting(lang, "currently-disabled", "The plugin is currently disabled, you cannot use this command.",
+				NO_COMMENTS);
 
 		if (updatePerformed) {
 			// Changes in the language file: save and do a fresh load.

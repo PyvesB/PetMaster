@@ -38,7 +38,7 @@ public class InfoCommand {
 		sender.sendMessage(plugin.getChatHeader() + ChatColor.GOLD
 				+ plugin.getPluginLang().getString("version-command-description", "Description:") + " " + ChatColor.GRAY
 				+ plugin.getPluginLang().getString("version-command-description-details",
-						"Whose pet is this? A simple plugin to change or display the owner of a pet via a hologram or a chat message."));
+						"Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!"));
 		// Display whether PetMaster is enabled.
 		String state;
 		if (plugin.getEnableDisableCommand().isEnabled()) {
