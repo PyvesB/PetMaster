@@ -2,9 +2,7 @@ package com.hm.petmaster;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -54,9 +52,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 	// Plugin options and various parameters.
 	private String chatHeader;
-	private boolean chatMessage;
-	private boolean hologramMessage;
-	private boolean actionBarMessage;
 	private boolean successfulLoad;
 	private boolean updatePerformed;
 
@@ -118,17 +113,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 		enableDisableCommand = new EnableDisableCommand(this);
 		reloadCommand = new ReloadCommand(this);
 
-		boolean holographicDisplaysAvailable = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
-
-		// Checking whether user configured plugin to display hologram but HolographicsDisplays not available.
-		if (hologramMessage && !holographicDisplaysAvailable) {
-			successfulLoad = false;
-			hologramMessage = false;
-			actionBarMessage = true;
-			this.getLogger().warning(
-					"HolographicDisplays was not found; disabling usage of holograms and enabling action bar messages.");
-		}
-
 		if (successfulLoad) {
 			this.getLogger().info("Plugin successfully enabled and ready to run! Took "
 					+ (System.currentTimeMillis() - startTime) + "ms.");
@@ -138,15 +122,14 @@ public class PetMaster extends JavaPlugin implements Listener {
 	}
 
 	/**
-	 * Extract plugin parameters from the configuration file.
+	 * Extracts plugin parameters from the configuration file.
 	 * 
 	 * @param attemptUpdate
 	 */
 	public void extractParametersFromConfig(boolean attemptUpdate) {
 		successfulLoad = true;
-		Logger logger = this.getLogger();
 
-		logger.info("Backing up and loading configuration files...");
+		this.getLogger().info("Backing up and loading configuration files...");
 
 		config = loadAndBackupYamlConfiguration("config.yml");
 		if (config == null) {
@@ -164,10 +147,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 			updateOldLanguage();
 		}
 
-		// Extract options from the config.
-		chatMessage = config.getBoolean("chatMessage", false);
-		hologramMessage = config.getBoolean("hologramMessage", true);
-		actionBarMessage = config.getBoolean("actionBarMessage", true);
 		playerInteractListener.extractParameters();
 
 		// Unregister events if user changed the option and did a /petm reload. Do not recheck for update on /petm
@@ -209,7 +188,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	}
 
 	/**
-	 * Update configuration file from older plugin versions by adding missing parameters. Upgrades from versions prior
+	 * Updates configuration file from older plugin versions by adding missing parameters. Upgrades from versions prior
 	 * to 1.2 are not supported.
 	 */
 	private void updateOldConfiguration() {
@@ -244,8 +223,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 	}
 
 	/**
-	 * Update language file from older plugin versions by adding missing parameters. Upgrades from versions prior to 1.2
-	 * are not supported.
+	 * Updates language file from older plugin versions by adding missing parameters. Upgrades from versions prior to
+	 * 1.2 are not supported.
 	 */
 	private void updateOldLanguage() {
 		updatePerformed = false;
@@ -335,7 +314,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	}
 
 	/**
-	 * Try to hook up with Vault, and log if this is called on plugin initialisation.
+	 * Tries to hook up with Vault, and log if this is called on plugin initialisation.
 	 * 
 	 * @param log
 	 * @return true if Vault available, false otherwise
@@ -358,20 +337,12 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 	}
 
+	public void setSuccessfulLoad(boolean successfulLoad) {
+		this.successfulLoad = successfulLoad;
+	}
+
 	public boolean isSuccessfulLoad() {
 		return successfulLoad;
-	}
-
-	public boolean isChatMessage() {
-		return chatMessage;
-	}
-
-	public boolean isHologramMessage() {
-		return hologramMessage;
-	}
-
-	public boolean isActionBarMessage() {
-		return actionBarMessage;
 	}
 
 	public String getChatHeader() {

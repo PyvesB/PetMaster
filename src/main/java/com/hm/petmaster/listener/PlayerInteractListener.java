@@ -44,6 +44,10 @@ public class PlayerInteractListener implements Listener {
 	private final PetMaster plugin;
 	private final int version;
 
+	// Configuration parameters.
+	private boolean chatMessage;
+	private boolean hologramMessage;
+	private boolean actionBarMessage;
 	private boolean displayDog;
 	private boolean displayCat;
 	private boolean displayHorse;
@@ -69,6 +73,19 @@ public class PlayerInteractListener implements Listener {
 		hologramDuration = plugin.getPluginConfig().getInt("hologramDuration", 50);
 		changeOwnerPrice = plugin.getPluginConfig().getInt("changeOwnerPrice", 0);
 		freePetPrice = plugin.getPluginConfig().getInt("freePetPrice", 0);
+		chatMessage = plugin.getPluginConfig().getBoolean("chatMessage", false);
+		hologramMessage = plugin.getPluginConfig().getBoolean("hologramMessage", true);
+		actionBarMessage = plugin.getPluginConfig().getBoolean("actionBarMessage", true);
+
+		boolean holographicDisplaysAvailable = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
+		// Checking whether user configured plugin to display hologram but HolographicsDisplays not available.
+		if (hologramMessage && !holographicDisplaysAvailable) {
+			plugin.setSuccessfulLoad(false);
+			hologramMessage = false;
+			actionBarMessage = true;
+			plugin.getLogger().warning(
+					"HolographicDisplays was not found; disabling usage of holograms and enabling action bar messages.");
+		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -133,7 +150,7 @@ public class PlayerInteractListener implements Listener {
 	}
 
 	/**
-	 * Free a pet; it will no longer be tamed.
+	 * Frees a pet; it will no longer be tamed.
 	 * 
 	 * @param event
 	 * @param oldOwner
@@ -163,13 +180,13 @@ public class PlayerInteractListener implements Listener {
 	}
 
 	/**
-	 * Display a hologram, and automatically delete it after a given delay.
+	 * Displays a hologram, and automatically delete it after a given delay.
 	 * 
 	 * @param event
 	 * @param owner
 	 */
 	private void displayHologramAndMessage(PlayerInteractEntityEvent event, AnimalTamer owner) {
-		if (plugin.isHologramMessage()) {
+		if (hologramMessage) {
 			Entity clickedAnimal = event.getRightClicked();
 
 			double offset = HORSE_OFFSET;
@@ -218,13 +235,13 @@ public class PlayerInteractListener implements Listener {
 			}.runTaskLater(plugin, hologramDuration);
 		}
 
-		if (plugin.isChatMessage()) {
+		if (chatMessage) {
 			event.getPlayer().sendMessage(
 					plugin.getChatHeader() + plugin.getPluginLang().getString("petmaster-chat", "Pet owned by ")
 							+ ChatColor.GOLD + owner.getName());
 		}
 
-		if (plugin.isActionBarMessage()) {
+		if (actionBarMessage) {
 			String actionBarJsonMessage = "{\"text\":\"&o" + ChatColor.GRAY
 					+ plugin.getPluginLang().getString("petmaster-action-bar", "Pet owned by ") + ChatColor.GOLD
 					+ owner.getName() + "\"}";

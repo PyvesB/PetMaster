@@ -22,7 +22,7 @@ public class SetOwnerCommand {
 
 	public SetOwnerCommand(PetMaster plugin) {
 		this.plugin = plugin;
-		changeOwnershipMap = new HashMap<String, Player>();
+		changeOwnershipMap = new HashMap<>();
 	}
 
 	public void setOwner(Player player, String[] args) {

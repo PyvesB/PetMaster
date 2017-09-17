@@ -20,7 +20,7 @@ public class InfoCommand {
 	}
 
 	/**
-	 * Display information about the plugin.
+	 * Displays information about the plugin.
 	 */
 	public void getInfo(CommandSender sender) {
 		sender.sendMessage(plugin.getChatHeader() + ChatColor.GOLD

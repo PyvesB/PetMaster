@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.hm.petmaster.PetMaster;
 
 /**
- * Class in charge of enabling or disabling the plugin on the fly (/petm enable or /petm disabled).
+ * Class in charge of enabling or disabling the plugin on the fly (/petm enable or /petm disable).
  * 
  * @author Pyves
  * 
@@ -17,7 +17,7 @@ public class EnableDisableCommand {
 
 	public EnableDisableCommand(PetMaster plugin) {
 		this.plugin = plugin;
-		enabled = false;
+		enabled = true;
 	}
 
 	public void setState(CommandSender sender, boolean enabled) {

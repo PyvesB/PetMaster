@@ -81,7 +81,7 @@ public class HelpCommand {
 	}
 
 	/**
-	 * Send a packet message to the server in order to display a clickable and hoverable message. A suggested command is
+	 * Sends a packet message to the server in order to display a clickable and hoverable message. A suggested command is
 	 * displayed in the chat when clicked on, and an additional help message appears when a command is hovered.
 	 * 
 	 * @param sender
