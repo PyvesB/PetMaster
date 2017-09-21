@@ -2,38 +2,24 @@
 <img src ="http://images.jupload.fr/1450630798.png" />
 </p>
 
-**Whose pet is this? Pet Master, a plugin to display the owner of a pet via a hologram or a chat message.**
-
-# Contributing
-
-Contributions are happily accepted through **pull requests** on GitHub. Feel free to fork the project and share your code, or improve and update the available translations!
-
-You can also **star this repository** to support the open-source project!
+**Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!**
 
 # Useful links
 
-The **Wiki** of Pet Master is available by clicking on the *Wiki* tab at the top of the page, or directly on [this link](https://github.com/PyvesB/PetMaster/wiki). Valuable information on how to set the plugin up or use it properly is at your disposal!
+[![Spigot](http://images.jupload.fr/1483481688.png)](https://www.spigotmc.org/resources/pet-master.15904/) [Spigot plugin page](https://www.spigotmc.org/resources/pet-master.15904/)
 
-For more *information and download links*, please visit the project's webpages:
+[![Bukkit](http://images.jupload.fr/1483481295.png)](http://dev.bukkit.org/bukkit-plugins/pet-master/) [Bukkit plugin page](http://dev.bukkit.org/bukkit-plugins/pet-master/)
 
-[Pet Master - Bukkit](http://dev.bukkit.org/bukkit-plugins/pet-master/)
+[![Wiki](http://images.jupload.fr/1469708815.png)](https://github.com/PyvesB/PetMaster/wiki) [Documentation and installation](https://github.com/PyvesB/PetMaster/wiki), _a lot of valuable information on how to set the plugin up or use it properly!_
 
-[Pet Master - Spigot](https://www.spigotmc.org/resources/pet-master.15904/)
+[![Issues](http://images.jupload.fr/1469708806.png)](https://github.com/PyvesB/PetMaster/issues) [Feature requests, support and issues](https://github.com/PyvesB/PetMaster/issues), _please open an issue if you need any help!_
 
-Feel free to visit **HelloMinecraft**, the plugin's official server (french server):
-[![HelloMinecraft](http://img11.hostingpics.net/pics/487719servericon.png)](http://hellominecraft.fr/)
+[![Translations](http://images.jupload.fr/1470315586.png)](https://github.com/PyvesB/PetMaster/tree/master/src/main/resources) [Plugin translations ](https://github.com/PyvesB/PetMaster/tree/master/src/main/resources), _2 languages available, feel free to improve the translations!_
 
-# Setting your own working copy of the project
+[![HelloMinecraft](http://images.jupload.fr/1469708948.png)](http://hellominecraft.fr/) [HelloMinecraft, the plugin's official server](http://hellominecraft.fr/), _amongst the best French servers out there!_
 
-Ensure you have a working version of the [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (Java Development Kit).
+# Contributing
 
-The following steps are for the [Eclipse](https://eclipse.org/) development environment, but will be similar on other IDEs.
+If you want to support this open-source project without doing anything that is code-related, you can simply **star this repository** by clicking on the *Star* icon on the top right of the page!
 
-* Download or clone the repository on your computer. You can also create your own fork by clicking on the *Fork* icon on the top right of the page.
-* In Eclipse, go to *File* -> *Import...* -> *Maven* -> *Existing Maven Projects*.
-* In the *Root Directory* field, select the location where you downloaded the Pet Master repository.
-* Tick the *pom.xml* box that appears in the *Projects* field and click *Finish*.
-* To compile the plugin, in the *Package Explorer* window, right click on the imported project, then *Run As* -> *Maven Install*.
-* The plugin will be generated in the *target* folder of the project.
- 
-Please let me know if you encounter any problems by opening an Issue, I am happy to help.
+Code contributions are happily accepted through **pull requests** on GitHub. Feel free to fork the project and share your code, or improve and update the available translations! Developers can refer to [this page of the Wiki](https://github.com/PyvesB/PetMaster/wiki/Developers) to get their project up and running and interact with Pet Master.
