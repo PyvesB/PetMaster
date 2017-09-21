@@ -1,12 +1,12 @@
 #============================================================#
 # +--------------------------------------------------------+ #
-# |         Pet Master 1.6.2 English language file         | #
+# |          Pet Master 1.7 English language file          | #
 # |                      By DarkPyves                      | #
 # +--------------------------------------------------------+ #
 #============================================================#
 
 no-permissions: "You do not have the permission to do this."
-currently-disabled: "The plugin is currently disabled, you cannot use this command."
+currently-disabled: "PetMaster is currently disabled, you cannot use this command."
 misused-command: "Misused command. Please type /petm."
 
 # Related to /petm reload.

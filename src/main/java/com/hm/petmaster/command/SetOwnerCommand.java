@@ -42,7 +42,7 @@ public class SetOwnerCommand {
 						"You do not have the permission to do this."));
 			} else if (!plugin.getEnableDisableCommand().isEnabled()) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("currently-disabled",
-						"The plugin is currently disabled, you cannot use this command."));
+						"PetMaster is currently disabled, you cannot use this command."));
 			} else if (!player.hasPermission("petmaster.admin") && newOwner.getName().equals(player.getName())) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
 						.getString("cannot-change-to-yourself", "You cannot change the owner to yourself!"));

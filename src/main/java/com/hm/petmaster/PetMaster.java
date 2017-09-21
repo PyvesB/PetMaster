@@ -40,7 +40,7 @@ import net.milkbowl.vault.economy.Economy;
  * Spigot project page: spigotmc.org/resources/pet-master.15904
  * 
  * @since December 2015.
- * @version 1.6.2
+ * @version 1.7
  * @author DarkPyves
  */
 public class PetMaster extends JavaPlugin implements Listener {
@@ -248,7 +248,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 				NO_COMMENTS);
 		updateSetting(lang, "pet-freed", "Say goodbye: this pet returned to the wild!", NO_COMMENTS);
 		updateSetting(lang, "not-enough-money", "You do not have the required amount: AMOUNT!", NO_COMMENTS);
-		updateSetting(lang, "currently-disabled", "The plugin is currently disabled, you cannot use this command.",
+		updateSetting(lang, "currently-disabled", "PetMaster is currently disabled, you cannot use this command.",
 				NO_COMMENTS);
 
 		if (updatePerformed) {

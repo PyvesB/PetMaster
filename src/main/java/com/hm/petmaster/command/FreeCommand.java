@@ -31,7 +31,7 @@ public class FreeCommand {
 						"You do not have the permission to do this."));
 			} else if (!plugin.getEnableDisableCommand().isEnabled()) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("currently-disabled",
-						"The plugin is currently disabled, you cannot use this command."));
+						"PetMaster is currently disabled, you cannot use this command."));
 			} else {
 				freePetSet.add(player.getName());
 				player.sendMessage(plugin.getChatHeader()
