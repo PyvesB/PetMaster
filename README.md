@@ -1,5 +1,19 @@
 <p align="center">
 <img src ="http://images.jupload.fr/1450630798.png" />
+  <br/>
+<br/>
+<a href="https://github.com/PyvesB/PetMaster/issues">
+<img src ="https://img.shields.io/github/issues/PyvesB/PetMaster.svg" />
+</a>
+<a href="https://github.com/PyvesB/PetMaster/stargazers">
+<img src ="https://img.shields.io/github/stars/PyvesB/PetMaster.svg" />
+</a>
+<a href="https://github.com/PyvesB/PetMaster/network">
+<img src ="https://img.shields.io/github/forks/PyvesB/PetMaster.svg" />
+</a>
+<a href="https://github.com/PyvesB/PetMaster/releases">
+<img src ="https://img.shields.io/github/release/PyvesB/PetMaster.svg" />
+</a>
 </p>
 
 **Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!**
