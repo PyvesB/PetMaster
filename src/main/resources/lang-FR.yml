@@ -1,11 +1,13 @@
 #============================================================#
 # +--------------------------------------------------------+ #
-# |         Pet Master 1.6.2 French language file          | #
+# |          Pet Master 1.7 French language file           | #
 # |                      By DarkPyves                      | #
 # +--------------------------------------------------------+ #
 #============================================================#
 
 no-permissions: Vous n'avez pas la permission de faire cela.
+currently-disabled: PetMaster est désactivé, vous ne pouvez pas utiliser cette commande.
+misused-command: Mauvaise commande. Tapez /petm.
 
 # Related to /petm reload.
 configuration-successfully-reloaded: Configuration rechargée avec succès.
@@ -17,25 +19,28 @@ petmaster-enabled: PetMaster activé.
 petmaster-hologram: 'Animal de '
 petmaster-chat: 'Animal de '
 petmaster-action-bar: 'Animal de '
-misused-command: Mauvaise commande. Tapez /petm.
 player-offline: Le joueur spécifié est hors ligne !
 right-click: Faites clic-droit sur un animal pour changer son propriétaire !
-owner-changed: 'Dîtes adieu : votre animal ne vous appartient plus !'
+owner-changed: Cet animal a changé de propriétaire !
 new-owner: Le joueur PLAYER vous a donné un animal !
 not-owner: Cet animal ne vous appartient pas !
 cannot-change-to-yourself: Vous êtes déjà le propriétaire !
 change-owner-price: 'Vous avez dépensé : AMOUNT !'
+pet-freed: 'Dîtes adieu : cet animal est retourné à l''état sauvage !'
+not-enough-money: 'Vous n''avez pas la somme requise : AMOUNT!'
 
 # Related to /petm help.
-petmaster-command-setowner: Changez le propriétaire de l'un §l&7de vos animaux.
+petmaster-command-setowner: Changer le propriétaire d'un animal.
 petmaster-command-disable: Désactiver PM jusqu'au prochain &7redémarrage.
 petmaster-command-enable: Activer PM (si précédemment désactivé).
 petmaster-command-reload: Recharger la configuration du plugin.
 petmaster-command-info: Afficher des informations à propos du plugin.
+petmaster-command-free: Relâcher un animal.
 petmaster-command-setowner-hover: Vous pouvez seulement changer le propriétaire de vos propres bêtes !
 petmaster-command-disable-hover: Plugin désactivé jusqu'au prochain redémarrage ou /petm enable.
 petmaster-command-enable-hover: Plugin activé par défaut. A utiliser si /petm disable a été employé !
 petmaster-command-reload-hover: Recharger la plupart des paramètres dans config.yml et lang.yml.
+petmaster-command-free-hover: Vous pouvez seulement changer le propriétaire de vos propres bêtes !
 petmaster-command-info-hover: Des infos supplémentaires sur le plugin !
 petmaster-tip: '&lASTUCE&r &7&n&oCliquez&r &8ou &7&n&opassez votre curseur&r &8sur les commandes !'
 
