@@ -1,7 +1,15 @@
 <p align="center">
 <img src ="http://images.jupload.fr/1450630798.png" />
-  <br/>
 <br/>
+</p>
+
+# Pet Master
+<a href="https://github.com/PyvesB/PetMaster/blob/master/LICENSE">
+<img src ="https://img.shields.io/github/license/PyvesB/PetMaster.svg" />
+</a>
+  <a href="https://github.com/PyvesB/PetMaster/releases">
+<img src ="https://img.shields.io/github/release/PyvesB/PetMaster.svg" />
+</a>
 <a href="https://github.com/PyvesB/PetMaster/issues">
 <img src ="https://img.shields.io/github/issues/PyvesB/PetMaster.svg" />
 </a>
@@ -11,29 +19,55 @@
 <a href="https://github.com/PyvesB/PetMaster/network">
 <img src ="https://img.shields.io/github/forks/PyvesB/PetMaster.svg" />
 </a>
-<a href="https://github.com/PyvesB/PetMaster/releases">
-<img src ="https://img.shields.io/github/release/PyvesB/PetMaster.svg" />
+<a href="https://github.com/PyvesB/PetMaster/contributors">
+<img src ="https://img.shields.io/github/contributors/PyvesB/PetMaster.svg" />
 </a>
+
+**Whose pet is this? Manage pets on Minecraft servers and display owners via holograms, action bar or chat messages!**
+
+<p align="center">
+<img src ="http://images.jupload.fr/1496942659.png" />
+<br/>
 </p>
 
-**Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!**
+# Getting started
 
-# Useful links
+#### :cd: Setup
 
-[![Spigot](http://images.jupload.fr/1483481688.png)](https://www.spigotmc.org/resources/pet-master.15904/) [Spigot plugin page](https://www.spigotmc.org/resources/pet-master.15904/)
+Ensure you have the JDK and Maven installed, and simply run the following commands in a terminal:
+````
+git clone https://github.com/PyvesB/PetMaster.git
+cd PetMaster
+mvn clean install
+````
+Your generated `PetMaster.jar` can be found in the `target` folder.
 
-[![Bukkit](http://images.jupload.fr/1483481295.png)](http://dev.bukkit.org/bukkit-plugins/pet-master/) [Bukkit plugin page](http://dev.bukkit.org/bukkit-plugins/pet-master/)
+#### :earth_americas: Useful links
 
-[![Wiki](http://images.jupload.fr/1469708815.png)](https://github.com/PyvesB/PetMaster/wiki) [Documentation and installation](https://github.com/PyvesB/PetMaster/wiki), _a lot of valuable information on how to set the plugin up or use it properly!_
+* [Spigot](https://www.spigotmc.org/resources/pet-master.15904/), homepage of the plugin.
 
-[![Issues](http://images.jupload.fr/1469708806.png)](https://github.com/PyvesB/PetMaster/issues) [Feature requests, support and issues](https://github.com/PyvesB/PetMaster/issues), _please open an issue if you need any help!_
+* [Bukkit](http://dev.bukkit.org/bukkit-plugins/pet-master/), another homepage.
 
-[![Translations](http://images.jupload.fr/1470315586.png)](https://github.com/PyvesB/PetMaster/tree/master/src/main/resources) [Plugin translations ](https://github.com/PyvesB/PetMaster/tree/master/src/main/resources), _2 languages available, feel free to improve the translations!_
+* [Documentation, installation and FAQ](https://github.com/PyvesB/PetMaster/wiki), a lot of valuable information on how to set the plugin up or use it properly.
 
-[![HelloMinecraft](http://images.jupload.fr/1469708948.png)](http://hellominecraft.fr/) [HelloMinecraft, the plugin's official server](http://hellominecraft.fr/), _amongst the best French servers out there!_
+* [Plugin translations](https://github.com/PyvesB/PetMaster/tree/master/src/main/resources), 2 languages available, feel free to improve the translations!
+
+* [HelloMinecraft](http://hellominecraft.fr/), the plugin's official server, amongst the best French servers out there!
 
 # Contributing
 
-If you want to support this open-source project without doing anything that is code-related, you can simply **star this repository** by clicking on the *Star* icon on the top right of the page!
+#### `$ code`
 
-Code contributions are happily accepted through **pull requests** on GitHub. Feel free to fork the project and share your code, or improve and update the available translations! Developers can refer to [this page of the Wiki](https://github.com/PyvesB/PetMaster/wiki/Developers) to get their project up and running and interact with Pet Master.
+Want to make Pet Master better, faster, stronger? Contributions are more than welcome, open a **pull request** and share your code! Simply **fork** the repository by clicking on the icon on the top right of this page and refer to the [Wiki](https://github.com/PyvesB/PetMaster/wiki/Developers) to get your copy up and running and interact with the plugin.
+
+#### :speech_balloon: Support
+
+Thought of a cool idea? Found a problem or need some help? Simply open an [**issue**](https://github.com/PyvesB/PetMaster/issues)!
+
+#### :star: Thanks
+
+Find the project useful, fun or interesting? **Star** the repository by clicking on the icon on the top right of this page!
+
+# License 
+
+GNU General Public License v3.0
