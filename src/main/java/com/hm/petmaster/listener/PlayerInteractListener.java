@@ -258,7 +258,7 @@ public class PlayerInteractListener implements Listener {
 	 * 
 	 * @param player
 	 * @param price
-	 * @return
+	 * @return true if money should be withdrawn from the player, false otherwise
 	 */
 	@SuppressWarnings("deprecation")
 	private boolean chargePrice(Player player, int price) {

@@ -45,8 +45,6 @@ import net.milkbowl.vault.economy.Economy;
  */
 public class PetMaster extends JavaPlugin implements Listener {
 
-	private static final String[] NO_COMMENTS = new String[] {};
-
 	// Used for Vault plugin integration.
 	private Economy economy;
 
@@ -230,26 +228,21 @@ public class PetMaster extends JavaPlugin implements Listener {
 		updatePerformed = false;
 
 		updateSetting(lang, "petmaster-command-setowner-hover",
-				"You can only change the ownership of your own pets, unless you're admin!", NO_COMMENTS);
+				"You can only change the ownership of your own pets, unless you're admin!");
 		updateSetting(lang, "petmaster-command-disable-hover",
-				"The plugin will not work until next reload or /petm enable.", NO_COMMENTS);
+				"The plugin will not work until next reload or /petm enable.");
 		updateSetting(lang, "petmaster-command-enable-hover",
-				"Plugin enabled by default. Use this if you entered /petm disable before!", NO_COMMENTS);
-		updateSetting(lang, "petmaster-command-reload-hover", "Reload most settings in config.yml and lang.yml files.",
-				NO_COMMENTS);
-		updateSetting(lang, "petmaster-command-info-hover", "Some extra info about the plugin and its awesome author!",
-				NO_COMMENTS);
-		updateSetting(lang, "petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!",
-				NO_COMMENTS);
-		updateSetting(lang, "change-owner-price", "You payed: AMOUNT!", NO_COMMENTS);
-		updateSetting(lang, "petmaster-action-bar", "Pet owned by ", NO_COMMENTS);
-		updateSetting(lang, "petmaster-command-free", "Free a pet.", NO_COMMENTS);
-		updateSetting(lang, "petmaster-command-free-hover", "You can only free your own pets, unless you're admin!",
-				NO_COMMENTS);
-		updateSetting(lang, "pet-freed", "Say goodbye: this pet returned to the wild!", NO_COMMENTS);
-		updateSetting(lang, "not-enough-money", "You do not have the required amount: AMOUNT!", NO_COMMENTS);
-		updateSetting(lang, "currently-disabled", "PetMaster is currently disabled, you cannot use this command.",
-				NO_COMMENTS);
+				"Plugin enabled by default. Use this if you entered /petm disable before!");
+		updateSetting(lang, "petmaster-command-reload-hover", "Reload most settings in config.yml and lang.yml files.");
+		updateSetting(lang, "petmaster-command-info-hover", "Some extra info about the plugin and its awesome author!");
+		updateSetting(lang, "petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!");
+		updateSetting(lang, "change-owner-price", "You payed: AMOUNT!");
+		updateSetting(lang, "petmaster-action-bar", "Pet owned by ");
+		updateSetting(lang, "petmaster-command-free", "Free a pet.");
+		updateSetting(lang, "petmaster-command-free-hover", "You can only free your own pets, unless you're admin!");
+		updateSetting(lang, "pet-freed", "Say goodbye: this pet returned to the wild!");
+		updateSetting(lang, "not-enough-money", "You do not have the required amount: AMOUNT!");
+		updateSetting(lang, "currently-disabled", "PetMaster is currently disabled, you cannot use this command.");
 
 		if (updatePerformed) {
 			// Changes in the language file: save and do a fresh load.
@@ -308,7 +301,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 * @param value
 	 * @param comments
 	 */
-	private void updateSetting(CommentedYamlConfiguration file, String name, Object value, String[] comments) {
+	private void updateSetting(CommentedYamlConfiguration file, String name, Object value, String... comments) {
 		if (!file.getKeys(false).contains(name)) {
 			file.set(name, value, comments);
 			updatePerformed = true;
@@ -318,7 +311,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 	/**
 	 * Tries to hook up with Vault, and log if this is called on plugin initialisation.
 	 * 
-	 * @param log
 	 * @return true if Vault available, false otherwise
 	 */
 	public boolean setUpEconomy() {
