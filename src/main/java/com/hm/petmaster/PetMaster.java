@@ -3,6 +3,7 @@ package com.hm.petmaster;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -91,6 +92,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		pm.registerEvents(playerQuitListener, this);
 
 		extractParametersFromConfig(true);
+		setupEconomy();
 
 		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
 
@@ -308,25 +310,15 @@ public class PetMaster extends JavaPlugin implements Listener {
 	}
 
 	/**
-	 * Tries to hook up with Vault, and log if this is called on plugin initialisation.
-	 * 
-	 * @return true if Vault available, false otherwise
+	 * Tries to retrieve an Economy instance from Vault.
 	 */
-	public boolean setUpEconomy() {
-		if (economy != null) {
-			return true;
-		}
-
-		try {
-			RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
-					.getRegistration(net.milkbowl.vault.economy.Economy.class);
-			if (economyProvider != null) {
-				economy = economyProvider.getProvider();
+	private void setupEconomy() {
+		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null) {
+			RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager()
+					.getRegistration(Economy.class);
+			if (rsp != null) {
+				economy = rsp.getProvider();
 			}
-			return economy != null;
-		} catch (NoClassDefFoundError e) {
-			this.getLogger().warning("Attempt to hook up with Vault failed. Payment ignored.");
-			return false;
 		}
 	}
 

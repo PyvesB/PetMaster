@@ -26,6 +26,8 @@ import com.hm.mcshared.particle.PacketSender;
 import com.hm.mcshared.particle.ReflectionUtils.PackageType;
 import com.hm.petmaster.PetMaster;
 
+import net.milkbowl.vault.economy.Economy;
+
 /**
  * Class used to display holograms, change the owner of a pet or free a pet.
  * 
@@ -260,37 +262,25 @@ public class PlayerInteractListener implements Listener {
 	 * @param price
 	 * @return true if money should be withdrawn from the player, false otherwise
 	 */
-	@SuppressWarnings("deprecation")
 	private boolean chargePrice(Player player, int price) {
+		Economy economy = plugin.getEconomy();
 		// Charge player for changing ownership.
-		if (price > 0 && !player.hasPermission("petmaster.admin") && plugin.setUpEconomy()) {
+		if (price > 0 && !player.hasPermission("petmaster.admin") && economy != null) {
 			String priceWithCurrency;
 			// If server has set different currency names depending on amount, adapt message accordingly.
 			if (price > 1) {
-				priceWithCurrency = price + " " + plugin.getEconomy().currencyNamePlural();
+				priceWithCurrency = price + " " + economy.currencyNamePlural();
 			} else {
-				priceWithCurrency = price + " " + plugin.getEconomy().currencyNameSingular();
+				priceWithCurrency = price + " " + economy.currencyNameSingular();
 			}
-			double balance;
-			try {
-				balance = plugin.getEconomy().getBalance(player);
-			} catch (NoSuchMethodError e) {
-				// Deprecated method, but was the only one existing prior to Vault 1.4.
-				balance = plugin.getEconomy().getBalance(player.getName());
-			}
-			if (balance < price) {
+			if (economy.getBalance(player) < price) {
 				player.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
 						plugin.getPluginLang()
 								.getString("not-enough-money", "You do not have the required amount: AMOUNT!")
 								.replace("AMOUNT", priceWithCurrency)));
 				return false;
 			}
-			try {
-				plugin.getEconomy().withdrawPlayer(player, price);
-			} catch (NoSuchMethodError e) {
-				// Deprecated method, but was the only one existing prior to Vault 1.4.
-				plugin.getEconomy().withdrawPlayer(player.getName(), price);
-			}
+			economy.withdrawPlayer(player, price);
 			player.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
 					plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT!").replace("AMOUNT",
 							priceWithCurrency)));
