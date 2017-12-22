@@ -27,6 +27,9 @@ actionBarMessage: true
 # Duration of the hologram, in server ticks (20 ticks = 1 second).
 hologramDuration: 50
 
+# Show health next to owner in chat and action bar messages (not holograms).
+showHealth: true
+
 # Check for update on plugin launch and notify when an OP joins the game.
 checkForUpdate: true
 

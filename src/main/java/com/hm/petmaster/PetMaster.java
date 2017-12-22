@@ -208,6 +208,8 @@ public class PetMaster extends JavaPlugin implements Listener {
 		updateSetting(lang, "displayToOwner", false,
 				new String[] { "Enable or disable showing ownership information for a player's own pets." });
 		updateSetting(lang, "freePetPrice", 0, new String[] { "Price of the /petm free command (requires Vault)." });
+		updateSetting(config, "showHealth", true,
+				new String[] { "Show health next to owner in chat and action bar messages (not holograms)." });
 
 		if (updatePerformed) {
 			// Changes in the configuration: save and do a fresh load.
@@ -244,6 +246,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		updateSetting(lang, "pet-freed", "Say goodbye: this pet returned to the wild!");
 		updateSetting(lang, "not-enough-money", "You do not have the required amount: AMOUNT!");
 		updateSetting(lang, "currently-disabled", "PetMaster is currently disabled, you cannot use this command.");
+		updateSetting(lang, "petmaster-health", "Health: ");
 
 		if (updatePerformed) {
 			// Changes in the language file: save and do a fresh load.

@@ -3,7 +3,9 @@ package com.hm.petmaster.listener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Llama;
 import org.bukkit.entity.Ocelot;
@@ -59,6 +61,7 @@ public class PlayerInteractListener implements Listener {
 	private int hologramDuration;
 	private int changeOwnerPrice;
 	private int freePetPrice;
+	private boolean showHealth;
 
 	public PlayerInteractListener(PetMaster petMaster) {
 		this.plugin = petMaster;
@@ -78,6 +81,7 @@ public class PlayerInteractListener implements Listener {
 		chatMessage = plugin.getPluginConfig().getBoolean("chatMessage", false);
 		hologramMessage = plugin.getPluginConfig().getBoolean("hologramMessage", true);
 		actionBarMessage = plugin.getPluginConfig().getBoolean("actionBarMessage", true);
+		showHealth = plugin.getPluginConfig().getBoolean("showHealth", true);
 
 		boolean holographicDisplaysAvailable = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 		// Checking whether user configured plugin to display hologram but HolographicsDisplays not available.
@@ -237,16 +241,27 @@ public class PlayerInteractListener implements Listener {
 			}.runTaskLater(plugin, hologramDuration);
 		}
 
+		String healthInfo = "";
+		if (showHealth) {
+			Animals damageable = (Animals) event.getRightClicked();
+			String currentHealth = String.format("%.1f", damageable.getHealth());
+			@SuppressWarnings("deprecation")
+			String maxHealth = version < 9 ? String.format("%.1f", damageable.getMaxHealth())
+					: String.format("%.1f", damageable.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+			healthInfo = ChatColor.GRAY + ". " + plugin.getPluginLang().getString("petmaster-health", "Health: ")
+					+ ChatColor.GOLD + currentHealth + "/" + maxHealth;
+		}
+
 		if (chatMessage) {
 			event.getPlayer().sendMessage(
 					plugin.getChatHeader() + plugin.getPluginLang().getString("petmaster-chat", "Pet owned by ")
-							+ ChatColor.GOLD + owner.getName());
+							+ ChatColor.GOLD + owner.getName() + healthInfo);
 		}
 
 		if (actionBarMessage) {
 			String actionBarJsonMessage = "{\"text\":\"&o" + ChatColor.GRAY
 					+ plugin.getPluginLang().getString("petmaster-action-bar", "Pet owned by ") + ChatColor.GOLD
-					+ owner.getName() + "\"}";
+					+ owner.getName() + healthInfo + "\"}";
 			try {
 				PacketSender.sendActionBarPacket(event.getPlayer(), actionBarJsonMessage);
 			} catch (Exception e) {
