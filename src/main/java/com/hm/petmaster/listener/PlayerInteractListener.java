@@ -19,6 +19,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -47,6 +48,7 @@ public class PlayerInteractListener implements Listener {
 
 	private final PetMaster plugin;
 	private final int version;
+	private Economy economy;
 
 	// Configuration parameters.
 	private boolean chatMessage;
@@ -66,6 +68,14 @@ public class PlayerInteractListener implements Listener {
 	public PlayerInteractListener(PetMaster petMaster) {
 		this.plugin = petMaster;
 		version = Integer.parseInt(PackageType.getServerVersion().split("_")[1]);
+		// Try to retrieve an Economy instance from Vault.
+		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null) {
+			RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager()
+					.getRegistration(Economy.class);
+			if (rsp != null) {
+				economy = rsp.getProvider();
+			}
+		}
 	}
 
 	public void extractParameters() {
@@ -78,8 +88,8 @@ public class PlayerInteractListener implements Listener {
 		hologramDuration = plugin.getPluginConfig().getInt("hologramDuration", 50);
 		changeOwnerPrice = plugin.getPluginConfig().getInt("changeOwnerPrice", 0);
 		freePetPrice = plugin.getPluginConfig().getInt("freePetPrice", 0);
-		chatMessage = plugin.getPluginConfig().getBoolean("chatMessage", false);
-		hologramMessage = plugin.getPluginConfig().getBoolean("hologramMessage", true);
+		chatMessage = plugin.getPluginConfig().getBoolean("chatMessage", true);
+		hologramMessage = plugin.getPluginConfig().getBoolean("hologramMessage", false);
 		actionBarMessage = plugin.getPluginConfig().getBoolean("actionBarMessage", true);
 		showHealth = plugin.getPluginConfig().getBoolean("showHealth", true);
 
@@ -191,6 +201,7 @@ public class PlayerInteractListener implements Listener {
 	 * @param event
 	 * @param owner
 	 */
+	@SuppressWarnings("deprecation")
 	private void displayHologramAndMessage(PlayerInteractEntityEvent event, AnimalTamer owner) {
 		if (hologramMessage) {
 			Entity clickedAnimal = event.getRightClicked();
@@ -245,7 +256,6 @@ public class PlayerInteractListener implements Listener {
 		if (showHealth) {
 			Animals damageable = (Animals) event.getRightClicked();
 			String currentHealth = String.format("%.1f", damageable.getHealth());
-			@SuppressWarnings("deprecation")
 			String maxHealth = version < 9 ? String.format("%.1f", damageable.getMaxHealth())
 					: String.format("%.1f", damageable.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 			healthInfo = ChatColor.GRAY + ". " + plugin.getPluginLang().getString("petmaster-health", "Health: ")
@@ -278,16 +288,11 @@ public class PlayerInteractListener implements Listener {
 	 * @return true if money should be withdrawn from the player, false otherwise
 	 */
 	private boolean chargePrice(Player player, int price) {
-		Economy economy = plugin.getEconomy();
 		// Charge player for changing ownership.
 		if (price > 0 && !player.hasPermission("petmaster.admin") && economy != null) {
-			String priceWithCurrency;
 			// If server has set different currency names depending on amount, adapt message accordingly.
-			if (price > 1) {
-				priceWithCurrency = price + " " + economy.currencyNamePlural();
-			} else {
-				priceWithCurrency = price + " " + economy.currencyNameSingular();
-			}
+			String priceWithCurrency = price + " "
+					+ (price > 1 ? economy.currencyNamePlural() : economy.currencyNameSingular());
 			if (economy.getBalance(player) < price) {
 				player.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
 						plugin.getPluginLang()

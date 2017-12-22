@@ -12,7 +12,7 @@ import com.hm.petmaster.PetMaster;
  */
 public class EnableDisableCommand {
 
-	private PetMaster plugin;
+	private final PetMaster plugin;
 	private boolean enabled;
 
 	public EnableDisableCommand(PetMaster plugin) {

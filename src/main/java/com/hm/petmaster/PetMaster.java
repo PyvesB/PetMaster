@@ -3,7 +3,6 @@ package com.hm.petmaster;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.hm.mcshared.file.CommentedYamlConfiguration;
@@ -25,8 +23,6 @@ import com.hm.petmaster.command.ReloadCommand;
 import com.hm.petmaster.command.SetOwnerCommand;
 import com.hm.petmaster.listener.PlayerInteractListener;
 import com.hm.petmaster.listener.PlayerQuitListener;
-
-import net.milkbowl.vault.economy.Economy;
 
 /**
  * Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!
@@ -45,9 +41,6 @@ import net.milkbowl.vault.economy.Economy;
  * @author DarkPyves
  */
 public class PetMaster extends JavaPlugin implements Listener {
-
-	// Used for Vault plugin integration.
-	private Economy economy;
 
 	// Plugin options and various parameters.
 	private String chatHeader;
@@ -81,7 +74,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 		// Start enabling plugin.
 		long startTime = System.currentTimeMillis();
 
-		this.getLogger().info("Registering listeners...");
+		getLogger().info("Registering listeners...");
 
 		playerInteractListener = new PlayerInteractListener(this);
 		playerQuitListener = new PlayerQuitListener(this);
@@ -92,7 +85,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 		pm.registerEvents(playerQuitListener, this);
 
 		extractParametersFromConfig(true);
-		setupEconomy();
 
 		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
 
@@ -113,10 +105,10 @@ public class PetMaster extends JavaPlugin implements Listener {
 		reloadCommand = new ReloadCommand(this);
 
 		if (successfulLoad) {
-			this.getLogger().info("Plugin successfully enabled and ready to run! Took "
+			getLogger().info("Plugin successfully enabled and ready to run! Took "
 					+ (System.currentTimeMillis() - startTime) + "ms.");
 		} else {
-			this.getLogger().severe("Error(s) while loading plugin. Please view previous logs for more information.");
+			getLogger().severe("Error(s) while loading plugin. Please view previous logs for more information.");
 		}
 	}
 
@@ -128,7 +120,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	public void extractParametersFromConfig(boolean attemptUpdate) {
 		successfulLoad = true;
 
-		this.getLogger().info("Backing up and loading configuration files...");
+		getLogger().info("Backing up and loading configuration files...");
 
 		config = loadAndBackupYamlConfiguration("config.yml");
 		if (config == null) {
@@ -165,24 +157,22 @@ public class PetMaster extends JavaPlugin implements Listener {
 		CommentedYamlConfiguration yamlConfiguration = null;
 		try {
 			yamlConfiguration = new CommentedYamlConfiguration(fileName, this);
-		} catch (IOException e) {
-			this.getLogger().log(Level.SEVERE, "Error while loading " + fileName + " file: ", e);
-			successfulLoad = false;
-		} catch (InvalidConfigurationException e) {
-			this.getLogger().severe("Error while loading " + fileName + " file, disabling plugin.");
-			this.getLogger().log(Level.SEVERE,
+		} catch (IOException | InvalidConfigurationException e) {
+			getLogger().severe("Error while loading " + fileName + " file, disabling plugin.");
+			getLogger().log(Level.SEVERE,
 					"Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
 			successfulLoad = false;
-			this.getServer().getPluginManager().disablePlugin(this);
+			getServer().getPluginManager().disablePlugin(this);
 		}
 
-		if (yamlConfiguration != null)
+		if (yamlConfiguration != null) {
 			try {
 				yamlConfiguration.backupConfiguration();
 			} catch (IOException e) {
-				this.getLogger().log(Level.SEVERE, "Error while backing up configuration file: ", e);
+				getLogger().log(Level.SEVERE, "Error while backing up configuration file: ", e);
 				successfulLoad = false;
 			}
+		}
 		return yamlConfiguration;
 	}
 
@@ -193,23 +183,22 @@ public class PetMaster extends JavaPlugin implements Listener {
 	private void updateOldConfiguration() {
 		updatePerformed = false;
 
-		updateSetting(lang, "languageFileName", "lang.yml", new String[] { "Name of the language file." });
-		updateSetting(lang, "checkForUpdate", true,
-				new String[] { "Check for update on plugin launch and notify when an OP joins the game." });
-		updateSetting(lang, "changeOwnerPrice", 0,
-				new String[] { "Price of the /petm setowner command (requires Vault)." });
-		updateSetting(lang, "displayDog", true, new String[] { "Take dogs into account." });
-		updateSetting(lang, "displayCat", true, new String[] { "Take cats into account." });
-		updateSetting(lang, "displayHorse", true, new String[] { "Take horses into account." });
-		updateSetting(lang, "displayLlama", true, new String[] { "Take llamas into account." });
-		updateSetting(lang, "displayParrot", true, new String[] { "Take parrots into account." });
-		updateSetting(lang, "actionBarMessage", false,
-				new String[] { "Enable or disable action bar messages when right-clicking on a pet." });
-		updateSetting(lang, "displayToOwner", false,
-				new String[] { "Enable or disable showing ownership information for a player's own pets." });
-		updateSetting(lang, "freePetPrice", 0, new String[] { "Price of the /petm free command (requires Vault)." });
+		updateSetting(config, "languageFileName", "lang.yml", "Name of the language file.");
+		updateSetting(config, "checkForUpdate", true,
+				"Check for update on plugin launch and notify when an OP joins the game.");
+		updateSetting(config, "changeOwnerPrice", 0, "Price of the /petm setowner command (requires Vault).");
+		updateSetting(config, "displayDog", true, "Take dogs into account.");
+		updateSetting(config, "displayCat", true, "Take cats into account.");
+		updateSetting(config, "displayHorse", true, "Take horses into account.");
+		updateSetting(config, "displayLlama", true, "Take llamas into account.");
+		updateSetting(config, "displayParrot", true, "Take parrots into account.");
+		updateSetting(config, "actionBarMessage", false,
+				"Enable or disable action bar messages when right-clicking on a pet.");
+		updateSetting(config, "displayToOwner", false,
+				"Enable or disable showing ownership information for a player's own pets.");
+		updateSetting(config, "freePetPrice", 0, "Price of the /petm free command (requires Vault).");
 		updateSetting(config, "showHealth", true,
-				new String[] { "Show health next to owner in chat and action bar messages (not holograms)." });
+				"Show health next to owner in chat and action bar messages (not holograms).");
 
 		if (updatePerformed) {
 			// Changes in the configuration: save and do a fresh load.
@@ -217,7 +206,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 				config.saveConfiguration();
 				config.loadConfiguration();
 			} catch (IOException | InvalidConfigurationException e) {
-				this.getLogger().log(Level.SEVERE, "Error while saving changes to the configuration file: ", e);
+				getLogger().log(Level.SEVERE, "Error while saving changes to the configuration file: ", e);
 				successfulLoad = false;
 			}
 		}
@@ -254,7 +243,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 				lang.saveConfiguration();
 				lang.loadConfiguration();
 			} catch (IOException | InvalidConfigurationException e) {
-				this.getLogger().log(Level.SEVERE, "Error while saving changes to the language file: ", e);
+				getLogger().log(Level.SEVERE, "Error while saving changes to the language file: ", e);
 				successfulLoad = false;
 			}
 		}
@@ -265,7 +254,7 @@ public class PetMaster extends JavaPlugin implements Listener {
 	 */
 	@Override
 	public void onDisable() {
-		this.getLogger().info("PetMaster has been disabled.");
+		getLogger().info("PetMaster has been disabled.");
 	}
 
 	/**
@@ -312,19 +301,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 		}
 	}
 
-	/**
-	 * Tries to retrieve an Economy instance from Vault.
-	 */
-	private void setupEconomy() {
-		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null) {
-			RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager()
-					.getRegistration(Economy.class);
-			if (rsp != null) {
-				economy = rsp.getProvider();
-			}
-		}
-	}
-
 	public void setSuccessfulLoad(boolean successfulLoad) {
 		this.successfulLoad = successfulLoad;
 	}
@@ -343,10 +319,6 @@ public class PetMaster extends JavaPlugin implements Listener {
 
 	public CommentedYamlConfiguration getPluginLang() {
 		return lang;
-	}
-
-	public Economy getEconomy() {
-		return economy;
 	}
 
 	public SetOwnerCommand getSetOwnerCommand() {

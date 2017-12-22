@@ -19,7 +19,7 @@
 chatMessage: false
 
 # Enable or disable hologram messages when right-clicking on a pet (requires Holographic Displays).
-hologramMessage: true
+hologramMessage: false
 
 # Enable or disable action bar messages when right-clicking on a pet.
 actionBarMessage: true

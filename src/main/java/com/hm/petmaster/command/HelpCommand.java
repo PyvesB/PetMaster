@@ -33,7 +33,7 @@ public class HelpCommand {
 								"Display various information about the plugin."),
 				"/petm info", plugin.getPluginLang().getString("petmaster-command-info-hover",
 						"Some extra info about the plugin and its awesome author!"));
-		
+
 		if (sender.hasPermission("petmaster.free")) {
 			sendJsonClickableHoverableMessage(sender,
 					plugin.getChatHeader() + ChatColor.GOLD + "/petm free" + ChatColor.GRAY + " > "
@@ -81,8 +81,8 @@ public class HelpCommand {
 	}
 
 	/**
-	 * Sends a packet message to the server in order to display a clickable and hoverable message. A suggested command is
-	 * displayed in the chat when clicked on, and an additional help message appears when a command is hovered.
+	 * Sends a packet message to the server in order to display a clickable and hoverable message. A suggested command
+	 * is displayed in the chat when clicked on, and an additional help message appears when a command is hovered.
 	 * 
 	 * @param sender
 	 * @param message
@@ -90,18 +90,18 @@ public class HelpCommand {
 	 * @param hover
 	 */
 	public void sendJsonClickableHoverableMessage(CommandSender sender, String message, String command, String hover) {
-		// Build the json format string.
-		String json = "{\"text\":\"" + message + "\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\""
-				+ command + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":[{\"text\":\"" + hover
-				+ "\",\"color\":\"gold\"}]}}";
-
 		// Send clickable and hoverable message if sender is a player and if no exception is caught.
 		if (sender instanceof Player) {
+			// Build the json format string.
+			String json = "{\"text\":\"" + message + "\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\""
+					+ command + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":[{\"text\":\"" + hover
+					+ "\",\"color\":\"gold\"}]}}";
 			try {
 				PacketSender.sendChatMessagePacket((Player) sender, json);
 			} catch (Exception ex) {
-				plugin.getLogger().severe(
-						"Errors while trying to display clickable and hoverable message in /petm help command. Displaying standard message instead.");
+				plugin.getLogger()
+						.severe("Errors while trying to display clickable and hoverable message in /petm help command. "
+								+ "Displaying standard message instead.");
 				sender.sendMessage(message);
 			}
 		} else {
