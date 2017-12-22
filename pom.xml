@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.hm.petmaster</groupId>
 	<artifactId>PetMaster</artifactId>
-	<version>1.7</version>
+	<version>1.8</version>
 	<url>https://github.com/PyvesB/PetMaster</url>
 	<name>PetMaster</name>
-	<description>Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!</description>
+	<description>Whose pet is this? Manage pets and display information via holograms, action bar or chat messages!</description>
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/PyvesB/PetMaster/issues</url>

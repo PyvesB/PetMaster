@@ -25,7 +25,7 @@ import com.hm.petmaster.listener.PlayerInteractListener;
 import com.hm.petmaster.listener.PlayerQuitListener;
 
 /**
- * Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!
+ * Whose pet is this? Manage pets and display information via holograms, action bar or chat messages!
  * 
  * PetMaster is under GNU General Public License version 3. Please visit the plugin's GitHub for more information :
  * https://github.com/PyvesB/PetMaster
@@ -37,7 +37,7 @@ import com.hm.petmaster.listener.PlayerQuitListener;
  * Spigot project page: spigotmc.org/resources/pet-master.15904
  * 
  * @since December 2015.
- * @version 1.7
+ * @version 1.8
  * @author DarkPyves
  */
 public class PetMaster extends JavaPlugin implements Listener {

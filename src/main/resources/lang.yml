@@ -1,6 +1,6 @@
 #============================================================#
 # +--------------------------------------------------------+ #
-# |          Pet Master 1.7 English language file          | #
+# |          Pet Master 1.8 English language file          | #
 # |                      By DarkPyves                      | #
 # +--------------------------------------------------------+ #
 #============================================================#
@@ -51,7 +51,7 @@ version-command-version: "Version:"
 version-command-website: "Website:"
 version-command-author: "Author:"
 version-command-description: "Description:"
-version-command-description-details: "Whose pet is this? Manage pets and display owners via holograms, action bar or chat messages!"
+version-command-description-details: "Whose pet is this? Manage pets and display infomartion via holograms, action bar or chat messages!"
 version-command-enabled: "Plugin enabled:"
 
 #============================================================#
