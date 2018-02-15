@@ -90,8 +90,7 @@ public class PetMaster extends JavaPlugin {
 		// Check for available plugin update.
 		if (config.getBoolean("checkForUpdate", true)) {
 			updateChecker = new UpdateChecker(this, "https://raw.githubusercontent.com/PyvesB/PetMaster/master/pom.xml",
-					"petmaster.admin", chatHeader, "spigotmc.org/resources/pet-master.15904",
-					"dev.bukkit.org/bukkit-plugins/pet-master/files");
+					"petmaster.admin", chatHeader, "spigotmc.org/resources/pet-master.15904");
 			pm.registerEvents(updateChecker, this);
 			updateChecker.launchUpdateCheckerTask();
 		}

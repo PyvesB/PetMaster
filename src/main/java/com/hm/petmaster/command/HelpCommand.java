@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.hm.mcshared.particle.PacketSender;
+import com.hm.mcshared.particle.FancyMessageSender;
 import com.hm.petmaster.PetMaster;
 
 /**
@@ -92,12 +92,8 @@ public class HelpCommand {
 	public void sendJsonClickableHoverableMessage(CommandSender sender, String message, String command, String hover) {
 		// Send clickable and hoverable message if sender is a player and if no exception is caught.
 		if (sender instanceof Player) {
-			// Build the json format string.
-			String json = "{\"text\":\"" + message + "\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\""
-					+ command + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":[{\"text\":\"" + hover
-					+ "\",\"color\":\"gold\"}]}}";
 			try {
-				PacketSender.sendChatMessagePacket((Player) sender, json);
+				FancyMessageSender.sendHoverableCommandMessage((Player) sender, message, command, hover, "gold");
 			} catch (Exception ex) {
 				plugin.getLogger()
 						.severe("Errors while trying to display clickable and hoverable message in /petm help command. "
