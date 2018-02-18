@@ -1,0 +1,61 @@
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Pet Master 1.8.2 Chinese language file         | #
+# |                      By Lss233                         | #
+# +--------------------------------------------------------+ #
+#============================================================#
+
+no-permissions: "你没有权限这么做."
+currently-disabled: "PetMaster 已被停用，你不能使用这个命令."
+misused-command: "未知命令. 请使用 /petm."
+
+# 有关 /petm reload.
+configuration-successfully-reloaded: "配置文件已重新加载."
+configuration-reload-failed: "在加载配置文件过程中出现错误. 请翻看日志了解更多详情."
+
+# 有关其他插件命令.
+petmaster-disabled: "PetMaster 已被停用，直到下次重新载入或使用 /petm enable."
+petmaster-enabled: "PetMaster 已启用."
+petmaster-hologram: "主人 "
+petmaster-chat: "主人 "
+petmaster-action-bar: "主人 "
+petmaster-health: "生命值: "
+player-offline: "那个玩家当前不在线!"
+cannot-change-to-yourself: "你不能将主人设置为自己!"
+owner-changed: "这只宠物现在有了新的主人啦!"
+change-owner-price: "你花费了: AMOUNT 元!"
+new-owner: "玩家 PLAYER 给了你一只宠物的所有权!"
+not-owner: "你不是这只宠物的主人!"
+right-click: "右键一只宠物，改变它的主人!"
+pet-freed: "拜拜~，这只宠物回归自然啦!"
+not-enough-money: "你没有足够的余额，它将花费: AMOUNT 元!"
+
+# 有关 /petm help.
+petmaster-command-setowner: "改变宠物的主人."
+petmaster-command-free: "放生宠物."
+petmaster-command-disable: "停用插件."
+petmaster-command-enable: "启用插件."
+petmaster-command-reload: "重新加载插件的配置文件."
+petmaster-command-info: "显示插件的各种信息."
+petmaster-command-setowner-hover: "你只能改变你自家宠物的所有权，除非你是管理员!"
+petmaster-command-free-hover: "你只能放生你自家的宠物，除非你是管理员!"
+petmaster-command-disable-hover: "停用插件，直到下次重新载入或使用 /petm enable."
+petmaster-command-enable-hover: "插件默认在启用状态，如果你曾经使用了 /petm disable 命令，你可以启用它!"
+petmaster-command-reload-hover: "重新加载大部分在 config.yml 和 lang.yml 文件里的设置."
+petmaster-command-info-hover: "关于插件和它那位才华盖世的作者的一些额外信息!"
+petmaster-tip: "&l提示&r &8你可以把你用鼠标 &7&n&o悬停&r &8或 &7&n&o点击&r &8这些命令!"
+
+# Related to /petm info.
+version-command-name: "名字:"
+version-command-version: "版本:"
+version-command-website: "网站:"
+version-command-author: "作者:"
+version-command-description: "描述:"
+version-command-description-details: "这是谁家的宠物? 通过全息、动作栏和聊天栏管理宠物的相关信息!"
+version-command-enabled: "插件启用:"
+
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Parameters to appear in future versions        | #
+# +--------------------------------------------------------+ #
+#============================================================#
