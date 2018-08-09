@@ -6,6 +6,7 @@ softdepend: [HolographicDisplays, Vault]
 load: POSTWORLD
 description: Whose pet is this? Manage pets and display information via holograms, action bar or chat messages!
 website: https://github.com/PyvesB/PetMaster
+api-version: 1.13
 commands:
   petm:
     description: Main Pet Master command, use it to list sub-commands. 
