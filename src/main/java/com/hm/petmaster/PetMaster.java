@@ -155,6 +155,7 @@ public class PetMaster extends JavaPlugin {
 		CommentedYamlConfiguration yamlConfiguration = null;
 		try {
 			yamlConfiguration = new CommentedYamlConfiguration(fileName, this);
+			yamlConfiguration.loadConfiguration();
 		} catch (IOException | InvalidConfigurationException e) {
 			getLogger().severe("Error while loading " + fileName + " file, disabling plugin.");
 			getLogger().log(Level.SEVERE,
