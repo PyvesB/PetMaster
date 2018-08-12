@@ -4,19 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.Animals;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Llama;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Parrot;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Sittable;
-import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -64,6 +56,7 @@ public class PlayerInteractListener implements Listener {
 	private int changeOwnerPrice;
 	private int freePetPrice;
 	private boolean showHealth;
+	private boolean disablePlayerDamage;
 
 	public PlayerInteractListener(PetMaster petMaster) {
 		this.plugin = petMaster;
@@ -92,6 +85,7 @@ public class PlayerInteractListener implements Listener {
 		hologramMessage = plugin.getPluginConfig().getBoolean("hologramMessage", false);
 		actionBarMessage = plugin.getPluginConfig().getBoolean("actionBarMessage", true);
 		showHealth = plugin.getPluginConfig().getBoolean("showHealth", true);
+		disablePlayerDamage = plugin.getPluginConfig().getBoolean("disablePlayerDamage", false);
 
 		boolean holographicDisplaysAvailable = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 		// Checking whether user configured plugin to display hologram but HolographicsDisplays not available.
@@ -139,6 +133,17 @@ public class PlayerInteractListener implements Listener {
 			displayHologramAndMessage(event, currentOwner);
 		}
 	}
+
+	@EventHandler(ignoreCancelled = true)
+    public void onPlayerDamagePet(EntityDamageByEntityEvent event){
+	    if(!((event.getDamager() instanceof Projectile || event.getDamager() instanceof Player) && event.getEntity() instanceof Tameable && ((Tameable) event.getEntity()).getOwner() != null && disablePlayerDamage))
+	        return;
+	    Entity damager = event.getDamager();
+	    if(event.getDamager() instanceof Projectile && ((Projectile) event.getDamager()).getShooter() instanceof Player)
+	        damager = (Player) ((Projectile) event.getDamager()).getShooter();
+	    if(!((Tameable) event.getEntity()).getOwner().equals(damager))
+	        event.setCancelled(true);
+    }
 
 	/**
 	 * Change the owner of a pet.
