@@ -3,11 +3,13 @@ package com.hm.petmaster;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import com.hm.petmaster.listener.PlayerAttackListener;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,6 +55,7 @@ public class PetMaster extends JavaPlugin {
 	// Plugin listeners.
 	private PlayerInteractListener playerInteractListener;
 	private PlayerQuitListener playerQuitListener;
+	private PlayerAttackListener playerAttackListener;
 
 	// Used to check for plugin updates.
 	private UpdateChecker updateChecker;
@@ -77,11 +80,13 @@ public class PetMaster extends JavaPlugin {
 
 		playerInteractListener = new PlayerInteractListener(this);
 		playerQuitListener = new PlayerQuitListener(this);
+		playerAttackListener = new PlayerAttackListener();
 
 		PluginManager pm = getServer().getPluginManager();
 		// Register listeners.
 		pm.registerEvents(playerInteractListener, this);
 		pm.registerEvents(playerQuitListener, this);
+		pm.registerEvents(playerAttackListener, this);
 
 		extractParametersFromConfig(true);
 
@@ -143,6 +148,19 @@ public class PetMaster extends JavaPlugin {
 		if (!config.getBoolean("checkForUpdate", true)) {
 			PlayerJoinEvent.getHandlerList().unregister(updateChecker);
 		}
+
+		if(config.getBoolean("disablePlayerDamage", false)) {
+			if(playerAttackListener == null) {
+				playerAttackListener = new PlayerAttackListener();
+				getServer().getPluginManager().registerEvents(playerAttackListener, this);
+			}
+
+		} else {
+			if(playerAttackListener != null) {
+				HandlerList.unregisterAll(playerAttackListener);
+				playerAttackListener = null;
+			}
+		}
 	}
 
 	/**
@@ -198,6 +216,7 @@ public class PetMaster extends JavaPlugin {
 		updateSetting(config, "freePetPrice", 0, "Price of the /petm free command (requires Vault).");
 		updateSetting(config, "showHealth", true,
 				"Show health next to owner in chat and action bar messages (not holograms).");
+		updateSetting(config, "disablePlayerDamage", false, "Protect pets to avoid being hurt by other player.");
 
 		if (updatePerformed) {
 			// Changes in the configuration: save and do a fresh load.
