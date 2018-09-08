@@ -1,0 +1,61 @@
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Pet Master 1.8.3 German language file          | #
+# |      By Shotpirat - Hyperion Oldschool Minecraft       | #
+# +--------------------------------------------------------+ #
+#============================================================#
+
+no-permissions: "Du hast nicht die nötigen Rechte um dies zu tun."
+currently-disabled: "PetMaster ist momentan deaktiviert, du kannst diesen Befehl nicht nutzen."
+misused-command: "Dieser Befehl existiert nicht, nutze bitte /petm."
+
+# Related to /petm reload.
+configuration-successfully-reloaded: "Konfigurationen erfolgreich aktualisiert"
+configuration-reload-failed: "Fehler beim aktualisieren der Konfigurationen. Bitte schau dir den Log für weitere Informationen an."
+
+# Related to other plugin commands.
+petmaster-disabled: "PetMaster deaktiviert bis zum nächster aktualisierung oder mit /petm enable wieder aktivieren."
+petmaster-enabled: "PetMaster aktiviert"
+petmaster-hologram: "Haustierbesitzer"
+petmaster-chat: "Haustierbesitzer"
+petmaster-action-bar: "Haustierbesitzer"
+petmaster-health: "Leben: "
+player-offline: "Der Haustierbesitzer ist offline."
+cannot-change-to-yourself: "Du kannst nicht den Halter auf dich umändern."
+owner-changed: "Das Haustier hat nun einen neuen Besitzer!"
+change-owner-price: "Du zahlst: AMOUNT!"
+new-owner: "PLAYER hat das Haustier auf dich übertragen!"
+not-owner: "Dir gehört das Haustier nicht!"
+right-click: "Rechtsklick um den Besitzer zu wechseln!"
+pet-freed: "Sag Tschüss, das Haustier wird nun wieder in die Wildbahn entlassen!"
+not-enough-money: "Dir fehlt das nötige Geld: AMOUNT!"
+
+# Related to /petm help.
+petmaster-command-setowner: "Änder den Besitzer."
+petmaster-command-free: "Lass das Tier frei."
+petmaster-command-disable: "Deaktiviere das Plugin."
+petmaster-command-enable: "Aktiviere das Plugin."
+petmaster-command-reload: "Aktuallisiere die Plugin Konfigurationen."
+petmaster-command-info: "Zeige alle Informationen zum Plugin an."
+petmaster-command-setowner-hover: "Du kannst nicht den Besitzer wechseln, es sei denn du bist Admin!"
+petmaster-command-free-hover: "Du kannst nur deine eigenen Haustiere freilassen, es sei denn du bist Admin!"
+petmaster-command-disable-hover: "Das Plugin funktioniert erst nach der nächsten Aktualisierung oder mit /petm enable."
+petmaster-command-enable-hover: "Plugin mit Standardeinstellungen aktiviert. Bitte benutze es nur wenn du es zuvor mit /petm disable deaktiviert hast!"
+petmaster-command-reload-hover: "Aktualisierung der meisten Einstellungen in der config.yml und lang.yml"
+petmaster-command-info-hover: "Ein paar Extrainformationen zum Plugin und den unglaublichen Programmierern!"
+petmaster-tip: "&lHinweis&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!"
+
+# Related to /petm info.
+version-command-name: "Name:"
+version-command-version: "Version:"
+version-command-website: "Webseite:"
+version-command-author: "Autor:"
+version-command-description: "Beschreibung:"
+version-command-description-details: "Wem gehört das Tier? Manage Haustiere und lass dir Informatinen mit Hologrammen, Aktionbar oder im Chat anzeigen!"
+version-command-enabled: "Plugin aktiviert:"
+
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Parameters to appear in future versions        | #
+# +--------------------------------------------------------+ #
+#============================================================#
