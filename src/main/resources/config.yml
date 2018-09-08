@@ -60,6 +60,9 @@ displayLlama: true
 # Take parrots into account.
 displayParrot: true
 
+# Protect pets to avoid being hurt by other player.
+disablePlayerDamage: false
+
 #=============================OOO=============================#
 # III-----------------------------------------------------III #
 # |         Parameters to appear in future versions         | #
