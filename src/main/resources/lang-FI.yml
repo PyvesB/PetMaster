@@ -1,0 +1,61 @@
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Pet Master 1.8.3 Finnish language file         | #
+# |                       By Rsl1122                       | #
+# +--------------------------------------------------------+ #
+#============================================================#
+
+no-permissions: "Sinulla ei ole lupaa tähän."
+currently-disabled: "PetMaster on poissa käytöstä, et voi käyttää tätä komentoa."
+misused-command: "Väärin käytetty komento. Käytä mielummin /petm."
+
+# Related to /petm reload.
+configuration-successfully-reloaded: "Asetustiedostot ladattu onnistuneesti."
+configuration-reload-failed: "Virheitä ladatessa asetustiedostoja. Tarkista lokit saadaksesi lisätietoa."
+
+# Related to other plugin commands.
+petmaster-disabled: "PetMaster poistettu käytöstä seuraavaan lataukseen tai /petm enable asti."
+petmaster-enabled: "PetMaster otettu käyttöön."
+petmaster-hologram: "Lemmikin omistaa "
+petmaster-chat: "Lemmikin omistaa "
+petmaster-action-bar: "Lemmikin omistaa "
+petmaster-health: "Elämä: "
+player-offline: "Annettu pelaaja ei ole paikalla!"
+cannot-change-to-yourself: "Et voi vaihtaa omistajaa itseksesi!"
+owner-changed: "Lemmikillä on nyt uusi omistaja!"
+change-owner-price: "Maksoit: AMOUNT!"
+new-owner: "Pelaaja PLAYER antoi sinulle lemmikin omistajuuden!"
+not-owner: "Et omista tätä lemmikkiä!"
+right-click: "Vaihda omistaja hiiren oikealla painikkeella!"
+pet-freed: "Sano hei hei: tämä lemmikki palasi luontoon!"
+not-enough-money: "Sinulla ei ole pyydettyä määrää rahaa: AMOUNT!"
+
+# Related to /petm help.
+petmaster-command-setowner: "Vaihda lemmikin omistajaa."
+petmaster-command-free: "Vapauta lemmikki."
+petmaster-command-disable: "Poista Petmaster käytöstä."
+petmaster-command-enable: "Ota Petmaster käyttöön."
+petmaster-command-reload: "Lataa asetukset uudelleen."
+petmaster-command-info: "Tarkastele tietoja pluginista."
+petmaster-command-setowner-hover: "Voit vaihtaa vain omien lemmikkisie omistajaa, paitsi jos olet admin!"
+petmaster-command-free-hover: "Voit vapauttaa vain omia lemmikkejäsi, paitsi jos olet admin!"
+petmaster-command-disable-hover: "Petmaster ei toimi ennen seuraavaa latausta tai /petm enable komentoa."
+petmaster-command-enable-hover: "Petmaster on tavallisesti päällä. Käytä tätä jos käytit /petm disable aikaisemmin!"
+petmaster-command-reload-hover: "Lataa useimmat asetukset config.yml ja lang.yml tiedostoista."
+petmaster-command-info-hover: "Lisätietoa pluginista ja sen mahtavasta tekijästä!"
+petmaster-tip: "&lHINT&r &8Voit &7&n&opitää hiirtä&r &8tai &7&n&oclick&r &8komentojen päällä!"
+
+# Related to /petm info.
+version-command-name: "Nimi:"
+version-command-version: "Versio:"
+version-command-website: "Sivusto:"
+version-command-author: "Tekijä:"
+version-command-description: "Kuvaus:"
+version-command-description-details: "Kenen lemmikki tämä on? Hallitse lemmikkejä ja näytä omistaja hologrammeilla, toiminto palkilla tai chatti viesteillä!"
+version-command-enabled: "Plugin käynnistetty:"
+
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Parameters to appear in future versions        | #
+# +--------------------------------------------------------+ #
+#============================================================#
