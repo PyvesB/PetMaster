@@ -147,7 +147,7 @@ public class PetMaster extends JavaPlugin {
 
 		if (config.getBoolean("disablePlayerDamage", false)) {
 			if (playerAttackListener == null) {
-				playerAttackListener = new PlayerAttackListener();
+				playerAttackListener = new PlayerAttackListener(this);
 				getServer().getPluginManager().registerEvents(playerAttackListener, this);
 			}
 
@@ -284,9 +284,9 @@ public class PetMaster extends JavaPlugin {
 		} else if ("reload".equalsIgnoreCase(args[0])) {
 			reloadCommand.reload(sender);
 		} else if ("disable".equalsIgnoreCase(args[0])) {
-			enableDisableCommand.setState(sender, false);
-		} else if ("enable".equalsIgnoreCase(args[0])) {
 			enableDisableCommand.setState(sender, true);
+		} else if ("enable".equalsIgnoreCase(args[0])) {
+			enableDisableCommand.setState(sender, false);
 		} else if ("setowner".equalsIgnoreCase(args[0]) && sender instanceof Player) {
 			setOwnerCommand.setOwner(((Player) sender), args);
 		} else if ("free".equalsIgnoreCase(args[0]) && sender instanceof Player) {

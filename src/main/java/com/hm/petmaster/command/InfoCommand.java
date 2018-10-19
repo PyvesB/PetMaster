@@ -42,12 +42,7 @@ public class InfoCommand {
 				+ plugin.getPluginLang().getString("version-command-description-details",
 						"Whose pet is this? Manage pets and display information via holograms, action bar or chat messages!"));
 		// Display whether PetMaster is enabled.
-		String state;
-		if (plugin.getEnableDisableCommand().isEnabled()) {
-			state = "YES";
-		} else {
-			state = "NO";
-		}
+		String state = plugin.getEnableDisableCommand().isDisabled() ? "NO" : "YES";
 		sender.sendMessage(plugin.getChatHeader() + ChatColor.GOLD
 				+ plugin.getPluginLang().getString("version-command-enabled", "Plugin enabled:") + " " + ChatColor.GRAY
 				+ state);

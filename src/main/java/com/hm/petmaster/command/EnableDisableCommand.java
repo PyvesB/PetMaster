@@ -13,16 +13,16 @@ import com.hm.petmaster.PetMaster;
 public class EnableDisableCommand {
 
 	private final PetMaster plugin;
-	private boolean enabled;
+	private boolean disabled;
 
 	public EnableDisableCommand(PetMaster plugin) {
 		this.plugin = plugin;
-		enabled = true;
+		disabled = false;
 	}
 
 	public void setState(CommandSender sender, boolean enabled) {
 		if (sender.hasPermission("petmaster.admin")) {
-			this.enabled = enabled;
+			this.disabled = enabled;
 			if (enabled) {
 				sender.sendMessage(plugin.getChatHeader()
 						+ plugin.getPluginLang().getString("petmaster-enabled", "PetMaster enabled."));
@@ -36,7 +36,7 @@ public class EnableDisableCommand {
 		}
 	}
 
-	public boolean isEnabled() {
-		return enabled;
+	public boolean isDisabled() {
+		return disabled;
 	}
 }

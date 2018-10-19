@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import com.hm.petmaster.PetMaster;
+
 /**
  * Class used to prevent player damage to pets who have an owner.
  * 
@@ -16,8 +18,18 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
  */
 public class PlayerAttackListener implements Listener {
 
+	private final PetMaster plugin;
+
+	public PlayerAttackListener(PetMaster plugin) {
+		this.plugin = plugin;
+	}
+
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerDamagePet(EntityDamageByEntityEvent event) {
+		if (plugin.getEnableDisableCommand().isDisabled()) {
+			return;
+		}
+
 		if (!((event.getDamager() instanceof Projectile || event.getDamager() instanceof Player)
 				&& event.getEntity() instanceof Tameable && ((Tameable) event.getEntity()).getOwner() != null)) {
 			return;

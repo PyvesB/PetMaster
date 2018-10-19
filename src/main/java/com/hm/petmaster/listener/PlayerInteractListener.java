@@ -112,7 +112,7 @@ public class PlayerInteractListener implements Listener {
 		}
 
 		if (!(event.getRightClicked() instanceof Tameable) || ((Tameable) event.getRightClicked()).getOwner() == null
-				|| !plugin.getEnableDisableCommand().isEnabled()) {
+				|| plugin.getEnableDisableCommand().isDisabled()) {
 			return;
 		}
 

@@ -29,7 +29,7 @@ public class FreeCommand {
 			if (!player.hasPermission("petmaster.free")) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("no-permissions",
 						"You do not have the permission to do this."));
-			} else if (!plugin.getEnableDisableCommand().isEnabled()) {
+			} else if (plugin.getEnableDisableCommand().isDisabled()) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("currently-disabled",
 						"PetMaster is currently disabled, you cannot use this command."));
 			} else {
