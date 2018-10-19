@@ -80,25 +80,15 @@ public class PetMaster extends JavaPlugin {
 
 		playerInteractListener = new PlayerInteractListener(this);
 		playerQuitListener = new PlayerQuitListener(this);
-		playerAttackListener = new PlayerAttackListener();
 
 		PluginManager pm = getServer().getPluginManager();
 		// Register listeners.
 		pm.registerEvents(playerInteractListener, this);
 		pm.registerEvents(playerQuitListener, this);
-		pm.registerEvents(playerAttackListener, this);
 
 		extractParametersFromConfig(true);
 
 		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
-
-		// Check for available plugin update.
-		if (config.getBoolean("checkForUpdate", true)) {
-			updateChecker = new UpdateChecker(this, "https://raw.githubusercontent.com/PyvesB/PetMaster/master/pom.xml",
-					"petmaster.admin", chatHeader, "spigotmc.org/resources/pet-master.15904");
-			pm.registerEvents(updateChecker, this);
-			updateChecker.launchUpdateCheckerTask();
-		}
 
 		helpCommand = new HelpCommand(this);
 		infoCommand = new InfoCommand(this);
@@ -143,10 +133,16 @@ public class PetMaster extends JavaPlugin {
 
 		playerInteractListener.extractParameters();
 
-		// Unregister events if user changed the option and did a /petm reload. Do not recheck for update on /petm
-		// reload.
-		if (!config.getBoolean("checkForUpdate", true)) {
+		if (config.getBoolean("checkForUpdate", true)) {
+			if (updateChecker == null) {
+				updateChecker = new UpdateChecker(this, "https://raw.githubusercontent.com/PyvesB/PetMaster/master/pom.xml",
+						"petmaster.admin", chatHeader, "spigotmc.org/resources/pet-master.15904");
+				getServer().getPluginManager().registerEvents(updateChecker, this);
+				updateChecker.launchUpdateCheckerTask();
+			}
+		} else {
 			PlayerJoinEvent.getHandlerList().unregister(updateChecker);
+			updateChecker = null;
 		}
 
 		if (config.getBoolean("disablePlayerDamage", false)) {
