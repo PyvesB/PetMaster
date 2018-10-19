@@ -149,14 +149,14 @@ public class PetMaster extends JavaPlugin {
 			PlayerJoinEvent.getHandlerList().unregister(updateChecker);
 		}
 
-		if(config.getBoolean("disablePlayerDamage", false)) {
-			if(playerAttackListener == null) {
+		if (config.getBoolean("disablePlayerDamage", false)) {
+			if (playerAttackListener == null) {
 				playerAttackListener = new PlayerAttackListener();
 				getServer().getPluginManager().registerEvents(playerAttackListener, this);
 			}
 
 		} else {
-			if(playerAttackListener != null) {
+			if (playerAttackListener != null) {
 				HandlerList.unregisterAll(playerAttackListener);
 				playerAttackListener = null;
 			}
@@ -170,9 +170,8 @@ public class PetMaster extends JavaPlugin {
 	 * @return the loaded CommentedYamlConfiguration
 	 */
 	private CommentedYamlConfiguration loadAndBackupYamlConfiguration(String fileName) {
-		CommentedYamlConfiguration yamlConfiguration = null;
+		CommentedYamlConfiguration yamlConfiguration = new CommentedYamlConfiguration(fileName, this);
 		try {
-			yamlConfiguration = new CommentedYamlConfiguration(fileName, this);
 			yamlConfiguration.loadConfiguration();
 		} catch (IOException | InvalidConfigurationException e) {
 			getLogger().severe("Error while loading " + fileName + " file, disabling plugin.");
@@ -182,13 +181,11 @@ public class PetMaster extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 		}
 
-		if (yamlConfiguration != null) {
-			try {
-				yamlConfiguration.backupConfiguration();
-			} catch (IOException e) {
-				getLogger().log(Level.SEVERE, "Error while backing up configuration file: ", e);
-				successfulLoad = false;
-			}
+		try {
+			yamlConfiguration.backupConfiguration();
+		} catch (IOException e) {
+			getLogger().log(Level.SEVERE, "Error while backing up configuration file: ", e);
+			successfulLoad = false;
 		}
 		return yamlConfiguration;
 	}
