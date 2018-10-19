@@ -20,15 +20,15 @@ public class EnableDisableCommand {
 		disabled = false;
 	}
 
-	public void setState(CommandSender sender, boolean enabled) {
+	public void setState(CommandSender sender, boolean disabled) {
 		if (sender.hasPermission("petmaster.admin")) {
-			this.disabled = enabled;
-			if (enabled) {
-				sender.sendMessage(plugin.getChatHeader()
-						+ plugin.getPluginLang().getString("petmaster-enabled", "PetMaster enabled."));
-			} else {
+			this.disabled = disabled;
+			if (disabled) {
 				sender.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("petmaster-disabled",
 						"PetMaster disabled till next reload or /petm enable."));
+			} else {
+				sender.sendMessage(plugin.getChatHeader()
+						+ plugin.getPluginLang().getString("petmaster-enabled", "PetMaster enabled."));
 			}
 		} else {
 			sender.sendMessage(plugin.getChatHeader()
