@@ -1,0 +1,63 @@
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Pet Master 1.9.2 Russian language file         | #
+# |                      By NyanGuyMF                      | #
+# +--------------------------------------------------------+ #
+#============================================================#
+
+no-permissions: "У Вас нет прав на это действие."
+currently-disabled: "Плагин PetMaster выключен, вы не можете использовать эту команду."
+misused-command: "Вы ошиблись с командой. Пожалуйста, введите /petm."
+
+# Команда «/petm reload».
+configuration-successfully-reloaded: "Конфигурация успешно перезагружена."
+configuration-reload-failed: "Возникла ошибка при перезагрузке конфигов. Пожалуйста, посмотрите логи для подробностей."
+
+# Другие команды плагина.
+petmaster-disabled: "Плагин PetMaster выключен до перезагрузки сервера или /petm enable."
+petmaster-enabled: "Плагин PetMaster включен."
+petmaster-hologram: "Питомец принадлежит "
+petmaster-chat: "Питомец принадлежит "
+petmaster-action-bar: "Питомец принадлежит "
+petmaster-health: "Здоровье: "
+player-offline: "Указанный игрок оффлайн!"
+cannot-change-to-yourself: "Вы не можете сделать себя владельцем!"
+owner-changed: "Этот питомец передан другому владельцу!"
+change-owner-price: "Вы заплатили: AMOUNT!"
+new-owner: "Игрок PLAYER передал Вам питомца!"
+not-owner: "Это не Ваш питомец!"
+right-click: "ПКМ по питомцу, чтобы сменить его владельца!"
+pet-freed: "Скажи «прощай» - питомец вернулся в дикую природу!"
+not-enough-money: "У Вас недостаточно денег, нужно «AMOUNT»!"
+
+# Команда «/petm help».
+petmaster-command-setowner: "Сменить владельца питомца."
+petmaster-command-free: "Освободить питомца."
+petmaster-command-disable: "Выключить плагин."
+petmaster-command-enable: "Включить плагин."
+petmaster-command-reload: "Перезагрузить конфигурацию плагина."
+petmaster-command-info: "Отобразить информацию о плагине."
+petmaster-command-setowner-hover: "Это не Ваш питомец, только админ может сменить владельца чужого питомца!"
+petmaster-command-free-hover: "Это не Ваш питомец, только админ может освободить чужого питомца!"
+petmaster-command-disable-hover: "Плагин не будет работать до перезагрузки сервера или /perm enable."
+petmaster-command-enable-hover: "По умолчанию плагин включен. Используйте, если вы до этого вводили /perm disable!"
+petmaster-command-reload-hover: "Перезагрузка настроек в config.yml и lang.yml файлах."
+petmaster-command-info-hover: "Немного информации о плагине и его прекрасном авторе!"
+petmaster-tip: "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!"
+petmaster-tip: "&lПОДСКАЗКА&r &8Вы можете &7&n&oнаводить&r &8или &7&n&oнажимать&r &8на команды!"
+
+# Related to /petm info.
+# Команда «/petm info».
+version-command-name: "Название:"
+version-command-version: "Версия:"
+version-command-website: "Сайт:"
+version-command-author: "Автор:"
+version-command-description: "Описание:"
+version-command-description-details: "Чей это питомец? Управление питомцами и отображеине информации через голограммы, строку состояния (ActionBar) или сообщения в чате!"
+version-command-enabled: "Плагин включен:"
+
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Parameters to appear in future versions        | #
+# +--------------------------------------------------------+ #
+#============================================================#
