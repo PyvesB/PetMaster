@@ -1,11 +1,14 @@
 package com.hm.petmaster.listener;
 
+import java.lang.reflect.Method;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.Cat;
 import org.bukkit.entity.Llama;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Parrot;
@@ -190,7 +193,13 @@ public class PlayerInteractListener implements Listener {
 			} else if (tameable instanceof Wolf) {
 				((Wolf) tameable).setSitting(false);
 			} else if (tameable instanceof Ocelot) {
-				((Ocelot) tameable).setSitting(false);
+				// Since Minecraft 1.14, ocelots are no longer Sittable, use reflection for old game versions.
+				try {
+					Method setSitting = Ocelot.class.getMethod("setSitting", boolean.class);
+					setSitting.invoke(tameable, false);
+				} catch (ReflectiveOperationException e) {
+					plugin.getLogger().warning("Failed to make freed ocelot stand up.");
+				}
 			}
 
 			player.sendMessage(plugin.getChatHeader()
@@ -214,7 +223,7 @@ public class PlayerInteractListener implements Listener {
 	private void displayHologramAndMessage(Player player, AnimalTamer owner, Tameable tameable) {
 		if (hologramMessage) {
 			double offset = HORSE_OFFSET;
-			if (tameable instanceof Ocelot) {
+			if (tameable instanceof Ocelot || version >= 14 && tameable instanceof Cat) {
 				if (!displayCat || !player.hasPermission("petmaster.showowner.cat")) {
 					return;
 				}
