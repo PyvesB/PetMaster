@@ -50,7 +50,7 @@ Your generated `PetMaster.jar` can be found in the `target` folder.
 
 * [Documentation, installation and FAQ](https://github.com/PyvesB/PetMaster/wiki), a lot of valuable information on how to set the plugin up or use it properly.
 
-* [Plugin translations](https://github.com/PyvesB/PetMaster/tree/master/src/main/resources), 7 languages available, feel free to improve the translations!
+* [Plugin translations](https://github.com/PyvesB/PetMaster/tree/master/src/main/resources), 8 languages available, feel free to improve the translations!
 
 * [HelloMinecraft](http://hellominecraft.fr/), the plugin's official server, amongst the best French servers out there!
 

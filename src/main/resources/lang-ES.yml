@@ -1,0 +1,61 @@
+﻿#============================================================#
+# +--------------------------------------------------------+ #
+# |             Pet Master 1.9.4 Archivo de Idioma         | #
+# |               Español-Latino Por Lethargicx1           | #
+# +--------------------------------------------------------+ #
+#============================================================#
+
+no-permissions: "No tienes permiso para hacer esto."
+currently-disabled: "PetMaster está actualmente deshabilitado, no puede usar este comando."
+misused-command: "Comando mal utilizado. Por favor escriba /petm."
+
+# Related to /petm reload.
+configuration-successfully-reloaded: "Configuración recargada con éxito."
+configuration-reload-failed: "Ha ocurrido un error al recargar la configuración. Por favor, vea los registros para más detalles."
+
+# Related to other plugin commands.
+petmaster-disabled: "PetMaster deshabilitado hasta la próxima recarga o /petm habilitado."
+petmaster-enabled: "PetMaster habilitado."
+petmaster-hologram: "Mascota de "
+petmaster-chat: "Mascota de "
+petmaster-action-bar: "Mascota de "
+petmaster-health: "Salud: "
+player-offline: "¡El jugador especificado está desconectado!"
+cannot-change-to-yourself: "¡No puedes cambiar el dueño a ti mismo!"
+owner-changed: "¡Esta mascota fue entregada a un nuevo dueño!"
+change-owner-price: "Has pagado: AMOUNT!"
+new-owner: "El jugador PLAYER te dio la propiedad de una mascota!"
+not-owner: "No eres el dueño de esta mascota!"
+right-click: "Haga clic derecho sobre una mascota para cambiar su dueño!"
+pet-freed: "Dile adiós: esta mascota regresó a la naturaleza!"
+not-enough-money: "No posees la cantidad requerida: AMOUNT!"
+
+# Related to /petm help.
+petmaster-command-setowner: "Cambiar la propiedad de una mascota."
+petmaster-command-free: "Libera una mascota."
+petmaster-command-disable: "Deshabilitar el plugin."
+petmaster-command-enable: "Habilita el plugin."
+petmaster-command-reload: "Vuelve a cargar la configuración del plugin."
+petmaster-command-info: "Muestra información diversa sobre el plugin."
+petmaster-command-setowner-hover: "Solo puedes cambiar la propiedad de tus propias mascotas, ¡a menos que seas administrador!"
+petmaster-command-free-hover: "¡Solo puedes liberar a tus propias mascotas, a menos que seas administrador!"
+petmaster-command-disable-hover: "El Plugin no funcionará hasta la próxima recarga o habilitar /petm"
+petmaster-command-enable-hover: "Plugin habilitado por defecto. Use esto si ingresó /petm deshabilitar antes!"
+petmaster-command-reload-hover: "Vuelve a cargar la mayoría de las configuraciones en los archivos config.yml y lang.yml."
+petmaster-command-info-hover: "Un poco de información adicional sobre el plugin y su autor impresionante!"
+petmaster-tip: "&lHINT&r &8Usted puede &7&n&colocar el mouse encima&r &8o &7&n&oclickear&r &8en los comandos!"
+
+# Related to /petm info.
+version-command-name: "Nombre:"
+version-command-version: "Version:"
+version-command-website: "WebSite:"
+version-command-author: "Autor:"
+version-command-description: "Descripción:"
+version-command-description-details: "¿De quién es esta mascota? ¡Gestiona mascotas y muestra información a través de hologramas, barra de acción o mensajes de chat!"
+version-command-enabled: "Plugin habilitado:"
+
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Parameters to appear in future versions        | #
+# +--------------------------------------------------------+ #
+#============================================================#
