@@ -63,6 +63,9 @@ displayParrot: true
 # Protect pets to avoid being hurt by other player.
 disablePlayerDamage: false
 
+# Allows players to defend themselves against angry tamed mobs (e.g. dogs) even if disablePlayerDamage is true.
+enableAngryMobPlayerDamage: true
+
 #=============================OOO=============================#
 # III-----------------------------------------------------III #
 # |         Parameters to appear in future versions         | #

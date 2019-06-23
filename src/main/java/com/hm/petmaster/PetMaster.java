@@ -149,6 +149,7 @@ public class PetMaster extends JavaPlugin {
 			if (playerAttackListener == null) {
 				playerAttackListener = new PlayerAttackListener(this);
 				getServer().getPluginManager().registerEvents(playerAttackListener, this);
+				playerAttackListener.extractParameters();
 			}
 
 		} else {
@@ -210,6 +211,7 @@ public class PetMaster extends JavaPlugin {
 		updateSetting(config, "showHealth", true,
 				"Show health next to owner in chat and action bar messages (not holograms).");
 		updateSetting(config, "disablePlayerDamage", false, "Protect pets to avoid being hurt by other player.");
+		updateSetting(config, "enableAngryMobPlayerDamage", true, "Allows players to defend themselves against angry tamed mobs (e.g. dogs) even if disablePlayerDamage is true.");
 
 		if (updatePerformed) {
 			// Changes in the configuration: save and do a fresh load.
