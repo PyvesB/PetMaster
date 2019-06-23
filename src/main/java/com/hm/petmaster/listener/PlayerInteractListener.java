@@ -116,7 +116,7 @@ public class PlayerInteractListener implements Listener {
 			}
 			// Has the player clicked on one of his own pets?
 			Player player = event.getPlayer();
-			boolean isOwner = player.getName().equals(currentOwner.getName());
+			boolean isOwner = player.getUniqueId().equals(currentOwner.getUniqueId());
 			// Retrieve new owner from the map and delete corresponding entry.
 			Player newOwner = plugin.getSetOwnerCommand().collectPendingSetOwnershipRequest(player);
 			// Has the player requested to free one of his pets?

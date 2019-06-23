@@ -2,6 +2,7 @@ package com.hm.petmaster.command;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class SetOwnerCommand {
 
 	private final PetMaster plugin;
 	// Contains pairs with name of previous owner and new owner.
-	private final Map<String, Player> changeOwnershipMap;
+	private final Map<UUID, Player> changeOwnershipMap;
 
 	public SetOwnerCommand(PetMaster plugin) {
 		this.plugin = plugin;
@@ -43,11 +44,11 @@ public class SetOwnerCommand {
 			} else if (plugin.getEnableDisableCommand().isDisabled()) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("currently-disabled",
 						"PetMaster is currently disabled, you cannot use this command."));
-			} else if (!player.hasPermission("petmaster.admin") && newOwner.getName().equals(player.getName())) {
+			} else if (!player.hasPermission("petmaster.admin") && newOwner.getUniqueId().equals(player.getUniqueId())) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
 						.getString("cannot-change-to-yourself", "You cannot change the owner to yourself!"));
 			} else {
-				changeOwnershipMap.put(player.getName(), newOwner);
+				changeOwnershipMap.put(player.getUniqueId(), newOwner);
 				player.sendMessage(plugin.getChatHeader()
 						+ plugin.getPluginLang().getString("right-click", "Right click on a pet to change its owner!"));
 				// Cancel previous pending operation.
@@ -60,6 +61,6 @@ public class SetOwnerCommand {
 	}
 
 	public Player collectPendingSetOwnershipRequest(Player player) {
-		return changeOwnershipMap.remove(player.getName());
+		return changeOwnershipMap.remove(player.getUniqueId());
 	}
 }

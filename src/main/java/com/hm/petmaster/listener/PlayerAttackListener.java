@@ -59,13 +59,13 @@ public class PlayerAttackListener implements Listener {
 	}
 
 	private boolean isDamagerPlayerDifferentFromDamagedOwner(Entity damager, Entity damaged) {
-		return damager instanceof Player && !((Tameable) damaged).getOwner().getName().equals(damager.getName());
+		return damager instanceof Player && !((Tameable) damaged).getOwner().getUniqueId().equals(damager.getUniqueId());
 	}
 
 	private boolean isDamagedTargettingDamager(Entity damager, Entity damaged) {
 		if (damaged instanceof Mob) {
 			Mob mob = (Mob) damaged;
-			return mob.getTarget() != null && mob.getTarget().getName().equals(damager.getName());
+			return mob.getTarget() != null && mob.getTarget().getUniqueId().equals(damager.getUniqueId());
 		}
 		return false;
 	}

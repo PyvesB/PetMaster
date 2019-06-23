@@ -2,6 +2,7 @@ package com.hm.petmaster.command;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
@@ -17,7 +18,7 @@ public class FreeCommand {
 
 	private final PetMaster plugin;
 	// Contains names of owners wanting to free their pets.
-	private final Set<String> freePetSet;
+	private final Set<UUID> freePetSet;
 
 	public FreeCommand(PetMaster plugin) {
 		this.plugin = plugin;
@@ -33,7 +34,7 @@ public class FreeCommand {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("currently-disabled",
 						"PetMaster is currently disabled, you cannot use this command."));
 			} else {
-				freePetSet.add(player.getName());
+				freePetSet.add(player.getUniqueId());
 				player.sendMessage(plugin.getChatHeader()
 						+ plugin.getPluginLang().getString("right-click", "Right click on a pet to change its owner!"));
 				// Cancel previous pending operation.
@@ -46,6 +47,6 @@ public class FreeCommand {
 	}
 
 	public boolean collectPendingFreeRequest(Player player) {
-		return freePetSet.remove(player.getName());
+		return freePetSet.remove(player.getUniqueId());
 	}
 }
