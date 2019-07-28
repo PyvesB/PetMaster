@@ -98,7 +98,6 @@ public class PlayerInteractListener implements Listener {
 		boolean holographicDisplaysAvailable = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 		// Checking whether user configured plugin to display hologram but HolographicsDisplays not available.
 		if (hologramMessage && !holographicDisplaysAvailable) {
-			plugin.setSuccessfulLoad(false);
 			hologramMessage = false;
 			actionBarMessage = true;
 			plugin.getLogger().warning(

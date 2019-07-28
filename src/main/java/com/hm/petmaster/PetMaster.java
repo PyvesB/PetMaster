@@ -45,7 +45,6 @@ public class PetMaster extends JavaPlugin {
 
 	// Plugin options and various parameters.
 	private String chatHeader;
-	private boolean successfulLoad;
 	private boolean updatePerformed;
 
 	// Fields related to file handling.
@@ -97,11 +96,8 @@ public class PetMaster extends JavaPlugin {
 		enableDisableCommand = new EnableDisableCommand(this);
 		reloadCommand = new ReloadCommand(this);
 
-		if (successfulLoad) {
-			getLogger().info("Plugin successfully enabled and ready to run! Took "
-					+ (System.currentTimeMillis() - startTime) + "ms.");
-		} else {
-			getLogger().severe("Error(s) while loading plugin. Please view previous logs for more information.");
+		if (getServer().getPluginManager().isPluginEnabled(this)) {
+			getLogger().info("Plugin enabled and ready to run! Took " + (System.currentTimeMillis() - startTime) + "ms.");
 		}
 	}
 
@@ -111,17 +107,12 @@ public class PetMaster extends JavaPlugin {
 	 * @param attemptUpdate
 	 */
 	public void extractParametersFromConfig(boolean attemptUpdate) {
-		successfulLoad = true;
-
 		getLogger().info("Backing up and loading configuration files...");
 
 		config = loadAndBackupYamlConfiguration("config.yml");
-		if (config == null) {
-			return;
-		}
-
 		lang = loadAndBackupYamlConfiguration(config.getString("languageFileName", "lang.yml"));
-		if (lang == null) {
+
+		if (!getServer().getPluginManager().isPluginEnabled(this)) {
 			return;
 		}
 
@@ -174,7 +165,6 @@ public class PetMaster extends JavaPlugin {
 			getLogger().severe("Error while loading " + fileName + " file, disabling plugin.");
 			getLogger().log(Level.SEVERE,
 					"Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
-			successfulLoad = false;
 			getServer().getPluginManager().disablePlugin(this);
 		}
 
@@ -182,7 +172,6 @@ public class PetMaster extends JavaPlugin {
 			yamlConfiguration.backupConfiguration();
 		} catch (IOException e) {
 			getLogger().log(Level.SEVERE, "Error while backing up configuration file: ", e);
-			successfulLoad = false;
 		}
 		return yamlConfiguration;
 	}
@@ -211,7 +200,8 @@ public class PetMaster extends JavaPlugin {
 		updateSetting(config, "showHealth", true,
 				"Show health next to owner in chat and action bar messages (not holograms).");
 		updateSetting(config, "disablePlayerDamage", false, "Protect pets to avoid being hurt by other player.");
-		updateSetting(config, "enableAngryMobPlayerDamage", true, "Allows players to defend themselves against angry tamed mobs (e.g. dogs) even if disablePlayerDamage is true.");
+		updateSetting(config, "enableAngryMobPlayerDamage", true,
+				"Allows players to defend themselves against angry tamed mobs (e.g. dogs) even if disablePlayerDamage is true.");
 
 		if (updatePerformed) {
 			// Changes in the configuration: save and do a fresh load.
@@ -220,7 +210,6 @@ public class PetMaster extends JavaPlugin {
 				config.loadConfiguration();
 			} catch (IOException | InvalidConfigurationException e) {
 				getLogger().log(Level.SEVERE, "Error while saving changes to the configuration file: ", e);
-				successfulLoad = false;
 			}
 		}
 	}
@@ -257,7 +246,6 @@ public class PetMaster extends JavaPlugin {
 				lang.loadConfiguration();
 			} catch (IOException | InvalidConfigurationException e) {
 				getLogger().log(Level.SEVERE, "Error while saving changes to the language file: ", e);
-				successfulLoad = false;
 			}
 		}
 	}
@@ -312,14 +300,6 @@ public class PetMaster extends JavaPlugin {
 			file.set(name, value, comments);
 			updatePerformed = true;
 		}
-	}
-
-	public void setSuccessfulLoad(boolean successfulLoad) {
-		this.successfulLoad = successfulLoad;
-	}
-
-	public boolean isSuccessfulLoad() {
-		return successfulLoad;
 	}
 
 	public String getChatHeader() {

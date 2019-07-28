@@ -13,7 +13,7 @@ import com.hm.petmaster.PetMaster;
  */
 public class ReloadCommand {
 
-	private PetMaster plugin;
+	private final PetMaster plugin;
 
 	public ReloadCommand(PetMaster plugin) {
 		this.plugin = plugin;
@@ -23,16 +23,18 @@ public class ReloadCommand {
 		if (sender.hasPermission("petmaster.admin")) {
 			plugin.reloadConfig();
 			plugin.extractParametersFromConfig(false);
-			if (plugin.isSuccessfulLoad()) {
+			if (plugin.getServer().getPluginManager().isPluginEnabled(plugin)) {
 				if (sender instanceof Player) {
 					sender.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
 							.getString("configuration-successfully-reloaded", "Configuration successfully reloaded."));
 				}
 				plugin.getLogger().info("Configuration successfully reloaded.");
 			} else {
-				sender.sendMessage(
-						plugin.getChatHeader() + plugin.getPluginLang().getString("configuration-reload-failed",
-								"Errors while reloading configuration. Please view logs for more details."));
+				if (sender instanceof Player) {
+					sender.sendMessage(
+							plugin.getChatHeader() + plugin.getPluginLang().getString("configuration-reload-failed",
+									"Errors while reloading configuration. Please view logs for more details."));
+				}
 				plugin.getLogger().severe("Errors while reloading configuration. Please view logs for more details.");
 			}
 		} else {
