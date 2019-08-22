@@ -1,0 +1,61 @@
+#==========================================================#
+# +------------------------------------------------------+ #
+# |        Pet Master 1.10.1 Polish language file        | #
+# |                      By Patbox                       | #
+# +------------------------------------------------------+ #
+#==========================================================#
+
+no-permissions: "Nie masz wystarczających uprawnień, aby to zrobić!"
+currently-disabled: "PetMaster jest aktualnie wyłączony, nie możesz użyć tej komendy."
+misused-command: "Nie ma takiej komendy!"
+
+# Related to /petm reload.
+configuration-successfully-reloaded: "Konfiguracja została przeładowana."
+configuration-reload-failed: "Wystąpił błąd podczas ładowania konfiguracji. Po więcej informacji sprawdź logi."
+
+# Related to other plugin commands.
+petmaster-disabled: "Wyłączono PetMaster do następnego restaru lub /petm enable."
+petmaster-enabled: "Włączono PetMaster."
+petmaster-hologram: "Właściciel: "
+petmaster-chat: "Właściciel: "
+petmaster-action-bar: "Właściciel: "
+petmaster-health: "Zdrowie: "
+player-offline: "Wyznaczony gracz nie jest online!"
+cannot-change-to-yourself: "Nie możesz zmienić właściciela na siebie!"
+owner-changed: "Oddałeś swojego pupila innemu graczowi!"
+change-owner-price: "Zapłaciłeś: AMOUNT!"
+new-owner: "Gracz PLAYER oddał ci swojego pupila!"
+not-owner: "Nie jesteś właścicielem tego zwierzaka!"
+right-click: "Kliknij PPM na zwierzaka, któremu chcesz zmienić właściciela!"
+pet-freed: "Pozegnaj się: ten zwierzak jest teraz wolny!"
+not-enough-money: "Nie masz wymaganej ilości pieniędzy: AMOUNT!"
+
+# Related to /petm help.
+petmaster-command-setowner: "Zmień właściciela swojego pupila."
+petmaster-command-free: "Wypuść swojego pupila na wolność."
+petmaster-command-disable: "Dezaktywuj plugin."
+petmaster-command-enable: "Aktywuj plugin."
+petmaster-command-reload: "Przeładuj konfigurację tego pluginu."
+petmaster-command-info: "Wyświetl informacje o tym pluginie."
+petmaster-command-setowner-hover: "Możesz zmienić jedynie właściciela swojego pupila, o ile nie jesteś adminem!"
+petmaster-command-free-hover: "Możesz wypuścić tylko swojego zwierzaka, o ile nie jesteś adminem!"
+petmaster-command-disable-hover: "Ten plugin nie będzie działał do następnego restartu lub /petm enable."
+petmaster-command-enable-hover: "Plugin jest domyślnie aktywny. Użyj tego, jeśli wpisałeś wcześniej /petm disable!"
+petmaster-command-reload-hover: "Przeładuj większość opcji z plików congi.yml i lang.yml."
+petmaster-command-info-hover: "Dodatkowe informacje na temat pluginu i jego super autora!"
+petmaster-tip: "&lHINT&r &8Możesz &7&n&onajechać&r &8lub &7&n&okliknąć&r &8na komendę!"
+
+# Related to /petm info.
+version-command-name: "Nazwa:"
+version-command-version: "Wersja:"
+version-command-website: "Strona:"
+version-command-author: "Autor:"
+version-command-description: "Opis:"
+version-command-description-details: "Czyje to zwierzę? Zarządzaj zwierzętami domowymi i wyświetlaj informacje za pomocą hologramów, paska akcji lub wiadomości na czacie!"
+version-command-enabled: "Plugin jest aktywny:"
+
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Parameters to appear in future versions        | #
+# +--------------------------------------------------------+ #
+#============================================================#
