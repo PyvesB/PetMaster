@@ -1,5 +1,5 @@
 <p align="center">
-<img src ="http://images.jupload.fr/1450630798.png" />
+<img src ="https://github.com/PyvesB/PetMaster/blob/master/images/banner.png?raw=true" />
 <br/>
 </p>
 
