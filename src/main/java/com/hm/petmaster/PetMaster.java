@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 import com.hm.petmaster.listener.PlayerAttackListener;
+import com.hm.petmaster.listener.PlayerLeashListener;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -53,6 +54,7 @@ public class PetMaster extends JavaPlugin {
 
 	// Plugin listeners.
 	private PlayerInteractListener playerInteractListener;
+	private PlayerLeashListener playerLeashListener;
 	private PlayerQuitListener playerQuitListener;
 	private PlayerAttackListener playerAttackListener;
 
@@ -78,11 +80,13 @@ public class PetMaster extends JavaPlugin {
 		getLogger().info("Registering listeners...");
 
 		playerInteractListener = new PlayerInteractListener(this);
+		playerLeashListener = new PlayerLeashListener(this);
 		playerQuitListener = new PlayerQuitListener(this);
 
 		PluginManager pm = getServer().getPluginManager();
 		// Register listeners.
 		pm.registerEvents(playerInteractListener, this);
+		pm.registerEvents(playerLeashListener, this);
 		pm.registerEvents(playerQuitListener, this);
 
 		extractParametersFromConfig(true);
@@ -123,6 +127,7 @@ public class PetMaster extends JavaPlugin {
 		}
 
 		playerInteractListener.extractParameters();
+		playerLeashListener.extractParameters();
 
 		if (config.getBoolean("checkForUpdate", true)) {
 			if (updateChecker == null) {

@@ -6,16 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.Animals;
-import org.bukkit.entity.Cat;
-import org.bukkit.entity.Llama;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Parrot;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Sittable;
-import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -66,6 +57,7 @@ public class PlayerInteractListener implements Listener {
 	private int changeOwnerPrice;
 	private int freePetPrice;
 	private boolean showHealth;
+	private boolean disableRiding;
 
 	public PlayerInteractListener(PetMaster petMaster) {
 		this.plugin = petMaster;
@@ -94,6 +86,7 @@ public class PlayerInteractListener implements Listener {
 		hologramMessage = plugin.getPluginConfig().getBoolean("hologramMessage", false);
 		actionBarMessage = plugin.getPluginConfig().getBoolean("actionBarMessage", true);
 		showHealth = plugin.getPluginConfig().getBoolean("showHealth", true);
+		disableRiding = plugin.getPluginConfig().getBoolean("disableRiding", false);
 
 		boolean holographicDisplaysAvailable = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 		// Checking whether user configured plugin to display hologram but HolographicsDisplays not available.
@@ -105,7 +98,7 @@ public class PlayerInteractListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 		if (shouldHandleEvent(event)) {
 			Tameable tameable = (Tameable) event.getRightClicked();
@@ -120,6 +113,13 @@ public class PlayerInteractListener implements Listener {
 			Player newOwner = plugin.getSetOwnerCommand().collectPendingSetOwnershipRequest(player);
 			// Has the player requested to free one of his pets?
 			boolean freePet = plugin.getFreeCommand().collectPendingFreeRequest(player);
+
+			if (disableRiding && !isOwner && !player.hasPermission("petmaster.admin") && tameable instanceof AbstractHorse) {
+				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
+						.getString("not-owner", "You do not own this pet!").replace("PLAYER", player.getName()));
+				event.setCancelled(true);
+				return;
+			}
 
 			// Cannot change ownership or free pet if not owner and no bypass permission.
 			if ((newOwner != null || freePet) && !isOwner && !player.hasPermission("petmaster.admin")) {
