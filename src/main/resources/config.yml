@@ -60,6 +60,12 @@ displayLlama: true
 # Take parrots into account.
 displayParrot: true
 
+# Prevent others from using lead on pet.
+disableLeash: false
+
+# Prevent others from mounting pet (horse/donkey).
+disableRiding: false
+
 # Protect pets to avoid being hurt by other player.
 disablePlayerDamage: false
 
