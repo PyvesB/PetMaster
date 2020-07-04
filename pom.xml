@@ -68,7 +68,7 @@
 	</build>
 	<repositories>
 		<repository>
-			<id>bukkit-repo</id>
+			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
 		</repository>
 		<repository>
@@ -76,15 +76,15 @@
 			<url>https://jitpack.io</url>
 		</repository>
 		<repository>
-			<id>MCShared-mvn-repo</id>
+			<id>mcshared-repo</id>
 			<url>https://raw.github.com/PyvesB/MCShared/mvn-repo/</url>
 		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.14.1-R0.1-SNAPSHOT</version>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>1.16.1-R0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -104,7 +104,7 @@
 		<dependency>
 			<groupId>com.hm.mcshared</groupId>
 			<artifactId>MCShared</artifactId>
-			<version>1.1.5</version>
+			<version>1.1.7</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

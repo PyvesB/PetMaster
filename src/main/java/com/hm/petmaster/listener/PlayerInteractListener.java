@@ -269,6 +269,7 @@ public class PlayerInteractListener implements Listener {
 
 		String healthInfo = "";
 		if (showHealth) {
+			@SuppressWarnings("cast") // Tameable did not extend Animals in older versions of Bukkit.
 			Animals animal = (Animals) tameable;
 			String currentHealth = String.format("%.1f", animal.getHealth());
 			String maxHealth = version < 9 ? String.format("%.1f", animal.getMaxHealth())
