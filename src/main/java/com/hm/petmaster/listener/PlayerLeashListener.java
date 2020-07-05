@@ -1,6 +1,5 @@
 package com.hm.petmaster.listener;
 
-import com.hm.mcshared.particle.ReflectionUtils;
 import com.hm.petmaster.PetMaster;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
@@ -13,14 +12,12 @@ import org.bukkit.event.entity.PlayerLeashEntityEvent;
 
 public class PlayerLeashListener implements Listener {
     private final PetMaster plugin;
-    private final int version;
 
     // Configuration parameters.
     private boolean disableLeash;
 
     public PlayerLeashListener(PetMaster petMaster) {
         this.plugin = petMaster;
-        version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 	}
 
     public void extractParameters() {
