@@ -207,6 +207,8 @@ public class PetMaster extends JavaPlugin {
 		updateSetting(config, "disablePlayerDamage", false, "Protect pets to avoid being hurt by other player.");
 		updateSetting(config, "enableAngryMobPlayerDamage", true,
 				"Allows players to defend themselves against angry tamed mobs (e.g. dogs) even if disablePlayerDamage is true.");
+		updateSetting(config, "disableLeash", false, "Prevent others from using leash on pet.");
+		updateSetting(config, "disableRiding", false, "Prevent others from mounting pet (horse/donkey).");
 
 		if (updatePerformed) {
 			// Changes in the configuration: save and do a fresh load.
