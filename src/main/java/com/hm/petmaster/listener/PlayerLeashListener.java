@@ -39,7 +39,7 @@ public class PlayerLeashListener implements Listener {
             return;
 
         player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-                .getString("not-owner", "You do not own this pet!").replace("PLAYER", player.getName()));
+                .getString("not-owner", "You do not own this pet!"));
         event.setCancelled(true);
     }
 }

@@ -116,7 +116,7 @@ public class PlayerInteractListener implements Listener {
 
 			if (disableRiding && !isOwner && !player.hasPermission("petmaster.admin") && tameable instanceof AbstractHorse) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-						.getString("not-owner", "You do not own this pet!").replace("PLAYER", player.getName()));
+						.getString("not-owner", "You do not own this pet!"));
 				event.setCancelled(true);
 				return;
 			}
@@ -124,7 +124,7 @@ public class PlayerInteractListener implements Listener {
 			// Cannot change ownership or free pet if not owner and no bypass permission.
 			if ((newOwner != null || freePet) && !isOwner && !player.hasPermission("petmaster.admin")) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-						.getString("not-owner", "You do not own this pet!").replace("PLAYER", player.getName()));
+						.getString("not-owner", "You do not own this pet!"));
 				return;
 			}
 
