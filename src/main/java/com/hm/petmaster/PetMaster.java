@@ -39,7 +39,7 @@ import com.hm.petmaster.listener.PlayerQuitListener;
  * Spigot project page: spigotmc.org/resources/pet-master.15904
  * 
  * @since December 2015.
- * @version 1.10.2
+ * @version 1.11.0
  * @author DarkPyves
  */
 public class PetMaster extends JavaPlugin {
