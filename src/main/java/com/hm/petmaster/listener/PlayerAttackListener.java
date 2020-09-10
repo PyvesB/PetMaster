@@ -1,7 +1,7 @@
 package com.hm.petmaster.listener;
 
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Tameable;
@@ -63,9 +63,9 @@ public class PlayerAttackListener implements Listener {
 	}
 
 	private boolean isDamagedTargettingDamager(Entity damager, Entity damaged) {
-		if (damaged instanceof Mob) {
-			Mob mob = (Mob) damaged;
-			return mob.getTarget() != null && mob.getTarget().getUniqueId().equals(damager.getUniqueId());
+		if (damaged instanceof Creature) {
+			Creature creature = (Creature) damaged;
+			return creature.getTarget() != null && creature.getTarget().getUniqueId().equals(damager.getUniqueId());
 		}
 		return false;
 	}

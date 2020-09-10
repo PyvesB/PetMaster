@@ -114,7 +114,7 @@ public class PlayerInteractListener implements Listener {
 			// Has the player requested to free one of his pets?
 			boolean freePet = plugin.getFreeCommand().collectPendingFreeRequest(player);
 
-			if (disableRiding && !isOwner && !player.hasPermission("petmaster.admin") && tameable instanceof AbstractHorse) {
+			if (disableRiding && !isOwner && !player.hasPermission("petmaster.admin") && tameable instanceof Vehicle) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
 						.getString("not-owner", "You do not own this pet!"));
 				event.setCancelled(true);
@@ -242,11 +242,13 @@ public class PlayerInteractListener implements Listener {
 					return;
 				}
 				offset = PARROT_OFFSET;
-			} else if (!displayHorse || !player.hasPermission("petmaster.showowner.horse")) {
-				return;
+			} else if (tameable instanceof Vehicle) {
+				if (!displayHorse || !player.hasPermission("petmaster.showowner.horse")) {
+					return;
+				}
 			}
 
-			Location eventLocation = tameable.getLocation();
+			Location eventLocation = ((Animals) tameable).getLocation();
 			// Create location with offset.
 			Location hologramLocation = new Location(eventLocation.getWorld(), eventLocation.getX(),
 					eventLocation.getY() + offset, eventLocation.getZ());
