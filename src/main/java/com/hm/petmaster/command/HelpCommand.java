@@ -71,6 +71,15 @@ public class HelpCommand {
 					"/petm setowner player", plugin.getPluginLang().getString("petmaster-command-setowner-hover",
 							"You can only change the ownership of your own pets, unless you're admin!"));
 		}
+		
+		if (sender.hasPermission("petmaster.setcolor")) {
+			sendJsonClickableHoverableMessage(sender,
+					plugin.getChatHeader() + ChatColor.GOLD + "/petm setcolor &oCOLOR&r" + ChatColor.GRAY + " > "
+							+ plugin.getPluginLang().getString("petmaster-command-setcolor",
+									"Set the color of the collars of all pets tamed in the future."),
+					"/petm setcolor COLOR", plugin.getPluginLang().getString("petmaster-command-setcolor-hover",
+							"Currently tamed pets are unaffected."));
+		}
 
 		// Empty line.
 		sender.sendMessage(ChatColor.GOLD + " ");
