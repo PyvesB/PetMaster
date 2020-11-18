@@ -9,6 +9,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 
 public class PlayerTameListener implements Listener {
@@ -29,6 +30,19 @@ public class PlayerTameListener implements Listener {
 		} else if (event.getEntity().getType().equals(EntityType.WOLF)) {
 			DyeColor color = plugin.getSetColorCommand().getColor(event.getOwner().getUniqueId());
 			((Wolf) event.getEntity()).setCollarColor(color);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onBreedNewPet(EntityBreedEvent event) {
+		if (version >= 14 && event.getEntity().getType().equals(EntityType.CAT)) {
+			Cat cat = ((Cat) event.getEntity());
+			DyeColor color = plugin.getSetColorCommand().getColor(cat.getOwner().getUniqueId());
+			cat.setCollarColor(color);
+		} else if (event.getEntity().getType().equals(EntityType.WOLF)) {
+			Wolf wolf = ((Wolf) event.getEntity());
+			DyeColor color = plugin.getSetColorCommand().getColor(wolf.getOwner().getUniqueId());
+			wolf.setCollarColor(color);
 		}
 	}
 
