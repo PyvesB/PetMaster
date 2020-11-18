@@ -36,8 +36,13 @@ public class SetColorCommand {
 	}
 
 	public void setColor(Player player, String[] args) {
-		if (args.length == 2) {
-			DyeColor color = DyeColor.valueOf(args[1]);
+		if (args.length != 2) {
+			player.sendMessage(plugin.getChatHeader()
+				+ plugin.getPluginLang().getString("misused-command", "Misused command. Please type /petm."));
+			return;
+		}
+		try {
+			DyeColor color = DyeColor.valueOf(args[1].toUpperCase());
 			if (!player.hasPermission("petmaster.setcolor")) {
 				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("no-permissions",
 					"You do not have the permission to do this."));
@@ -61,9 +66,18 @@ public class SetColorCommand {
 					plugin.getLogger().log(Level.SEVERE, "Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
 				}
 			}
-		} else {
-			player.sendMessage(plugin.getChatHeader()
-				+ plugin.getPluginLang().getString("misused-command", "Misused command. Please type /petm."));
+		} catch (IllegalArgumentException ex) {
+			String colors = "";
+			int length = DyeColor.values().length;
+			for (int i = 0; i < length; ++i) {
+				DyeColor color = DyeColor.values()[i];
+				colors += color.name().toLowerCase();
+				if (i < length - 1) {
+					colors += ' ';
+				}
+			}
+			player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("available-colors",
+				"The following colors are available: ") + colors);
 		}
 	}
 

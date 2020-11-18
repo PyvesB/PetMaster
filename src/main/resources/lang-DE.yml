@@ -29,6 +29,7 @@ not-owner: "Dir gehört das Haustier nicht!"
 right-click: "Rechtsklick um den Besitzer zu wechseln!"
 pet-freed: "Sag Tschüss, das Haustier wird nun wieder in die Wildbahn entlassen!"
 not-enough-money: "Dir fehlt das nötige Geld: AMOUNT!"
+available-colors: "Folgende Farben sind verfügbar: "
 
 # Related to /petm help.
 petmaster-command-setowner: "Änder den Besitzer."

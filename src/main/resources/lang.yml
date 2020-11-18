@@ -29,6 +29,7 @@ not-owner: "You do not own this pet!"
 right-click: "Right click on a pet to change its owner!"
 pet-freed: "Say goodbye: this pet returned to the wild!"
 not-enough-money: "You do not have the required amount: AMOUNT!"
+available-colors: "The following colors are available: "
 
 # Related to /petm help.
 petmaster-command-setowner: "Change the ownership of a pet."
