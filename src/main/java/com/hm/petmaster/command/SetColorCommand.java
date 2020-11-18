@@ -61,6 +61,9 @@ public class SetColorCommand {
 					}
 					playerConfig.set(COLOR_CONFIG_NAME, color.toString());
 					config.save(playerColorConfig);
+					
+					player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
+							.getString("color-successfully-set", "Color successfully changed."));
 				} catch (IOException e) {
 					plugin.getLogger().severe("Error while loading " + playerColorConfig.getName());
 					plugin.getLogger().log(Level.SEVERE, "Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
