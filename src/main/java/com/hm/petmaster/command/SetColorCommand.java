@@ -1,7 +1,5 @@
 package com.hm.petmaster.command;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
@@ -12,16 +10,12 @@ import java.io.IOException;
 import java.util.logging.Level;
 import org.bukkit.DyeColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
- * Class in charge of handling player requests to change ownership of a pet
- * (/petm setowner).
- *
- * @author Pyves
- *
+ * Class in charge of handling player requests to change default color of a pets
+ * collar. (/petm setcolor).
  */
 public class SetColorCommand {
 
@@ -61,26 +55,26 @@ public class SetColorCommand {
 					}
 					playerConfig.set(COLOR_CONFIG_NAME, color.toString());
 					config.save(playerColorConfig);
-					
+
 					player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-							.getString("color-successfully-set", "Color successfully changed."));
+						.getString("color-successfully-set", "Color successfully changed."));
 				} catch (IOException e) {
 					plugin.getLogger().severe("Error while loading " + playerColorConfig.getName());
 					plugin.getLogger().log(Level.SEVERE, "Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
 				}
 			}
 		} catch (IllegalArgumentException ex) {
-			String colors = "";
+			StringBuilder colors = new StringBuilder();
 			int length = DyeColor.values().length;
 			for (int i = 0; i < length; ++i) {
 				DyeColor color = DyeColor.values()[i];
-				colors += color.name().toLowerCase();
+				colors.append(color.name().toLowerCase());
 				if (i < length - 1) {
-					colors += ' ';
+					colors.append(' ');
 				}
 			}
 			player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("available-colors",
-				"The following colors are available: ") + colors);
+				"The following colors are available: ") + colors.toString());
 		}
 	}
 
