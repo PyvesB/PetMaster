@@ -16,6 +16,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.hm.mcshared.file.CommentedYamlConfiguration;
+import com.hm.mcshared.particle.ReflectionUtils;
 import com.hm.mcshared.update.UpdateChecker;
 import com.hm.petmaster.command.EnableDisableCommand;
 import com.hm.petmaster.command.FreeCommand;
@@ -24,6 +25,7 @@ import com.hm.petmaster.command.InfoCommand;
 import com.hm.petmaster.command.ReloadCommand;
 import com.hm.petmaster.command.SetColorCommand;
 import com.hm.petmaster.command.SetOwnerCommand;
+import com.hm.petmaster.listener.PlayerBreedListener;
 import com.hm.petmaster.listener.PlayerInteractListener;
 import com.hm.petmaster.listener.PlayerQuitListener;
 import com.hm.petmaster.listener.PlayerTameListener;
@@ -61,6 +63,7 @@ public class PetMaster extends JavaPlugin {
 	private PlayerQuitListener playerQuitListener;
 	private PlayerAttackListener playerAttackListener;
 	private PlayerTameListener playerTameListener;
+	private PlayerBreedListener playerBreedListener;
 
 	// Used to check for plugin updates.
 	private UpdateChecker updateChecker;
@@ -88,6 +91,7 @@ public class PetMaster extends JavaPlugin {
 		playerLeashListener = new PlayerLeashListener(this);
 		playerQuitListener = new PlayerQuitListener(this);
 		playerTameListener = new PlayerTameListener(this);
+		playerBreedListener = new PlayerBreedListener(this);
 
 		PluginManager pm = getServer().getPluginManager();
 		// Register listeners.
@@ -95,6 +99,9 @@ public class PetMaster extends JavaPlugin {
 		pm.registerEvents(playerLeashListener, this);
 		pm.registerEvents(playerQuitListener, this);
 		pm.registerEvents(playerTameListener, this);
+		if (getServerVersion() >= 10) {
+			pm.registerEvents(playerBreedListener, this);
+		}
 
 		extractParametersFromConfig(true);
 
@@ -319,6 +326,10 @@ public class PetMaster extends JavaPlugin {
 			file.set(name, value, comments);
 			updatePerformed = true;
 		}
+	}
+	
+	public int getServerVersion() {
+		return Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 	}
 
 	public String getChatHeader() {
