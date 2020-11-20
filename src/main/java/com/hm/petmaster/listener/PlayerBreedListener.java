@@ -1,7 +1,6 @@
 package com.hm.petmaster.listener;
 
 import com.hm.petmaster.PetMaster;
-import static jdk.nashorn.internal.runtime.Version.version;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Cat;
 import org.bukkit.entity.EntityType;
