@@ -52,6 +52,7 @@ public class PetMaster extends JavaPlugin {
 	// Plugin options and various parameters.
 	private String chatHeader;
 	private boolean updatePerformed;
+	private int serverVersion;
 
 	// Fields related to file handling.
 	private CommentedYamlConfiguration config;
@@ -86,6 +87,8 @@ public class PetMaster extends JavaPlugin {
 		long startTime = System.currentTimeMillis();
 
 		getLogger().info("Registering listeners...");
+		
+		serverVersion = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 
 		playerInteractListener = new PlayerInteractListener(this);
 		playerLeashListener = new PlayerLeashListener(this);
@@ -329,7 +332,7 @@ public class PetMaster extends JavaPlugin {
 	}
 	
 	public int getServerVersion() {
-		return Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
+		return serverVersion;
 	}
 
 	public String getChatHeader() {
