@@ -19,7 +19,6 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.hm.mcshared.event.PlayerChangeAnimalOwnershipEvent;
 import com.hm.mcshared.particle.FancyMessageSender;
-import com.hm.mcshared.particle.ReflectionUtils.PackageType;
 import com.hm.petmaster.PetMaster;
 
 import net.milkbowl.vault.economy.Economy;
@@ -40,7 +39,6 @@ public class PlayerInteractListener implements Listener {
 	private static final double PARROT_OFFSET = 1.15;
 
 	private final PetMaster plugin;
-	private final int version;
 	private Economy economy;
 
 	// Configuration parameters.
@@ -61,7 +59,6 @@ public class PlayerInteractListener implements Listener {
 
 	public PlayerInteractListener(PetMaster petMaster) {
 		this.plugin = petMaster;
-		version = Integer.parseInt(PackageType.getServerVersion().split("_")[1]);
 		// Try to retrieve an Economy instance from Vault.
 		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null) {
 			RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager()
@@ -147,7 +144,7 @@ public class PlayerInteractListener implements Listener {
 	private boolean shouldHandleEvent(PlayerInteractEntityEvent event) {
 		return !plugin.getEnableDisableCommand().isDisabled() && event.getRightClicked() instanceof Tameable
 				// On Minecraft 1.9+, the event is fired once per hand (HAND and OFF_HAND).
-				&& (version < 9 || event.getHand() == EquipmentSlot.HAND);
+				&& (plugin.getServerVersion() < 9 || event.getHand() == EquipmentSlot.HAND);
 	}
 
 	/**
@@ -187,7 +184,7 @@ public class PlayerInteractListener implements Listener {
 			// Free pet.
 			tameable.setTamed(false);
 			// Make freed pet stand up.
-			if (version >= 12 && tameable instanceof Sittable) {
+			if (plugin.getServerVersion() >= 12 && tameable instanceof Sittable) {
 				((Sittable) tameable).setSitting(false);
 			} else if (tameable instanceof Wolf) {
 				((Wolf) tameable).setSitting(false);
@@ -221,6 +218,7 @@ public class PlayerInteractListener implements Listener {
 	@SuppressWarnings("deprecation")
 	private void displayHologramAndMessage(Player player, AnimalTamer owner, Tameable tameable) {
 		if (hologramMessage) {
+			int version = plugin.getServerVersion();
 			double offset = HORSE_OFFSET;
 			if (tameable instanceof Ocelot || version >= 14 && tameable instanceof Cat) {
 				if (!displayCat || !player.hasPermission("petmaster.showowner.cat")) {
@@ -274,7 +272,7 @@ public class PlayerInteractListener implements Listener {
 			@SuppressWarnings("cast") // Tameable did not extend Animals in older versions of Bukkit.
 			Animals animal = (Animals) tameable;
 			String currentHealth = String.format("%.1f", animal.getHealth());
-			String maxHealth = version < 9 ? String.format("%.1f", animal.getMaxHealth())
+			String maxHealth = plugin.getServerVersion() < 9 ? String.format("%.1f", animal.getMaxHealth())
 					: String.format("%.1f", animal.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 			healthInfo = ChatColor.GRAY + ". " + plugin.getPluginLang().getString("petmaster-health", "Health: ")
 					+ ChatColor.GOLD + currentHealth + "/" + maxHealth;

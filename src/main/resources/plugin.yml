@@ -34,6 +34,9 @@ permissions:
   petmaster.setowner:
     description: Allows players to change the ownership of their own pets.
     default: true
+  petmaster.setcolor:
+    description: Allows players to change the default collar color of their newly tamed pets.
+    default: true
   petmaster.free:
     description: Allows players to free their own pets.
     default: true

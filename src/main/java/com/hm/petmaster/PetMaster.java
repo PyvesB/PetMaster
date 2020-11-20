@@ -16,15 +16,20 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.hm.mcshared.file.CommentedYamlConfiguration;
+import com.hm.mcshared.particle.ReflectionUtils;
 import com.hm.mcshared.update.UpdateChecker;
 import com.hm.petmaster.command.EnableDisableCommand;
 import com.hm.petmaster.command.FreeCommand;
 import com.hm.petmaster.command.HelpCommand;
 import com.hm.petmaster.command.InfoCommand;
 import com.hm.petmaster.command.ReloadCommand;
+import com.hm.petmaster.command.SetColorCommand;
 import com.hm.petmaster.command.SetOwnerCommand;
+import com.hm.petmaster.listener.PlayerBreedListener;
 import com.hm.petmaster.listener.PlayerInteractListener;
 import com.hm.petmaster.listener.PlayerQuitListener;
+import com.hm.petmaster.listener.PlayerTameListener;
+import java.io.File;
 
 /**
  * Whose pet is this? Manage pets and display information via holograms, action bar or chat messages!
@@ -57,6 +62,8 @@ public class PetMaster extends JavaPlugin {
 	private PlayerLeashListener playerLeashListener;
 	private PlayerQuitListener playerQuitListener;
 	private PlayerAttackListener playerAttackListener;
+	private PlayerTameListener playerTameListener;
+	private PlayerBreedListener playerBreedListener;
 
 	// Used to check for plugin updates.
 	private UpdateChecker updateChecker;
@@ -68,6 +75,7 @@ public class PetMaster extends JavaPlugin {
 	private FreeCommand freeCommand;
 	private EnableDisableCommand enableDisableCommand;
 	private ReloadCommand reloadCommand;
+	private SetColorCommand setColorCommand;
 
 	/**
 	 * Called when server is launched or reloaded.
@@ -82,16 +90,24 @@ public class PetMaster extends JavaPlugin {
 		playerInteractListener = new PlayerInteractListener(this);
 		playerLeashListener = new PlayerLeashListener(this);
 		playerQuitListener = new PlayerQuitListener(this);
+		playerTameListener = new PlayerTameListener(this);
+		playerBreedListener = new PlayerBreedListener(this);
 
 		PluginManager pm = getServer().getPluginManager();
 		// Register listeners.
 		pm.registerEvents(playerInteractListener, this);
 		pm.registerEvents(playerLeashListener, this);
 		pm.registerEvents(playerQuitListener, this);
+		pm.registerEvents(playerTameListener, this);
+		if (getServerVersion() >= 10) {
+			pm.registerEvents(playerBreedListener, this);
+		}
 
 		extractParametersFromConfig(true);
 
 		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
+
+		File playerColorConfig = new File(getDataFolder() + File.separator + "playersettings.yml");
 
 		helpCommand = new HelpCommand(this);
 		infoCommand = new InfoCommand(this);
@@ -99,6 +115,7 @@ public class PetMaster extends JavaPlugin {
 		freeCommand = new FreeCommand(this);
 		enableDisableCommand = new EnableDisableCommand(this);
 		reloadCommand = new ReloadCommand(this);
+		setColorCommand = new SetColorCommand(this, playerColorConfig);
 
 		if (getServer().getPluginManager().isPluginEnabled(this)) {
 			getLogger().info("Plugin enabled and ready to run! Took " + (System.currentTimeMillis() - startTime) + "ms.");
@@ -132,7 +149,7 @@ public class PetMaster extends JavaPlugin {
 		if (config.getBoolean("checkForUpdate", true)) {
 			if (updateChecker == null) {
 				updateChecker = new UpdateChecker(this, "https://raw.githubusercontent.com/PyvesB/PetMaster/master/pom.xml",
-						"petmaster.admin", chatHeader, "spigotmc.org/resources/pet-master.15904");
+					"petmaster.admin", chatHeader, "spigotmc.org/resources/pet-master.15904");
 				getServer().getPluginManager().registerEvents(updateChecker, this);
 				updateChecker.launchUpdateCheckerTask();
 			}
@@ -169,7 +186,7 @@ public class PetMaster extends JavaPlugin {
 		} catch (IOException | InvalidConfigurationException e) {
 			getLogger().severe("Error while loading " + fileName + " file, disabling plugin.");
 			getLogger().log(Level.SEVERE,
-					"Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
+				"Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
 			getServer().getPluginManager().disablePlugin(this);
 		}
 
@@ -190,7 +207,7 @@ public class PetMaster extends JavaPlugin {
 
 		updateSetting(config, "languageFileName", "lang.yml", "Name of the language file.");
 		updateSetting(config, "checkForUpdate", true,
-				"Check for update on plugin launch and notify when an OP joins the game.");
+			"Check for update on plugin launch and notify when an OP joins the game.");
 		updateSetting(config, "changeOwnerPrice", 0, "Price of the /petm setowner command (requires Vault).");
 		updateSetting(config, "displayDog", true, "Take dogs into account.");
 		updateSetting(config, "displayCat", true, "Take cats into account.");
@@ -198,15 +215,15 @@ public class PetMaster extends JavaPlugin {
 		updateSetting(config, "displayLlama", true, "Take llamas into account.");
 		updateSetting(config, "displayParrot", true, "Take parrots into account.");
 		updateSetting(config, "actionBarMessage", false,
-				"Enable or disable action bar messages when right-clicking on a pet.");
+			"Enable or disable action bar messages when right-clicking on a pet.");
 		updateSetting(config, "displayToOwner", false,
-				"Enable or disable showing ownership information for a player's own pets.");
+			"Enable or disable showing ownership information for a player's own pets.");
 		updateSetting(config, "freePetPrice", 0, "Price of the /petm free command (requires Vault).");
 		updateSetting(config, "showHealth", true,
-				"Show health next to owner in chat and action bar messages (not holograms).");
+			"Show health next to owner in chat and action bar messages (not holograms).");
 		updateSetting(config, "disablePlayerDamage", false, "Protect pets to avoid being hurt by other player.");
 		updateSetting(config, "enableAngryMobPlayerDamage", true,
-				"Allows players to defend themselves against angry tamed mobs (e.g. dogs) even if disablePlayerDamage is true.");
+			"Allows players to defend themselves against angry tamed mobs (e.g. dogs) even if disablePlayerDamage is true.");
 		updateSetting(config, "disableLeash", false, "Prevent others from using leash on pet.");
 		updateSetting(config, "disableRiding", false, "Prevent others from mounting pet (horse/donkey).");
 
@@ -229,11 +246,11 @@ public class PetMaster extends JavaPlugin {
 		updatePerformed = false;
 
 		updateSetting(lang, "petmaster-command-setowner-hover",
-				"You can only change the ownership of your own pets, unless you're admin!");
+			"You can only change the ownership of your own pets, unless you're admin!");
 		updateSetting(lang, "petmaster-command-disable-hover",
-				"The plugin will not work until next reload or /petm enable.");
+			"The plugin will not work until next reload or /petm enable.");
 		updateSetting(lang, "petmaster-command-enable-hover",
-				"Plugin enabled by default. Use this if you entered /petm disable before!");
+			"Plugin enabled by default. Use this if you entered /petm disable before!");
 		updateSetting(lang, "petmaster-command-reload-hover", "Reload most settings in config.yml and lang.yml files.");
 		updateSetting(lang, "petmaster-command-info-hover", "Some extra info about the plugin and its awesome author!");
 		updateSetting(lang, "petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!");
@@ -288,6 +305,8 @@ public class PetMaster extends JavaPlugin {
 			setOwnerCommand.setOwner(((Player) sender), args);
 		} else if ("free".equalsIgnoreCase(args[0]) && sender instanceof Player) {
 			freeCommand.freePet(((Player) sender), args);
+		} else if ("setcolor".equalsIgnoreCase(args[0]) && sender instanceof Player) {
+			setColorCommand.setColor(((Player) sender), args);
 		} else {
 			sender.sendMessage(chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
 		}
@@ -307,6 +326,10 @@ public class PetMaster extends JavaPlugin {
 			file.set(name, value, comments);
 			updatePerformed = true;
 		}
+	}
+	
+	public int getServerVersion() {
+		return Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 	}
 
 	public String getChatHeader() {
@@ -331,5 +354,9 @@ public class PetMaster extends JavaPlugin {
 
 	public EnableDisableCommand getEnableDisableCommand() {
 		return enableDisableCommand;
+	}
+
+	public SetColorCommand getSetColorCommand() {
+		return setColorCommand;
 	}
 }
