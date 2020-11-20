@@ -265,6 +265,10 @@ public class PetMaster extends JavaPlugin {
 		updateSetting(lang, "not-enough-money", "You do not have the required amount: AMOUNT!");
 		updateSetting(lang, "currently-disabled", "PetMaster is currently disabled, you cannot use this command.");
 		updateSetting(lang, "petmaster-health", "Health: ");
+		updateSetting(lang, "available-colors", "The following colors are available: ");
+		updateSetting(lang, "color-successfully-set", "Color successfully changed.");
+		updateSetting(lang, "petmaster-command-setcolor", "Set the color of the collars of all pets tamed in the future.");
+		updateSetting(lang, "petmaster-command-setcolor-hover", "Currently tamed pets are unaffected.");
 
 		if (updatePerformed) {
 			// Changes in the language file: save and do a fresh load.
