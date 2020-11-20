@@ -65,10 +65,10 @@ public class HelpCommand {
 
 		if (sender.hasPermission("petmaster.setowner")) {
 			sendJsonClickableHoverableMessage(sender,
-					plugin.getChatHeader() + ChatColor.GOLD + "/petm setowner &oplayer&r" + ChatColor.GRAY + " > "
+					plugin.getChatHeader() + ChatColor.GOLD + "/petm setowner &oPLAYER&r" + ChatColor.GRAY + " > "
 							+ plugin.getPluginLang().getString("petmaster-command-setowner",
 									"Change the ownership of a pet."),
-					"/petm setowner player", plugin.getPluginLang().getString("petmaster-command-setowner-hover",
+					"/petm setowner PLAYER", plugin.getPluginLang().getString("petmaster-command-setowner-hover",
 							"You can only change the ownership of your own pets, unless you're admin!"));
 		}
 		
