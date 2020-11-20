@@ -6,7 +6,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.*;
+import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Cat;
+import org.bukkit.entity.Llama;
+import org.bukkit.entity.Ocelot;
+import org.bukkit.entity.Parrot;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Sittable;
+import org.bukkit.entity.Tameable;
+import org.bukkit.entity.Vehicle;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -129,7 +139,7 @@ public class PlayerInteractListener implements Listener {
 				changeOwner(player, currentOwner, newOwner, tameable);
 			} else if (freePet) {
 				freePet(player, currentOwner, tameable);
-			} else if ((displayToOwner || !isOwner) && player.hasPermission("petmaster.showowner")) {
+			} else if ((displayToOwner || !isOwner) && player.hasPermission("petmaster.showowner.*")) {
 				displayHologramAndMessage(player, currentOwner, tameable);
 			}
 		}
