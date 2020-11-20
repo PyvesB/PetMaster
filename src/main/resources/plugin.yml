@@ -3,7 +3,6 @@ main: com.hm.petmaster.PetMaster
 version: ${project.version}
 author: DarkPyves
 softdepend: [HolographicDisplays,Vault]
-load: POSTWORLD
 description: Whose pet is this? Manage pets and display information via holograms, action bar or chat messages!
 website: https://github.com/PyvesB/PetMaster
 api-version: 1.13
