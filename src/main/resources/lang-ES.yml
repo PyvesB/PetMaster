@@ -1,12 +1,12 @@
-﻿#============================================================#
+#============================================================#
 # +--------------------------------------------------------+ #
-# |            Pet Master 1.11.1 Archivo de Idioma         | #
-# |               Español-Latino Por Lethargicx1           | #
+# |                   Pet Master 1.12.0                    | #
+# |            Archivo de Idioma Español-Latino            | #
 # +--------------------------------------------------------+ #
 #============================================================#
 
 no-permissions: "No tienes permiso para hacer esto."
-currently-disabled: "PetMaster está actualmente deshabilitado, no puede usar este comando."
+currently-disabled: "PetMaster está actualmente deshabilitado, no puedes usar este comando."
 misused-command: "Comando mal utilizado. Por favor escriba /petm."
 
 # Related to /petm reload.
@@ -29,16 +29,20 @@ not-owner: "No eres el dueño de esta mascota!"
 right-click: "Haga clic derecho sobre una mascota para cambiar su dueño!"
 pet-freed: "Dile adiós: esta mascota regresó a la naturaleza!"
 not-enough-money: "No posees la cantidad requerida: AMOUNT!"
+available-colors: "Los siguientes colores están disponibles: "
+color-successfully-set: "Color cambiado exitosamente."
 
 # Related to /petm help.
 petmaster-command-setowner: "Cambiar la propiedad de una mascota."
+petmaster-command-setcolor: "Escoje el color del collar de tus futuras mascotas."
 petmaster-command-free: "Libera una mascota."
 petmaster-command-disable: "Deshabilitar el plugin."
 petmaster-command-enable: "Habilita el plugin."
 petmaster-command-reload: "Vuelve a cargar la configuración del plugin."
 petmaster-command-info: "Muestra información diversa sobre el plugin."
-petmaster-command-setowner-hover: "Solo puedes cambiar la propiedad de tus propias mascotas, ¡a menos que seas administrador!"
-petmaster-command-free-hover: "¡Solo puedes liberar a tus propias mascotas, a menos que seas administrador!"
+petmaster-command-setowner-hover: "Sólo puedes cambiar la propiedad de tus propias mascotas, ¡A menos que seas Administrador!"
+petmaster-command-setcolor-hover: "Las mascotas domesticadas actualmente no son afectadas."
+petmaster-command-free-hover: "¡Sólo puedes liberar a tus propias mascotas, a menos que seas administrador!"
 petmaster-command-disable-hover: "El Plugin no funcionará hasta la próxima recarga o habilitar /petm"
 petmaster-command-enable-hover: "Plugin habilitado por defecto. Use esto si ingresó /petm deshabilitar antes!"
 petmaster-command-reload-hover: "Vuelve a cargar la mayoría de las configuraciones en los archivos config.yml y lang.yml."
