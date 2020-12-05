@@ -23,7 +23,7 @@
 <img src ="https://img.shields.io/github/contributors/PyvesB/PetMaster.svg" />
 </a>
 
-**Whose pet is this? Manage pets on Minecraft servers and display information via holograms, action bar or chat messages!**
+**Manage pets and display useful information via holograms, action bar or chat messages!**
 
 <p align="center">
 <img src ="http://images.jupload.fr/1513955095.png" />

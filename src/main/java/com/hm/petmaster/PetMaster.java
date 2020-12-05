@@ -32,7 +32,7 @@ import com.hm.petmaster.listener.PlayerTameListener;
 import java.io.File;
 
 /**
- * Whose pet is this? Manage pets and display information via holograms, action bar or chat messages!
+ * Manage pets and display useful information via holograms, action bar or chat messages!
  * 
  * PetMaster is under GNU General Public License version 3. Please visit the plugin's GitHub for more information :
  * https://github.com/PyvesB/PetMaster

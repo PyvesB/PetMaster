@@ -7,7 +7,7 @@
 	<version>1.12.0</version>
 	<url>https://github.com/PyvesB/PetMaster</url>
 	<name>PetMaster</name>
-	<description>Whose pet is this? Manage pets and display information via holograms, action bar or chat messages!</description>
+	<description>Manage pets and display useful information via holograms, action bar or chat messages!</description>
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/PyvesB/PetMaster/issues</url>
