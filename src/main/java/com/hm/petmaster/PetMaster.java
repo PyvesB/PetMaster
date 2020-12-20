@@ -44,7 +44,7 @@ import java.io.File;
  * Spigot project page: spigotmc.org/resources/pet-master.15904
  * 
  * @since December 2015.
- * @version 1.12.0
+ * @version 1.12.1
  * @author DarkPyves
  */
 public class PetMaster extends JavaPlugin {
