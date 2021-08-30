@@ -1,10 +1,10 @@
 package com.hm.petmaster;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import com.hm.petmaster.listener.PlayerAttackListener;
-import com.hm.petmaster.listener.PlayerLeashListener;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,7 +16,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.hm.mcshared.file.CommentedYamlConfiguration;
-import com.hm.mcshared.particle.ReflectionUtils;
 import com.hm.mcshared.update.UpdateChecker;
 import com.hm.petmaster.command.EnableDisableCommand;
 import com.hm.petmaster.command.FreeCommand;
@@ -25,11 +24,12 @@ import com.hm.petmaster.command.InfoCommand;
 import com.hm.petmaster.command.ReloadCommand;
 import com.hm.petmaster.command.SetColorCommand;
 import com.hm.petmaster.command.SetOwnerCommand;
+import com.hm.petmaster.listener.PlayerAttackListener;
 import com.hm.petmaster.listener.PlayerBreedListener;
 import com.hm.petmaster.listener.PlayerInteractListener;
+import com.hm.petmaster.listener.PlayerLeashListener;
 import com.hm.petmaster.listener.PlayerQuitListener;
 import com.hm.petmaster.listener.PlayerTameListener;
-import java.io.File;
 
 /**
  * Manage pets and display useful information via holograms, action bar or chat messages!
@@ -88,7 +88,8 @@ public class PetMaster extends JavaPlugin {
 
 		getLogger().info("Registering listeners...");
 		
-		serverVersion = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
+		serverVersion = Integer.parseInt(
+				Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3].split("_")[1]);
 
 		playerInteractListener = new PlayerInteractListener(this);
 		playerLeashListener = new PlayerLeashListener(this);

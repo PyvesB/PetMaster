@@ -77,14 +77,14 @@
 		</repository>
 		<repository>
 			<id>mcshared-repo</id>
-			<url>https://raw.github.com/PyvesB/MCShared/mvn-repo/</url>
+			<url>https://raw.github.com/Sidpatchy/MCShared/mvn-repo/</url>
 		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.16.1-R0.1-SNAPSHOT</version>
+			<version>1.17-R0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -104,8 +104,7 @@
 		<dependency>
 			<groupId>com.hm.mcshared</groupId>
 			<artifactId>MCShared</artifactId>
-			<version>1.1.7</version>
-			<scope>compile</scope>
+			<version>1.1.9</version>
 		</dependency>
 	</dependencies>
 </project>

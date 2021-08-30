@@ -65,7 +65,7 @@ public class HelpCommand {
 
 		if (sender.hasPermission("petmaster.setowner")) {
 			sendJsonClickableHoverableMessage(sender,
-					plugin.getChatHeader() + ChatColor.GOLD + "/petm setowner &oPLAYER&r" + ChatColor.GRAY + " > "
+					plugin.getChatHeader() + ChatColor.GOLD + "/petm setowner §oPLAYER§r" + ChatColor.GRAY + " > "
 							+ plugin.getPluginLang().getString("petmaster-command-setowner",
 									"Change the ownership of a pet."),
 					"/petm setowner PLAYER", plugin.getPluginLang().getString("petmaster-command-setowner-hover",
@@ -74,7 +74,7 @@ public class HelpCommand {
 		
 		if (sender.hasPermission("petmaster.setcolor")) {
 			sendJsonClickableHoverableMessage(sender,
-					plugin.getChatHeader() + ChatColor.GOLD + "/petm setcolor &oCOLOR&r" + ChatColor.GRAY + " > "
+					plugin.getChatHeader() + ChatColor.GOLD + "/petm setcolor §oCOLOR§r" + ChatColor.GRAY + " > "
 							+ plugin.getPluginLang().getString("petmaster-command-setcolor",
 									"Set the color of the collars of all pets tamed in the future."),
 					"/petm setcolor COLOR", plugin.getPluginLang().getString("petmaster-command-setcolor-hover",
@@ -102,7 +102,7 @@ public class HelpCommand {
 		// Send clickable and hoverable message if sender is a player and if no exception is caught.
 		if (sender instanceof Player) {
 			try {
-				FancyMessageSender.sendHoverableCommandMessage((Player) sender, message, command, hover, "gold");
+				FancyMessageSender.sendHoverableCommandMessage((Player) sender, message, command, hover);
 			} catch (Exception ex) {
 				plugin.getLogger()
 						.severe("Errors while trying to display clickable and hoverable message in /petm help command. "
