@@ -1,0 +1,65 @@
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Pet Master 1.12.2 English language file        | #
+# |                      By DarkPyves                      | #
+# +--------------------------------------------------------+ #
+#============================================================#
+
+no-permissions: "Bunun için yeterli yetkiye sahip değilsin."
+currently-disabled: "PetMaster şu anda deaktif, dolayısıyla bu komutu kullanamazsın."
+misused-command: "Hatalı komut. Lütfen /petm komutunu kullan."
+
+# Related to /petm reload.
+configuration-successfully-reloaded: "Yapılandırma dosyası başarıyla yeniden yüklendi"
+configuration-reload-failed: "Yapılandırma dosyası yenilenirken bir hata oluştu.Daha fazla detay için hata kayıtlarına göz at."
+
+# Related to other plugin commands.
+petmaster-disabled: "PetMaster bir sonraki yeniden yüklemeye, yeniden başlatmaya veya /petm enable komutu kullanılana kadar devre dışı bırakıldı."
+petmaster-enabled: "PetMaster etkinleştirldi."
+petmaster-hologram: "Evcil hayvanın sahibi: "
+petmaster-chat: "Evcil hayvanın sahibi: "
+petmaster-action-bar: "Evcil hayvanın sahibi: "
+petmaster-health: "Can: "
+player-offline: "Belirtilen oyuncu şu anda çevrimdışı"
+cannot-change-to-yourself: "Kendini yeni sahip olarak atayamazsın.
+owner-changed: "Bu evcil hayvanın sahibi değiştirildi."
+change-owner-price: "Şu miktarı ödedin: AMOUNT!"
+new-owner: "Oyuncu PLAYER bir evcil hayvanın sahipliğini size devretti."
+not-owner: "Bu evcil hayvanın sahibi sen değilsin."
+right-click: "RBir evcil hayvanın sahibini değiştirmek için evcil hayvana sağ tıkla."
+pet-freed: "Veda et, evcil hayvanın doğaya geri döndü."
+not-enough-money: "Gerekli miktara sahip değilsin: AMOUNT!"
+available-colors: "Şu renkler kullanılabilir: "
+color-successfully-set: "Renk başarıyla değiştirildi"
+
+# Related to /petm help.
+petmaster-command-setowner: "Change the ownership of a pet."
+petmaster-command-setcolor: "Set the color of the collars of all pets tamed in the future."
+petmaster-command-free: "Free a pet."
+petmaster-command-disable: "Disable plugin."
+petmaster-command-enable: "Enable plugin."
+petmaster-command-reload: "Reload the plugin's configuration."
+petmaster-command-info: "Display various information about the plugin."
+petmaster-command-setowner-hover: "You can only change the ownership of your own pets, unless you're admin!"
+petmaster-command-setcolor-hover: "Currently tamed pets are unaffected."
+petmaster-command-free-hover: "You can only free your own pets, unless you're admin!"
+petmaster-command-disable-hover: "The plugin will not work until next reload or /petm enable."
+petmaster-command-enable-hover: "Plugin enabled by default. Use this if you entered /petm disable before!"
+petmaster-command-reload-hover: "Reload most settings in config.yml and lang.yml files."
+petmaster-command-info-hover: "Some extra info about the plugin and its awesome author!"
+petmaster-tip: "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!"
+
+# Related to /petm info.
+version-command-name: "İsim:"
+version-command-version: "Versiyon:"
+version-command-website: "Websitesi:"
+version-command-author: "Üretici:"
+version-command-description: "Açıklama:"
+version-command-description-details: "Evcil hayvanları yönetin ve hologramlar, eylem çubuğu veya sohbet mesajları aracılığıyla faydalı bilgileri görüntüleyin!"
+version-command-enabled: "Etkinlik durumu:"
+
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Parameters to appear in future versions        | #
+# +--------------------------------------------------------+ #
+#============================================================#
