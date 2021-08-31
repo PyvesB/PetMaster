@@ -1,7 +1,7 @@
 #============================================================#
 # +--------------------------------------------------------+ #
-# |         Pet Master 1.12.2 English language file        | #
-# |                      By DarkPyves                      | #
+# |         Pet Master 1.12.2 Turkish language file        | #
+# |                      By NotAShelf                      | #
 # +--------------------------------------------------------+ #
 #============================================================#
 
@@ -9,11 +9,11 @@ no-permissions: "Bunun için yeterli yetkiye sahip değilsin."
 currently-disabled: "PetMaster şu anda deaktif, dolayısıyla bu komutu kullanamazsın."
 misused-command: "Hatalı komut. Lütfen /petm komutunu kullan."
 
-# Related to /petm reload.
+# /petm reload ile ilgili komutlar
 configuration-successfully-reloaded: "Yapılandırma dosyası başarıyla yeniden yüklendi"
 configuration-reload-failed: "Yapılandırma dosyası yenilenirken bir hata oluştu.Daha fazla detay için hata kayıtlarına göz at."
 
-# Related to other plugin commands.
+# Diğer eklenti komutları ile ilgili komutlar.
 petmaster-disabled: "PetMaster bir sonraki yeniden yüklemeye, yeniden başlatmaya veya /petm enable komutu kullanılana kadar devre dışı bırakıldı."
 petmaster-enabled: "PetMaster etkinleştirldi."
 petmaster-hologram: "Evcil hayvanın sahibi: "
@@ -32,7 +32,7 @@ not-enough-money: "Gerekli miktara sahip değilsin: AMOUNT!"
 available-colors: "Şu renkler kullanılabilir: "
 color-successfully-set: "Renk başarıyla değiştirildi"
 
-# Related to /petm help.
+# petm help ile ilgili komutlar.
 petmaster-command-setowner: "Bir evcil hayvanın sahibini değiştir."
 petmaster-command-setcolor: "İleride yakalanacak tüm evcil hayvanların isim rengini belirle/değiştir."
 petmaster-command-free: "Bir evcil hayvanı serbest bırak."
@@ -49,7 +49,7 @@ petmaster-command-reload-hover: "config.yml ve lang.yml dosyalarındaki çoğu a
 petmaster-command-info-hover: "Eklenti ve harika yaratıcısı hakkında bazı ek bilgiler!"
 petmaster-tip: "&lİPUCU &8Komutları &7&n&üzerinde imlecinizi dolaştırabilir &8veya &7&n&&8komutların üstüne tıklayabilirsiniz!"
 
-# Related to /petm info.
+# /petm info ile ilgili komutlar.
 version-command-name: "İsim:"
 version-command-version: "Versiyon:"
 version-command-website: "Websitesi:"
@@ -60,6 +60,6 @@ version-command-enabled: "Etkinlik durumu:"
 
 #============================================================#
 # +--------------------------------------------------------+ #
-# |         Parameters to appear in future versions        | #
+# |         Gelecek sürümlerde eklenecek parametreler      | #
 # +--------------------------------------------------------+ #
 #============================================================#
