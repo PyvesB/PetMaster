@@ -1,0 +1,65 @@
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Pet Master 1.12.2 Turkish language file        | #
+# |                      By NotAShelf                      | #
+# +--------------------------------------------------------+ #
+#============================================================#
+
+no-permissions: "Bunun için yeterli yetkiye sahip değilsin."
+currently-disabled: "PetMaster şu anda deaktif, dolayısıyla bu komutu kullanamazsın."
+misused-command: "Hatalı komut. Lütfen /petm komutunu kullan."
+
+# /petm reload ile ilgili komutlar
+configuration-successfully-reloaded: "Yapılandırma dosyası başarıyla yeniden yüklendi"
+configuration-reload-failed: "Yapılandırma dosyası yenilenirken bir hata oluştu.Daha fazla detay için hata kayıtlarına göz at."
+
+# Diğer eklenti komutları ile ilgili komutlar.
+petmaster-disabled: "PetMaster bir sonraki yeniden yüklemeye, yeniden başlatmaya veya /petm enable komutu kullanılana kadar devre dışı bırakıldı."
+petmaster-enabled: "PetMaster etkinleştirldi."
+petmaster-hologram: "Evcil hayvanın sahibi: "
+petmaster-chat: "Evcil hayvanın sahibi: "
+petmaster-action-bar: "Evcil hayvanın sahibi: "
+petmaster-health: "Can: "
+player-offline: "Belirtilen oyuncu şu anda çevrimdışı"
+cannot-change-to-yourself: "Kendini yeni sahip olarak atayamazsın.
+owner-changed: "Bu evcil hayvanın sahibi değiştirildi."
+change-owner-price: "Şu miktarı ödedin: AMOUNT!"
+new-owner: "Oyuncu PLAYER bir evcil hayvanın sahipliğini size devretti."
+not-owner: "Bu evcil hayvanın sahibi sen değilsin."
+right-click: "RBir evcil hayvanın sahibini değiştirmek için evcil hayvana sağ tıkla."
+pet-freed: "Veda et, evcil hayvanın doğaya geri döndü."
+not-enough-money: "Gerekli miktara sahip değilsin: AMOUNT!"
+available-colors: "Şu renkler kullanılabilir: "
+color-successfully-set: "Renk başarıyla değiştirildi"
+
+# petm help ile ilgili komutlar.
+petmaster-command-setowner: "Bir evcil hayvanın sahibini değiştir."
+petmaster-command-setcolor: "İleride yakalanacak tüm evcil hayvanların isim rengini belirle/değiştir."
+petmaster-command-free: "Bir evcil hayvanı serbest bırak."
+petmaster-command-disable: "Eklentiyi devre dışı bırak"
+petmaster-command-enable: "Eklentiyi etkinleştir."
+petmaster-command-reload: "Eklentinin yapılandırma dosyasını (config.yml) yeniden yükle."
+petmaster-command-info: "Eklenti hakkında çeşitli bilgileri görüntüleyin."
+petmaster-command-setowner-hover: "Yönetici değilseniz, yalnızca kendi evcil hayvanlarınızın sahipliğini değiştirebilirsiniz!"
+petmaster-command-setcolor-hover: "Şu anda evcilleştirilmiş evcil hayvanlar etkilenmez."
+petmaster-command-free-hover: "Yönetici değilseniz, yalnızca kendi evcil hayvanlarınızı serbest bırakabilirsiniz!"
+petmaster-command-disable-hover: "Eklenti, bir sonraki yeniden yüklemeye, yeniden başlatmaya veya /petm enable komutu kullanılana kadar çalışmayacaktır."
+petmaster-command-enable-hover: "Eklenti varsayılan olarak etkindir. Daha önce /petm disable girdiyseniz eklentiyi etkinleştirmek için bunu kullanın!"
+petmaster-command-reload-hover: "config.yml ve lang.yml dosyalarındaki çoğu ayarı yeniden yükleyin."
+petmaster-command-info-hover: "Eklenti ve harika yaratıcısı hakkında bazı ek bilgiler!"
+petmaster-tip: "&lİPUCU &8Komutları &7&n&üzerinde imlecinizi dolaştırabilir &8veya &7&n&&8komutların üstüne tıklayabilirsiniz!"
+
+# /petm info ile ilgili komutlar.
+version-command-name: "İsim:"
+version-command-version: "Versiyon:"
+version-command-website: "Websitesi:"
+version-command-author: "Yaratıcı:"
+version-command-description: "Açıklama:"
+version-command-description-details: "Evcil hayvanları yönetin ve hologramlar, eylem çubuğu veya sohbet mesajları aracılığıyla faydalı bilgileri görüntüleyin!"
+version-command-enabled: "Etkinlik durumu:"
+
+#============================================================#
+# +--------------------------------------------------------+ #
+# |         Gelecek sürümlerde eklenecek parametreler      | #
+# +--------------------------------------------------------+ #
+#============================================================#
