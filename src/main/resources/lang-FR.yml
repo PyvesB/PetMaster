@@ -36,7 +36,7 @@ not-owner: "Cet animal ne vous appartient pas !"
 right-click: "Faites clic-droit sur un animal pour changer son propriétaire !"
 pet-freed: "Dîtes adieu : cet animal est retourné à l'état sauvage !"
 not-enough-money: "Vous n'avez pas la somme requise : AMOUNT !"
-available-colors: "Les couleurs suivantes sont disponible : "
+available-colors: "Les couleurs suivantes sont disponibles : "
 color-successfully-set: "La couleur a été changée avec succès."
 
 # Related to /petm help.
