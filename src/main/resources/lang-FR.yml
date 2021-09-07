@@ -41,7 +41,7 @@ color-successfully-set: "La couleur a été changée avec succès."
 
 # Related to /petm help.
 petmaster-command-setowner: "Changer le propriétaire d'un animal."
-petmaster-command-setcolor: "Définit la couleur des colliers de tout les animaux apprivoisé dans le futur."
+petmaster-command-setcolor: "Définit la couleur des colliers de tous les animaux apprivoisés dans le futur."
 petmaster-command-free: "Relâcher un animal."
 petmaster-command-disable: "Désactiver PetMaster jusqu'au prochain redémarrage."
 petmaster-command-enable: "Activer PetMaster (si précédemment désactivé)."
