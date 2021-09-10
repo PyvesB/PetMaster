@@ -21,7 +21,7 @@ petmaster-chat: "Evcil hayvanın sahibi: "
 petmaster-action-bar: "Evcil hayvanın sahibi: "
 petmaster-health: "Can: "
 player-offline: "Belirtilen oyuncu şu anda çevrimdışı"
-cannot-change-to-yourself: "Kendini yeni sahip olarak atayamazsın.
+cannot-change-to-yourself: "Kendini yeni sahip olarak atayamazsın."
 owner-changed: "Bu evcil hayvanın sahibi değiştirildi."
 change-owner-price: "Şu miktarı ödedin: AMOUNT!"
 new-owner: "Oyuncu PLAYER bir evcil hayvanın sahipliğini size devretti."
