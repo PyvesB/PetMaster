@@ -79,6 +79,10 @@
 			<id>mcshared-repo</id>
 			<url>https://raw.github.com/Sidpatchy/MCShared/mvn-repo/</url>
 		</repository>
+		<repository>
+			<id>codemc-repo</id>
+			<url>https://repo.codemc.io/repository/maven-public/</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -96,10 +100,9 @@
 		</dependency>
 		<dependency>
 			<groupId>com.gmail.filoghost.holographicdisplays</groupId>
-			<artifactId>holographicdisplays</artifactId>
-			<version>2.1.7</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/libs/HolographicDisplaysAPI.jar</systemPath>
+			<artifactId>holographicdisplays-api</artifactId>
+			<version>2.4.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.hm.mcshared</groupId>
