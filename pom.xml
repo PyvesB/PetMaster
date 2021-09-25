@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.hm.petmaster</groupId>
 	<artifactId>PetMaster</artifactId>
-	<version>1.12.3</version>
+	<version>1.12.4</version>
 	<url>https://github.com/PyvesB/PetMaster</url>
 	<name>PetMaster</name>
 	<description>Manage pets and display useful information via holograms, action bar or chat messages!</description>
