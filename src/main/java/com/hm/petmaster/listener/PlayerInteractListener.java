@@ -295,7 +295,7 @@ public class PlayerInteractListener implements Listener {
 
 		if (actionBarMessage) {
 			try {
-				FancyMessageSender.sendActionBarMessage(player, "&o" + ChatColor.GRAY
+				FancyMessageSender.sendActionBarMessage(player, "§o" + ChatColor.GRAY
 						+ plugin.getPluginLang().getString("petmaster-action-bar", "Pet owned by ") + ChatColor.GOLD
 						+ owner.getName() + healthInfo);
 			} catch (Exception e) {
