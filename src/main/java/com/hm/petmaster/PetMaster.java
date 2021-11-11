@@ -77,6 +77,9 @@ public class PetMaster extends JavaPlugin {
 	private EnableDisableCommand enableDisableCommand;
 	private ReloadCommand reloadCommand;
 	private SetColorCommand setColorCommand;
+	private ShareCommand shareCommand;
+	private PetInvincibleCommand petInvincibleCommand;
+	private PetSkillCommand petSkillCommand;
 
 	/**
 	 * Called when server is launched or reloaded.
@@ -108,6 +111,10 @@ public class PetMaster extends JavaPlugin {
 		}
 
 		extractParametersFromConfig(true);
+		
+		PetAbilityFile.petAbilitySetup();
+		PetAbilityFile.getPetAbilities().options().copyDefaults(true);
+		PetAbilityFile.petAbilitySave();
 
 		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
 
@@ -120,6 +127,9 @@ public class PetMaster extends JavaPlugin {
 		enableDisableCommand = new EnableDisableCommand(this);
 		reloadCommand = new ReloadCommand(this);
 		setColorCommand = new SetColorCommand(this, playerColorConfig);
+		shareCommand = new ShareCommand(this);
+		petInvincibleCommand = new PetInvincibleCommand(this);
+		petSkillCommand = new PetSkillCommand(this);
 
 		if (getServer().getPluginManager().isPluginEnabled(this)) {
 			getLogger().info("Plugin enabled and ready to run! Took " + (System.currentTimeMillis() - startTime) + "ms.");
@@ -315,6 +325,12 @@ public class PetMaster extends JavaPlugin {
 			freeCommand.freePet(((Player) sender), args);
 		} else if ("setcolor".equalsIgnoreCase(args[0]) && sender instanceof Player) {
 			setColorCommand.setColor(((Player) sender), args);
+		} else if("sharepet".equalsIgnoreCase(args[0]) && sender instanceof Player) {
+			shareCommand.sharePetCommand((Player) sender);
+		} else if("godpet".equalsIgnoreCase(args[0]) && sender instanceof Player) {
+			petInvincibleCommand.godPetCommand((Player)sender);
+		} else if ("petskill".equalsIgnoreCase(args[0]) && sender instanceof Player) {
+			petSkillCommand.petSkillCommand((Player)sender);
 		} else {
 			sender.sendMessage(chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
 		}
