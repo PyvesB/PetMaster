@@ -11,7 +11,7 @@ public class PetDeathListener implements Listener{
 	PetMaster plugin;
 	
 	
-	Tameable tameable;
+	/*Tameable tameable;
 	public PetDeathListener(PetMaster petMaster) {
 		this.plugin = petMaster;
 	}
@@ -32,6 +32,6 @@ public class PetDeathListener implements Listener{
 			isDead = false;
 			isTamed =false;
 		}
-	}
+	}*/
 }
 
