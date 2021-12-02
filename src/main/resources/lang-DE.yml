@@ -16,8 +16,8 @@ configuration-reload-failed: "Fehler beim aktualisieren der Konfigurationen. Bit
 # Related to other plugin commands.
 petmaster-disabled: "PetMaster deaktiviert bis zum nächster aktualisierung oder mit /petm enable wieder aktivieren."
 petmaster-enabled: "PetMaster aktiviert"
-petmaster-hologram: "Haustierbesitzer"
-petmaster-chat: "Haustierbesitzer"
+petmaster-hologram: "Haustierbesitzer "
+petmaster-chat: "Haustierbesitzer "
 petmaster-action-bar: "Haustierbesitzer "
 petmaster-health: "Leben: "
 player-offline: "Der Haustierbesitzer ist offline."
