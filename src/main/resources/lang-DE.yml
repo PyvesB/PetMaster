@@ -18,7 +18,7 @@ petmaster-disabled: "PetMaster deaktiviert bis zum nächster aktualisierung oder
 petmaster-enabled: "PetMaster aktiviert"
 petmaster-hologram: "Haustierbesitzer"
 petmaster-chat: "Haustierbesitzer"
-petmaster-action-bar: "Haustierbesitzer"
+petmaster-action-bar: "Haustierbesitzer "
 petmaster-health: "Leben: "
 player-offline: "Der Haustierbesitzer ist offline."
 cannot-change-to-yourself: "Du kannst nicht den Halter auf dich umändern."
