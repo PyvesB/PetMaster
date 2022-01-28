@@ -24,7 +24,9 @@ public class MessageSender {
     }
 
     public String parseMessageToString(String key, List<Template> templates) {
-        return LegacyComponentSerializer.legacy('&').serialize(parseMessage(plugin.getPluginLang().getString(key), templates));
+        return LegacyComponentSerializer.builder().useUnusualXRepeatedCharacterHexFormat().build().serialize(
+                parseMessage(plugin.getPluginLang().getString(key), templates)
+        );
     }
 
     public String parseMessageToString(String key) {
