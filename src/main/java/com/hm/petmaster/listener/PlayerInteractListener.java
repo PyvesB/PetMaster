@@ -1,7 +1,14 @@
 package com.hm.petmaster.listener;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.hm.petmaster.utils.MessageSender;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.Template;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -32,6 +39,8 @@ import com.hm.mcshared.particle.FancyMessageSender;
 import com.hm.petmaster.PetMaster;
 
 import net.milkbowl.vault.economy.Economy;
+
+import javax.xml.transform.Templates;
 
 /**
  * Class used to display holograms, change the owner of a pet or free a pet.
@@ -122,16 +131,14 @@ public class PlayerInteractListener implements Listener {
 			boolean freePet = plugin.getFreeCommand().collectPendingFreeRequest(player);
 
 			if (disableRiding && !isOwner && !player.hasPermission("petmaster.admin") && tameable instanceof Vehicle) {
-				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-						.getString("not-owner", "You do not own this pet!"));
+				plugin.getMessageSender().sendMessage(player, "not-owner");
 				event.setCancelled(true);
 				return;
 			}
 
 			// Cannot change ownership or free pet if not owner and no bypass permission.
 			if ((newOwner != null || freePet) && !isOwner && !player.hasPermission("petmaster.admin")) {
-				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-						.getString("not-owner", "You do not own this pet!"));
+				plugin.getMessageSender().sendMessage(player, "not-owner");
 				return;
 			}
 
@@ -208,8 +215,7 @@ public class PlayerInteractListener implements Listener {
 				}
 			}
 
-			player.sendMessage(plugin.getChatHeader()
-					+ plugin.getPluginLang().getString("pet-freed", "Say goodbye: this pet returned to the wild!"));
+			plugin.getMessageSender().sendMessage(player, "pet-freed");
 
 			// Create new event to allow other plugins to be aware of the freeing.
 			PlayerChangeAnimalOwnershipEvent playerChangeAnimalOwnershipEvent = new PlayerChangeAnimalOwnershipEvent(
@@ -262,9 +268,9 @@ public class PlayerInteractListener implements Listener {
 					eventLocation.getY() + offset, eventLocation.getZ());
 
 			final Hologram hologram = HologramsAPI.createHologram(plugin, hologramLocation);
-			hologram.appendTextLine(
-					ChatColor.GRAY + plugin.getPluginLang().getString("petmaster-hologram", "Pet owned by ")
-							+ ChatColor.GOLD + owner.getName());
+			List<Template> templates = new ArrayList<>();
+			templates.add(Template.of("owner", owner.getName()));
+			hologram.appendTextLine(plugin.getMessageSender().parseMessageToString("petmaster-hologram", templates));
 
 			// Runnable to delete hologram.
 			new BukkitRunnable() {
@@ -277,30 +283,33 @@ public class PlayerInteractListener implements Listener {
 			}.runTaskLater(plugin, hologramDuration);
 		}
 
-		String healthInfo = "";
+		Component healthInfo = null;
 		if (showHealth) {
 			@SuppressWarnings("cast") // Tameable did not extend Animals in older versions of Bukkit.
 			Animals animal = (Animals) tameable;
-			String currentHealth = String.format("%.1f", animal.getHealth());
-			String maxHealth = plugin.getServerVersion() < 9 ? String.format("%.1f", animal.getMaxHealth())
-					: String.format("%.1f", animal.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-			healthInfo = ChatColor.GRAY + ". " + plugin.getPluginLang().getString("petmaster-health", "Health: ")
-					+ ChatColor.GOLD + currentHealth + "/" + maxHealth;
+			List<Template> templates = new ArrayList<>();
+			templates.add(Template.of("currentHealth", String.format("%.1f", animal.getHealth())));
+			templates.add(Template.of("maxHealth", plugin.getServerVersion() < 9 ? String.format("%.1f", animal.getMaxHealth())
+					: String.format("%.1f", animal.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue())));
+			healthInfo = plugin.getMessageSender().parseMessage(plugin.getPluginLang().getString("petmaster-health"), templates);
 		}
+		List<Template> templates = new ArrayList<>();
+		templates.add(Template.of("owner", owner.getName()));
 
 		if (chatMessage) {
-			player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("petmaster-chat", "Pet owned by ")
-					+ ChatColor.GOLD + owner.getName() + healthInfo);
+			Component parsedComponent = plugin.getMessageSender().parseMessage(plugin.getPluginLang().getString("petmaster-chat"), templates);
+			if (healthInfo != null){
+				parsedComponent = parsedComponent.append(healthInfo);
+			}
+			plugin.getMessageSender().sendComponent(player, parsedComponent);
 		}
 
 		if (actionBarMessage) {
-			try {
-				FancyMessageSender.sendActionBarMessage(player, "§o" + ChatColor.GRAY
-						+ plugin.getPluginLang().getString("petmaster-action-bar", "Pet owned by ") + ChatColor.GOLD
-						+ owner.getName() + healthInfo);
-			} catch (Exception e) {
-				plugin.getLogger().warning("Errors while trying to display action bar message for pet ownership.");
+			Component parsedComponent = plugin.getMessageSender().parseMessage(plugin.getPluginLang().getString("petmaster-action-bar"), templates);
+			if (healthInfo != null){
+				parsedComponent = parsedComponent.append(healthInfo);
 			}
+			plugin.getMessageSender().sendComponentToActionBar(player, parsedComponent);
 		}
 	}
 
@@ -318,16 +327,15 @@ public class PlayerInteractListener implements Listener {
 			String priceWithCurrency = price + " "
 					+ (price > 1 ? economy.currencyNamePlural() : economy.currencyNameSingular());
 			if (economy.getBalance(player) < price) {
-				player.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
-						plugin.getPluginLang()
-								.getString("not-enough-money", "You do not have the required amount: AMOUNT!")
-								.replace("AMOUNT", priceWithCurrency)));
+				List<Template> templates = new ArrayList<>();
+				templates.add(Template.of("amount", priceWithCurrency));
+				plugin.getMessageSender().sendMessage(player, "not-enough-money", templates);
 				return false;
 			}
 			economy.withdrawPlayer(player, price);
-			player.sendMessage(plugin.getChatHeader() + ChatColor.translateAlternateColorCodes('&',
-					plugin.getPluginLang().getString("change-owner-price", "You payed: AMOUNT!").replace("AMOUNT",
-							priceWithCurrency)));
+			List<Template> templates = new ArrayList<>();
+			templates.add(Template.of("amount", priceWithCurrency));
+			plugin.getMessageSender().sendMessage(player, "change-owner-price", templates);
 		}
 		return true;
 	}

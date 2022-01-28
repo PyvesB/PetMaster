@@ -24,15 +24,12 @@ public class EnableDisableCommand {
 		if (sender.hasPermission("petmaster.admin")) {
 			this.disabled = disabled;
 			if (disabled) {
-				sender.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("petmaster-disabled",
-						"PetMaster disabled till next reload or /petm enable."));
+				plugin.getMessageSender().sendMessage(sender, "petmaster-disabled");
 			} else {
-				sender.sendMessage(plugin.getChatHeader()
-						+ plugin.getPluginLang().getString("petmaster-enabled", "PetMaster enabled."));
+				plugin.getMessageSender().sendMessage(sender, "petmaster-enabled");
 			}
 		} else {
-			sender.sendMessage(plugin.getChatHeader()
-					+ plugin.getPluginLang().getString("no-permissions", "You do not have the permission to do this."));
+			plugin.getMessageSender().sendMessage(sender, "no-permissions");
 		}
 	}
 

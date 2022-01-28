@@ -1,11 +1,13 @@
 package com.hm.petmaster;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-
+import com.hm.mcshared.file.CommentedYamlConfiguration;
+import com.hm.mcshared.update.UpdateChecker;
+import com.hm.petmaster.command.*;
+import com.hm.petmaster.files.PetAbilityFile;
+import com.hm.petmaster.listener.*;
+import com.hm.petmaster.utils.MessageSender;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -14,29 +16,18 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
-import com.hm.mcshared.file.CommentedYamlConfiguration;
-import com.hm.mcshared.update.UpdateChecker;
-import com.hm.petmaster.command.EnableDisableCommand;
-import com.hm.petmaster.command.FreeCommand;
-import com.hm.petmaster.command.HelpCommand;
-import com.hm.petmaster.command.InfoCommand;
-import com.hm.petmaster.command.ReloadCommand;
-import com.hm.petmaster.command.SetColorCommand;
-import com.hm.petmaster.command.SetOwnerCommand;
-import com.hm.petmaster.listener.PlayerAttackListener;
-import com.hm.petmaster.listener.PlayerBreedListener;
-import com.hm.petmaster.listener.PlayerInteractListener;
-import com.hm.petmaster.listener.PlayerLeashListener;
-import com.hm.petmaster.listener.PlayerQuitListener;
-import com.hm.petmaster.listener.PlayerTameListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Manage pets and display useful information via holograms, action bar or chat messages!
  * 
  * PetMaster is under GNU General Public License version 3. Please visit the plugin's GitHub for more information :
  * https://github.com/PyvesB/PetMaster
- * 
+ *
  * Official plugin's server: hellominecraft.fr
  * 
  * Bukkit project page: dev.bukkit.org/bukkit-plugins/pet-master
@@ -81,6 +72,17 @@ public class PetMaster extends JavaPlugin {
 	private PetInvincibleCommand petInvincibleCommand;
 	private PetSkillCommand petSkillCommand;
 
+	//Messageing System
+	private BukkitAudiences adventure;
+	private MessageSender messageSender;
+
+	public @NotNull BukkitAudiences adventure() {
+		if(this.adventure == null) {
+			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+		}
+		return this.adventure;
+	}
+
 	/**
 	 * Called when server is launched or reloaded.
 	 */
@@ -88,6 +90,10 @@ public class PetMaster extends JavaPlugin {
 	public void onEnable() {
 		// Start enabling plugin.
 		long startTime = System.currentTimeMillis();
+
+		// Initializing the Messaging System
+		this.adventure = BukkitAudiences.create(this);
+		this.messageSender = new MessageSender(this);
 
 		getLogger().info("Registering listeners...");
 		
@@ -116,7 +122,7 @@ public class PetMaster extends JavaPlugin {
 		PetAbilityFile.getPetAbilities().options().copyDefaults(true);
 		PetAbilityFile.petAbilitySave();
 
-		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
+		chatHeader = lang.getString("petmaster-prefix");
 
 		File playerColorConfig = new File(getDataFolder() + File.separator + "playersettings.yml");
 
@@ -138,7 +144,7 @@ public class PetMaster extends JavaPlugin {
 
 	/**
 	 * Extracts plugin parameters from the configuration file.
-	 * 
+	 *
 	 * @param attemptUpdate
 	 */
 	public void extractParametersFromConfig(boolean attemptUpdate) {
@@ -280,6 +286,7 @@ public class PetMaster extends JavaPlugin {
 		updateSetting(lang, "color-successfully-set", "Color successfully changed.");
 		updateSetting(lang, "petmaster-command-setcolor", "Set the color of the collars of all pets tamed in the future.");
 		updateSetting(lang, "petmaster-command-setcolor-hover", "Currently tamed pets are unaffected.");
+		updateSetting(lang, "petmaster-prefix", "&7[&6\u265E&7]");
 
 		if (updatePerformed) {
 			// Changes in the language file: save and do a fresh load.
@@ -297,6 +304,11 @@ public class PetMaster extends JavaPlugin {
 	 */
 	@Override
 	public void onDisable() {
+		// Closing Adventure API
+		if(this.adventure != null) {
+			this.adventure.close();
+			this.adventure = null;
+		}
 		getLogger().info("PetMaster has been disabled.");
 	}
 
@@ -356,6 +368,7 @@ public class PetMaster extends JavaPlugin {
 		return serverVersion;
 	}
 
+	@Deprecated
 	public String getChatHeader() {
 		return chatHeader;
 	}
@@ -382,5 +395,9 @@ public class PetMaster extends JavaPlugin {
 
 	public SetColorCommand getSetColorCommand() {
 		return setColorCommand;
+	}
+
+	public MessageSender getMessageSender(){
+		return messageSender;
 	}
 }

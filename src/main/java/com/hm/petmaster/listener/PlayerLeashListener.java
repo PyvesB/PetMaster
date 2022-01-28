@@ -38,8 +38,7 @@ public class PlayerLeashListener implements Listener {
         if (currentOwner == null || currentOwner.getUniqueId().equals(player.getUniqueId()) || player.hasPermission("petmaster.admin"))
             return;
 
-        player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-                .getString("not-owner", "You do not own this pet!"));
+        plugin.getMessageSender().sendMessage(player, "not-owner");
         event.setCancelled(true);
     }
 }

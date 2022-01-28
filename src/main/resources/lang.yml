@@ -5,32 +5,35 @@
 # +--------------------------------------------------------+ #
 #============================================================#
 
-no-permissions: "You do not have the permission to do this."
-currently-disabled: "PetMaster is currently disabled, you cannot use this command."
-misused-command: "Misused command. Please type /petm."
+# Prefix has to be added with <prefix> to appear in messages
+petmaster-prefix: "<gray>[<gold>♞<gray>] "
+
+no-permissions: "<prefix> You do not have the permission to do this."
+currently-disabled: "<prefix> PetMaster is currently disabled, you cannot use this command."
+misused-command: "<prefix> Misused command. Please type /petm."
 
 # Related to /petm reload.
-configuration-successfully-reloaded: "Configuration successfully reloaded."
-configuration-reload-failed: "Errors while reloading configuration. Please view logs for more details."
+configuration-successfully-reloaded: "<prefix> Configuration successfully reloaded."
+configuration-reload-failed: "<prefix> Errors while reloading configuration. Please view logs for more details."
 
 # Related to other plugin commands.
-petmaster-disabled: "PetMaster disabled till next reload or /petm enable."
-petmaster-enabled: "PetMaster enabled."
-petmaster-hologram: "Pet owned by "
-petmaster-chat: "Pet owned by "
-petmaster-action-bar: "Pet owned by "
-petmaster-health: "Health: "
-player-offline: "The specified player is offline!"
-cannot-change-to-yourself: "You cannot change the owner to yourself!"
-owner-changed: "This pet was given to a new owner!"
-change-owner-price: "You payed: AMOUNT!"
-new-owner: "Player PLAYER gave you ownership of a pet!"
-not-owner: "You do not own this pet!"
-right-click: "Right click on a pet to change its owner!"
-pet-freed: "Say goodbye: this pet returned to the wild!"
-not-enough-money: "You do not have the required amount: AMOUNT!"
-available-colors: "The following colors are available: "
-color-successfully-set: "Color successfully changed."
+petmaster-disabled: "<prefix> PetMaster disabled till next reload or /petm enable."
+petmaster-enabled: "<prefix> PetMaster enabled."
+petmaster-hologram: "Pet owned by <gold><owner></gold>."
+petmaster-chat: "<prefix> Pet owned by <gold><owner></gold>. "
+petmaster-action-bar: "Pet owned by <gold><owner></gold>. "
+petmaster-health: "Health: <blue><currentHealth></blue> / <blue><maxHealth></blue>"
+player-offline: "<prefix> The specified player is offline!"
+cannot-change-to-yourself: "<prefix> You cannot change the owner to yourself!"
+owner-changed: "<prefix> This pet was given to a new owner!"
+change-owner-price: "<prefix> You payed: <gold><amount></gold>!"
+new-owner: "<prefix> Player <player> gave you ownership of a pet!"
+not-owner: "<prefix> You do not own this pet!"
+right-click: "<prefix> Right click on a pet to change its owner!"
+pet-freed: "<prefix> Say goodbye: this pet returned to the wild!"
+not-enough-money: "<prefix> You do not have the required amount: <red><amount></red>!"
+available-colors: "<prefix> The following colors are available: <colors>"
+color-successfully-set: "<prefix> Color successfully changed."
 
 # Related to /petm help.
 petmaster-command-setowner: "Change the ownership of a pet."
