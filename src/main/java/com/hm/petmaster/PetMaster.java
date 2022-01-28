@@ -266,29 +266,6 @@ public class PetMaster extends JavaPlugin {
 	private void updateOldLanguage() {
 		updatePerformed = false;
 
-		updateSetting(lang, "petmaster-command-setowner-hover",
-			"You can only change the ownership of your own pets, unless you're admin!");
-		updateSetting(lang, "petmaster-command-disable-hover",
-			"The plugin will not work until next reload or /petm enable.");
-		updateSetting(lang, "petmaster-command-enable-hover",
-			"Plugin enabled by default. Use this if you entered /petm disable before!");
-		updateSetting(lang, "petmaster-command-reload-hover", "Reload most settings in config.yml and lang.yml files.");
-		updateSetting(lang, "petmaster-command-info-hover", "Some extra info about the plugin and its awesome author!");
-		updateSetting(lang, "petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!");
-		updateSetting(lang, "change-owner-price", "You payed: AMOUNT!");
-		updateSetting(lang, "petmaster-action-bar", "Pet owned by ");
-		updateSetting(lang, "petmaster-command-free", "Free a pet.");
-		updateSetting(lang, "petmaster-command-free-hover", "You can only free your own pets, unless you're admin!");
-		updateSetting(lang, "pet-freed", "Say goodbye: this pet returned to the wild!");
-		updateSetting(lang, "not-enough-money", "You do not have the required amount: AMOUNT!");
-		updateSetting(lang, "currently-disabled", "PetMaster is currently disabled, you cannot use this command.");
-		updateSetting(lang, "petmaster-health", "Health: ");
-		updateSetting(lang, "available-colors", "The following colors are available: ");
-		updateSetting(lang, "color-successfully-set", "Color successfully changed.");
-		updateSetting(lang, "petmaster-command-setcolor", "Set the color of the collars of all pets tamed in the future.");
-		updateSetting(lang, "petmaster-command-setcolor-hover", "Currently tamed pets are unaffected.");
-		updateSetting(lang, "petmaster-prefix", "&7[&6\u265E&7]");
-
 		if (updatePerformed) {
 			// Changes in the language file: save and do a fresh load.
 			try {
@@ -345,7 +322,7 @@ public class PetMaster extends JavaPlugin {
 		} else if ("petskill".equalsIgnoreCase(args[0]) && sender instanceof Player) {
 			petSkillCommand.petSkillCommand((Player)sender);
 		} else {
-			sender.sendMessage(chatHeader + lang.getString("misused-command", "Misused command. Please type /petm."));
+			getMessageSender().sendMessage(sender, "misused-command");
 		}
 		return true;
 	}
