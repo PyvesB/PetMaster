@@ -8,6 +8,7 @@ import com.hm.petmaster.listener.*;
 import com.hm.petmaster.utils.MessageSender;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -122,7 +123,7 @@ public class PetMaster extends JavaPlugin {
 		PetAbilityFile.getPetAbilities().options().copyDefaults(true);
 		PetAbilityFile.petAbilitySave();
 
-		chatHeader = lang.getString("petmaster-prefix");
+		chatHeader = ChatColor.GRAY + "[" + ChatColor.GOLD + "\u265E" + ChatColor.GRAY + "] ";
 
 		File playerColorConfig = new File(getDataFolder() + File.separator + "playersettings.yml");
 
