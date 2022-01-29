@@ -138,6 +138,11 @@ public class PetMaster extends JavaPlugin {
 		petInvincibleCommand = new PetInvincibleCommand(this);
 		petSkillCommand = new PetSkillCommand(this);
 
+		// Warn if an outdated entry is contained in the language file
+		if (lang.contains("petmaster-command-info-hover")){
+			getLogger().log(Level.WARNING, "Your language file contains outdated entrys! It is highly reccomended to delete it and let it regenerate so that all messages appear correctly.");
+		}
+
 		if (getServer().getPluginManager().isPluginEnabled(this)) {
 			getLogger().info("Plugin enabled and ready to run! Took " + (System.currentTimeMillis() - startTime) + "ms.");
 		}
@@ -265,6 +270,9 @@ public class PetMaster extends JavaPlugin {
 	 */
 	private void updateOldLanguage() {
 		updatePerformed = false;
+
+		updateSetting(lang, "petmaster-help-header", "<prefix> <gold>------------------ ♞<bold>PetMaster</bold>♞  ------------------");
+		updateSetting(lang, "petmaster-prefix", "<gray>[<gold>♞<gray>] ");
 
 		if (updatePerformed) {
 			// Changes in the language file: save and do a fresh load.
