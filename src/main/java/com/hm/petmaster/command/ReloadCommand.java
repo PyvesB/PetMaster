@@ -25,21 +25,19 @@ public class ReloadCommand {
 			plugin.extractParametersFromConfig(false);
 			if (plugin.getServer().getPluginManager().isPluginEnabled(plugin)) {
 				if (sender instanceof Player) {
-					sender.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-							.getString("configuration-successfully-reloaded", "Configuration successfully reloaded."));
+					Player player = (Player)  sender;
+					plugin.getMessageSender().sendMessage(player, "configuration-successfully-reloaded");
 				}
 				plugin.getLogger().info("Configuration successfully reloaded.");
 			} else {
 				if (sender instanceof Player) {
-					sender.sendMessage(
-							plugin.getChatHeader() + plugin.getPluginLang().getString("configuration-reload-failed",
-									"Errors while reloading configuration. Please view logs for more details."));
+					Player player = (Player)  sender;
+					plugin.getMessageSender().sendMessage(sender, "configuration-reload-failed");
 				}
 				plugin.getLogger().severe("Errors while reloading configuration. Please view logs for more details.");
 			}
 		} else {
-			sender.sendMessage(plugin.getChatHeader()
-					+ plugin.getPluginLang().getString("no-permissions", "You do not have the permission to do this."));
+			plugin.getMessageSender().sendMessage(sender, "no-permissions");
 		}
 	}
 

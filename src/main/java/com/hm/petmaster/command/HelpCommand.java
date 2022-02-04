@@ -23,94 +23,35 @@ public class HelpCommand {
 
 	public void getHelp(CommandSender sender) {
 		// Header.
-		sender.sendMessage(ChatColor.GOLD + "------------------ " + ChatColor.GRAY + ChatColor.GOLD + "\u265E"
-				+ ChatColor.translateAlternateColorCodes('&', " &lPet Master ") + ChatColor.GOLD + "\u265E"
-				+ ChatColor.GRAY + ChatColor.GOLD + " ------------------");
+		plugin.getMessageSender().sendMessage(sender, "petmaster-help-header");
 
-		sendJsonClickableHoverableMessage(sender,
-				plugin.getChatHeader() + ChatColor.GOLD + "/petm info" + ChatColor.GRAY + " > "
-						+ plugin.getPluginLang().getString("petmaster-command-info",
-								"Display various information about the plugin."),
-				"/petm info", plugin.getPluginLang().getString("petmaster-command-info-hover",
-						"Some extra info about the plugin and its awesome author!"));
+		plugin.getMessageSender().sendMessage(sender, "petmaster-command-info");
+
 
 		if (sender.hasPermission("petmaster.free")) {
-			sendJsonClickableHoverableMessage(sender,
-					plugin.getChatHeader() + ChatColor.GOLD + "/petm free" + ChatColor.GRAY + " > "
-							+ plugin.getPluginLang().getString("petmaster-command-free", "Free a pet."),
-					"/petm free", plugin.getPluginLang().getString("petmaster-command-free-hover",
-							"You can only free your own pets, unless you're admin!"));
+			plugin.getMessageSender().sendMessage(sender, "petmaster-command-free");
 		}
 
 		if (sender.hasPermission("petmaster.admin")) {
-			sendJsonClickableHoverableMessage(sender,
-					plugin.getChatHeader() + ChatColor.GOLD + "/petm reload" + ChatColor.GRAY + " > "
-							+ plugin.getPluginLang().getString("petmaster-command-reload",
-									"Reload the plugin's configuration."),
-					"/petm reload", plugin.getPluginLang().getString("petmaster-command-reload-hover",
-							"Reload most settings in config.yml and lang.yml files."));
+			plugin.getMessageSender().sendMessage(sender, "petmaster-command-reload");
 
-			sendJsonClickableHoverableMessage(sender,
-					plugin.getChatHeader() + ChatColor.GOLD + "/petm enable" + ChatColor.GRAY + " > "
-							+ plugin.getPluginLang().getString("petmaster-command-enable", "Enable plugin."),
-					"/petm enable", plugin.getPluginLang().getString("petmaster-command-enable-hover",
-							"Plugin enabled by default. Use this if you entered /petm disable before!"));
+			plugin.getMessageSender().sendMessage(sender, "petmaster-command-enable");
 
-			sendJsonClickableHoverableMessage(sender,
-					plugin.getChatHeader() + ChatColor.GOLD + "/petm disable" + ChatColor.GRAY + " > "
-							+ plugin.getPluginLang().getString("petmaster-command-disable", "Disable plugin."),
-					"/petm disable", plugin.getPluginLang().getString("petmaster-command-disable-hover",
-							"The plugin will not work until next reload or /petm enable."));
+			plugin.getMessageSender().sendMessage(sender, "petmaster-command-disable");
 		}
 
 		if (sender.hasPermission("petmaster.setowner")) {
-			sendJsonClickableHoverableMessage(sender,
-					plugin.getChatHeader() + ChatColor.GOLD + "/petm setowner §oPLAYER§r" + ChatColor.GRAY + " > "
-							+ plugin.getPluginLang().getString("petmaster-command-setowner",
-									"Change the ownership of a pet."),
-					"/petm setowner PLAYER", plugin.getPluginLang().getString("petmaster-command-setowner-hover",
-							"You can only change the ownership of your own pets, unless you're admin!"));
+			plugin.getMessageSender().sendMessage(sender, "petmaster-command-setowner");
 		}
 		
 		if (sender.hasPermission("petmaster.setcolor")) {
-			sendJsonClickableHoverableMessage(sender,
-					plugin.getChatHeader() + ChatColor.GOLD + "/petm setcolor §oCOLOR§r" + ChatColor.GRAY + " > "
-							+ plugin.getPluginLang().getString("petmaster-command-setcolor",
-									"Set the color of the collars of all pets tamed in the future."),
-					"/petm setcolor COLOR", plugin.getPluginLang().getString("petmaster-command-setcolor-hover",
-							"Currently tamed pets are unaffected."));
+			plugin.getMessageSender().sendMessage(sender, "petmaster-command-setcolor");
 		}
 
 		// Empty line.
-		sender.sendMessage(ChatColor.GOLD + " ");
+		sender.sendMessage("");
 
 		// Tip message.
-		sender.sendMessage(ChatColor.GRAY + ChatColor.translateAlternateColorCodes('&', plugin.getPluginLang()
-				.getString("petmaster-tip", "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!")));
-	}
-
-	/**
-	 * Sends a packet message to the server in order to display a clickable and hoverable message. A suggested command
-	 * is displayed in the chat when clicked on, and an additional help message appears when a command is hovered.
-	 * 
-	 * @param sender
-	 * @param message
-	 * @param command
-	 * @param hover
-	 */
-	public void sendJsonClickableHoverableMessage(CommandSender sender, String message, String command, String hover) {
-		// Send clickable and hoverable message if sender is a player and if no exception is caught.
-		if (sender instanceof Player) {
-			try {
-				FancyMessageSender.sendHoverableCommandMessage((Player) sender, message, command, hover);
-			} catch (Exception ex) {
-				plugin.getLogger()
-						.severe("Errors while trying to display clickable and hoverable message in /petm help command. "
-								+ "Displaying standard message instead.");
-				sender.sendMessage(message);
-			}
-		} else {
-			sender.sendMessage(message);
-		}
+		plugin.getMessageSender().sendMessage(sender, "petmaster-tip");
 	}
 }

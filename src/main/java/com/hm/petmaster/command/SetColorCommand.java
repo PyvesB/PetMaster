@@ -1,7 +1,10 @@
 package com.hm.petmaster.command;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import net.kyori.adventure.text.minimessage.Template;
 import org.bukkit.entity.Player;
 
 import com.hm.petmaster.PetMaster;
@@ -12,6 +15,8 @@ import org.bukkit.DyeColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import javax.xml.transform.Templates;
 
 /**
  * Class in charge of handling player requests to change default color of a pets
@@ -31,18 +36,15 @@ public class SetColorCommand {
 
 	public void setColor(Player player, String[] args) {
 		if (args.length != 2) {
-			player.sendMessage(plugin.getChatHeader()
-				+ plugin.getPluginLang().getString("misused-command", "Misused command. Please type /petm."));
+			plugin.getMessageSender().sendMessage(player, "misused-command");
 			return;
 		}
 		try {
 			DyeColor color = DyeColor.valueOf(args[1].toUpperCase());
 			if (!player.hasPermission("petmaster.setcolor")) {
-				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("no-permissions",
-					"You do not have the permission to do this."));
+				plugin.getMessageSender().sendMessage(player, "no-permissions");
 			} else if (plugin.getEnableDisableCommand().isDisabled()) {
-				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("currently-disabled",
-					"PetMaster is currently disabled, you cannot use this command."));
+				plugin.getMessageSender().sendMessage(player, "currently-disabled");
 			} else {
 				try {
 					if (!playerColorConfig.exists()) {
@@ -56,8 +58,7 @@ public class SetColorCommand {
 					playerConfig.set(COLOR_CONFIG_NAME, color.toString());
 					config.save(playerColorConfig);
 
-					player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-						.getString("color-successfully-set", "Color successfully changed."));
+					plugin.getMessageSender().sendMessage(player, "color-successfully-set");
 				} catch (IOException e) {
 					plugin.getLogger().severe("Error while loading " + playerColorConfig.getName());
 					plugin.getLogger().log(Level.SEVERE, "Verify your syntax by visiting yaml-online-parser.appspot.com and using the following logs: ", e);
@@ -73,8 +74,9 @@ public class SetColorCommand {
 					colors.append(' ');
 				}
 			}
-			player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("available-colors",
-				"The following colors are available: ") + colors.toString());
+			List<Template> templates = new ArrayList<>();
+			templates.add(Template.of("colors", colors.toString()));
+			plugin.getMessageSender().sendMessage(player, "available-colors", templates);
 		}
 	}
 

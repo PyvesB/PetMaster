@@ -36,27 +36,21 @@ public class SetOwnerCommand {
 				}
 			}
 			if (newOwner == null) {
-				player.sendMessage(plugin.getChatHeader()
-						+ plugin.getPluginLang().getString("player-offline", "The specified player is offline!"));
+				plugin.getMessageSender().sendMessage(player, "player-offline");
 			} else if (!player.hasPermission("petmaster.setowner")) {
-				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("no-permissions",
-						"You do not have the permission to do this."));
+				plugin.getMessageSender().sendMessage(player, "no-permissions");
 			} else if (plugin.getEnableDisableCommand().isDisabled()) {
-				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang().getString("currently-disabled",
-						"PetMaster is currently disabled, you cannot use this command."));
+				plugin.getMessageSender().sendMessage(player, "currently-disabled");
 			} else if (!player.hasPermission("petmaster.admin") && newOwner.getUniqueId().equals(player.getUniqueId())) {
-				player.sendMessage(plugin.getChatHeader() + plugin.getPluginLang()
-						.getString("cannot-change-to-yourself", "You cannot change the owner to yourself!"));
+				plugin.getMessageSender().sendMessage(player, "cannot-change-to-yourself");
 			} else {
 				changeOwnershipMap.put(player.getUniqueId(), newOwner);
-				player.sendMessage(plugin.getChatHeader()
-						+ plugin.getPluginLang().getString("right-click", "Right click on a pet to change its owner!"));
+				plugin.getMessageSender().sendMessage(player, "right-click");
 				// Cancel previous pending operation.
 				plugin.getFreeCommand().collectPendingFreeRequest(player);
 			}
 		} else {
-			player.sendMessage(plugin.getChatHeader()
-					+ plugin.getPluginLang().getString("misused-command", "Misused command. Please type /petm."));
+			plugin.getMessageSender().sendMessage(player, "misused-command");
 		}
 	}
 

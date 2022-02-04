@@ -1,3 +1,4 @@
+
 #============================================================#
 # +--------------------------------------------------------+ #
 # |         Pet Master 1.12.5 English language file        | #
@@ -5,58 +6,56 @@
 # +--------------------------------------------------------+ #
 #============================================================#
 
-no-permissions: "You do not have the permission to do this."
-currently-disabled: "PetMaster is currently disabled, you cannot use this command."
-misused-command: "Misused command. Please type /petm."
+# Prefix has to be added with <prefix> to appear in messages
+petmaster-prefix: "<gray>[<gold>♞<gray>] "
+
+no-permissions: "<prefix> You do not have the permission to do this."
+currently-disabled: "<prefix> PetMaster is currently disabled, you cannot use this command."
+misused-command: "<prefix> Misused command. Please type /petm."
 
 # Related to /petm reload.
-configuration-successfully-reloaded: "Configuration successfully reloaded."
-configuration-reload-failed: "Errors while reloading configuration. Please view logs for more details."
+configuration-successfully-reloaded: "<prefix> Configuration successfully reloaded."
+configuration-reload-failed: "<prefix> Errors while reloading configuration. Please view logs for more details."
 
 # Related to other plugin commands.
-petmaster-disabled: "PetMaster disabled till next reload or /petm enable."
-petmaster-enabled: "PetMaster enabled."
-petmaster-hologram: "Pet owned by "
-petmaster-chat: "Pet owned by "
-petmaster-action-bar: "Pet owned by "
-petmaster-health: "Health: "
-player-offline: "The specified player is offline!"
-cannot-change-to-yourself: "You cannot change the owner to yourself!"
-owner-changed: "This pet was given to a new owner!"
-change-owner-price: "You payed: AMOUNT!"
-new-owner: "Player PLAYER gave you ownership of a pet!"
-not-owner: "You do not own this pet!"
-right-click: "Right click on a pet to change its owner!"
-pet-freed: "Say goodbye: this pet returned to the wild!"
-not-enough-money: "You do not have the required amount: AMOUNT!"
-available-colors: "The following colors are available: "
-color-successfully-set: "Color successfully changed."
+petmaster-disabled: "<prefix> PetMaster disabled till next reload or /petm enable."
+petmaster-enabled: "<prefix> PetMaster enabled."
+petmaster-hologram: "Pet owned by <gold><owner></gold>."
+petmaster-chat: "<prefix> Pet owned by <gold><owner></gold>. "
+petmaster-action-bar: "<gray>Pet owned by <gold><owner><gray>. "
+petmaster-health: "<gray>Health: <blue><currentHealth></blue>/<blue><maxHealth></blue>"
+player-offline: "<prefix> The specified player is offline!"
+cannot-change-to-yourself: "<prefix> You cannot change the owner to yourself!"
+owner-changed: "<prefix> This pet was given to a new owner!"
+change-owner-price: "<prefix> You payed: <gold><amount></gold>!"
+new-owner: "<prefix> Player <player> gave you ownership of a pet!"
+not-owner: "<prefix> You do not own this pet!"
+right-click: "<prefix> Right click on a pet to change its owner!"
+pet-freed: "<prefix> Say goodbye: this pet returned to the wild!"
+not-enough-money: "<prefix> You do not have the required amount: <red><amount></red>!"
+available-colors: "<prefix> The following colors are available: <colors>"
+color-successfully-set: "<prefix> Color successfully changed."
 
 # Related to /petm help.
-petmaster-command-setowner: "Change the ownership of a pet."
-petmaster-command-setcolor: "Set the color of the collars of all pets tamed in the future."
-petmaster-command-free: "Free a pet."
-petmaster-command-disable: "Disable plugin."
-petmaster-command-enable: "Enable plugin."
-petmaster-command-reload: "Reload the plugin's configuration."
-petmaster-command-info: "Display various information about the plugin."
-petmaster-command-setowner-hover: "You can only change the ownership of your own pets, unless you're admin!"
-petmaster-command-setcolor-hover: "Currently tamed pets are unaffected."
-petmaster-command-free-hover: "You can only free your own pets, unless you're admin!"
-petmaster-command-disable-hover: "The plugin will not work until next reload or /petm enable."
-petmaster-command-enable-hover: "Plugin enabled by default. Use this if you entered /petm disable before!"
-petmaster-command-reload-hover: "Reload most settings in config.yml and lang.yml files."
-petmaster-command-info-hover: "Some extra info about the plugin and its awesome author!"
-petmaster-tip: "&lHINT&r &8You can &7&n&ohover&r &8or &7&n&oclick&r &8on the commands!"
+petmaster-help-header: "<prefix> <gold>------------------ ♞<bold>PetMaster</bold>♞  ------------------"
+petmaster-command-setowner: "<prefix> <hover:show_text:'You can only change the ownershipof your own pets, unless you're admin!'><click:suggest_command:/petm setowner><gold>/petm setowner [player]<gray></click></hover>Change the ownership of a pet."
+petmaster-command-setcolor: "<prefix> <hover:show_text:'Currently tamed pets are unaffected.'><click:suggest_command:/petm setcolor><gold>/petm setcolor [color]<gray></click></hover> Set the color of the collars of all pets tamed in the future."
+petmaster-command-free: "<prefix> <hover:show_text:'You can only free your own pets,unless you're admin!'><click:suggest_command:/petm free><gold>/petm free<gray></click></hover> Free a pet."
+petmaster-command-disable: "<prefix> <hover:show_text:'The plugin will not work untilnext reload or /petm enable.'><click:suggest_command:/petm disable><gold>/petm disable<gray></click></hover> Disable the plugin."
+petmaster-command-enable: "<prefix> <hover:show_text:'Plugin enabled by default. Usethis if you entered /petm disable before!'><click:suggest_command:/petm enable><gold>/petm enable<gray></click></hover> Enable the plugin."
+petmaster-command-reload: "<prefix> <hover:show_text:'Reload most settings in config.ymland lang.yml files.'><click:suggest_command:/petm reload><gold>/petm reload<gray></click></hover> Reload the plugin's configuration."
+petmaster-command-info: "<prefix> <hover:show_text:'Some extra info about the pluginand its awesome author!'><click:suggest_command:/petm info><gold>/petm info<gray></click></hover> Display various informationabout the plugin."
+petmaster-tip: "<gray><b>Hint</b> <dark_gray>you can <i><u><gray>hover</gray></u></i> over and <i><u><gray>click</gray></u></i> on the commands!"
+
 
 # Related to /petm info.
-version-command-name: "Name:"
-version-command-version: "Version:"
-version-command-website: "Website:"
-version-command-author: "Author:"
-version-command-description: "Description:"
+version-command-name: "<prefix> Name: <gold><name>"
+version-command-version: "<prefix> Version: <gold><version>"
+version-command-website: "<prefix> Website: <gold><website>"
+version-command-author: "<prefix> Author: <gold><author>"
+version-command-description: "<prefix> Description: <white><description-details>"
 version-command-description-details: "Manage pets and display useful information via holograms, action bar or chat messages!"
-version-command-enabled: "Plugin enabled:"
+version-command-enabled: "<prefix> Plugin enabled: <gold><state>"
 
 #============================================================#
 # +--------------------------------------------------------+ #
