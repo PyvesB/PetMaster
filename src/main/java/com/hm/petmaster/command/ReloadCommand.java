@@ -24,12 +24,14 @@ public class ReloadCommand {
 			plugin.reloadConfig();
 			plugin.extractParametersFromConfig(false);
 			if (plugin.getServer().getPluginManager().isPluginEnabled(plugin)) {
-				if (sender instanceof Player player) {
+				if (sender instanceof Player) {
+					Player player = (Player)  sender;
 					plugin.getMessageSender().sendMessage(player, "configuration-successfully-reloaded");
 				}
 				plugin.getLogger().info("Configuration successfully reloaded.");
 			} else {
-				if (sender instanceof Player player) {
+				if (sender instanceof Player) {
+					Player player = (Player)  sender;
 					plugin.getMessageSender().sendMessage(sender, "configuration-reload-failed");
 				}
 				plugin.getLogger().severe("Errors while reloading configuration. Please view logs for more details.");
