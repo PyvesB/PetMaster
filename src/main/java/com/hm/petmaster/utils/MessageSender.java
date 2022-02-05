@@ -85,4 +85,14 @@ public class MessageSender {
         Audience audience = plugin.adventure().player(player);
         sendActionBar(audience, key, templates);
     }
+
+    public void sendNewLine(CommandSender sender, boolean sendPrefix){
+        Audience audience = plugin.adventure().sender(sender);
+
+        if (sendPrefix){
+            sendMessage(audience, "petmaster-prefix", new ArrayList<>());
+        } else {
+            audience.sendMessage(Component.newline());
+        }
+    }
 }
