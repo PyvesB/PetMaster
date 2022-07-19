@@ -1,29 +1,16 @@
 package com.hm.petmaster.listener;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.hm.petmaster.utils.MessageSender;
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.hm.mcshared.event.PlayerChangeAnimalOwnershipEvent;
+import com.hm.petmaster.PetMaster;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.Template;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.Animals;
-import org.bukkit.entity.Cat;
-import org.bukkit.entity.Llama;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Parrot;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Sittable;
-import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Vehicle;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -32,15 +19,9 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.hm.mcshared.event.PlayerChangeAnimalOwnershipEvent;
-import com.hm.mcshared.particle.FancyMessageSender;
-import com.hm.petmaster.PetMaster;
-
-import net.milkbowl.vault.economy.Economy;
-
-import javax.xml.transform.Templates;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class used to display holograms, change the owner of a pet or free a pet.
@@ -268,9 +249,10 @@ public class PlayerInteractListener implements Listener {
 					eventLocation.getY() + offset, eventLocation.getZ());
 
 			final Hologram hologram = HologramsAPI.createHologram(plugin, hologramLocation);
-			List<Template> templates = new ArrayList<>();
-			templates.add(Template.of("owner", owner.getName()));
-			hologram.appendTextLine(plugin.getMessageSender().parseMessageToString("petmaster-hologram", templates));
+			hologram.appendTextLine(plugin.getMessageSender().parseMessageToString(
+					"petmaster-hologram",
+					Placeholder.component("owner", Component.text(owner.getName() != null ? owner.getName() : "null"))
+			));
 
 			// Runnable to delete hologram.
 			new BukkitRunnable() {
@@ -287,17 +269,20 @@ public class PlayerInteractListener implements Listener {
 		if (showHealth) {
 			@SuppressWarnings("cast") // Tameable did not extend Animals in older versions of Bukkit.
 			Animals animal = (Animals) tameable;
-			List<Template> templates = new ArrayList<>();
-			templates.add(Template.of("currentHealth", String.format("%.1f", animal.getHealth())));
-			templates.add(Template.of("maxHealth", plugin.getServerVersion() < 9 ? String.format("%.1f", animal.getMaxHealth())
-					: String.format("%.1f", animal.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue())));
-			healthInfo = plugin.getMessageSender().parseMessage(plugin.getPluginLang().getString("petmaster-health"), templates);
+			healthInfo = plugin.getMessageSender().parseMessage(
+					plugin.getPluginLang().getString("petmaster-health"),
+					Placeholder.component("current-health", Component.text(String.format("%.1f", animal.getHealth()))),
+					Placeholder.component("max-health", Component.text(
+							plugin.getServerVersion() < 9 ? String.format("%.1f", animal.getMaxHealth())
+							: String.format("%.1f", animal.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue())))
+			);
 		}
-		List<Template> templates = new ArrayList<>();
-		templates.add(Template.of("owner", owner.getName()));
 
 		if (chatMessage) {
-			Component parsedComponent = plugin.getMessageSender().parseMessage(plugin.getPluginLang().getString("petmaster-chat"), templates);
+			Component parsedComponent = plugin.getMessageSender().parseMessage(
+					plugin.getPluginLang().getString("petmaster-chat"),
+					Placeholder.component("owner", Component.text(owner.getName() != null ? owner.getName() : "null"))
+			);
 			if (healthInfo != null){
 				parsedComponent = parsedComponent.append(healthInfo);
 			}
@@ -305,7 +290,10 @@ public class PlayerInteractListener implements Listener {
 		}
 
 		if (actionBarMessage) {
-			Component parsedComponent = plugin.getMessageSender().parseMessage(plugin.getPluginLang().getString("petmaster-action-bar"), templates);
+			Component parsedComponent = plugin.getMessageSender().parseMessage(
+					plugin.getPluginLang().getString("petmaster-action-bar"),
+					Placeholder.component("owner", Component.text(owner.getName() != null ? owner.getName() : "null"))
+			);
 			if (healthInfo != null){
 				parsedComponent = parsedComponent.append(healthInfo);
 			}
@@ -327,15 +315,19 @@ public class PlayerInteractListener implements Listener {
 			String priceWithCurrency = price + " "
 					+ (price > 1 ? economy.currencyNamePlural() : economy.currencyNameSingular());
 			if (economy.getBalance(player) < price) {
-				List<Template> templates = new ArrayList<>();
-				templates.add(Template.of("amount", priceWithCurrency));
-				plugin.getMessageSender().sendMessage(player, "not-enough-money", templates);
+				plugin.getMessageSender().sendMessage(
+						player,
+						"not-enough-money",
+						Placeholder.component("amount", Component.text(priceWithCurrency))
+				);
 				return false;
 			}
 			economy.withdrawPlayer(player, price);
-			List<Template> templates = new ArrayList<>();
-			templates.add(Template.of("amount", priceWithCurrency));
-			plugin.getMessageSender().sendMessage(player, "change-owner-price", templates);
+			plugin.getMessageSender().sendMessage(
+					player,
+					"change-owner-price",
+					Placeholder.component("amount", Component.text(priceWithCurrency))
+			);
 		}
 		return true;
 	}

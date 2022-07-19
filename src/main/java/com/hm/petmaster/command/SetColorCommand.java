@@ -1,22 +1,18 @@
 package com.hm.petmaster.command;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import net.kyori.adventure.text.minimessage.Template;
-import org.bukkit.entity.Player;
-
 import com.hm.petmaster.PetMaster;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.DyeColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
-import javax.xml.transform.Templates;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * Class in charge of handling player requests to change default color of a pets
@@ -74,9 +70,11 @@ public class SetColorCommand {
 					colors.append(' ');
 				}
 			}
-			List<Template> templates = new ArrayList<>();
-			templates.add(Template.of("colors", colors.toString()));
-			plugin.getMessageSender().sendMessage(player, "available-colors", templates);
+			plugin.getMessageSender().sendMessage(
+					player,
+					"available-colors",
+					Placeholder.component("colors", Component.text(colors.toString()))
+			);
 		}
 	}
 

@@ -4,38 +4,39 @@ import com.hm.petmaster.PetMaster;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.Template;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MessageSender {
     private final PetMaster plugin;
+    private final MiniMessage miniMessage;
 
     public MessageSender(PetMaster plugin) {
         this.plugin = plugin;
+        miniMessage = MiniMessage.miniMessage();
     }
+    
 
-    public Component parseMessage(String message) {
-        return parseMessage(message, new ArrayList<>());
-    }
-
-    public String parseMessageToString(String key, List<Template> templates) {
+    public String parseMessageToString(String key, TagResolver... tagResolvers) {
         return LegacyComponentSerializer.builder().useUnusualXRepeatedCharacterHexFormat().build().serialize(
-                parseMessage(plugin.getPluginLang().getString(key), templates)
+                parseMessage(plugin.getPluginLang().getString(key), tagResolvers)
         );
     }
 
-    public String parseMessageToString(String key) {
-        return parseMessageToString(key, new ArrayList<>());
-    }
-
-    public Component parseMessage(String message, List<Template> templates) {
-        templates.add(Template.of("prefix", plugin.getPluginLang().getString("petmaster-prefix")));
-        return MiniMessage.get().parse(message, templates);
+    public Component parseMessage(String message, TagResolver... tagResolvers) {
+        List<TagResolver> allTagResolvers = new ArrayList<>(Arrays.stream(tagResolvers).toList());
+        allTagResolvers.add(Placeholder.parsed(
+                "prefix",
+                plugin.getPluginLang().getString("petmaster-prefix", "<gray>[<gold>♞<gray>] ")
+        ));
+        return miniMessage.deserialize(message, allTagResolvers.toArray(new TagResolver[]{}));
     }
 
     public void sendComponent(Player player, Component component){
@@ -48,49 +49,34 @@ public class MessageSender {
         audience.sendActionBar(component);
     }
 
-    public void sendMessage(Audience audience, String key, List<Template> templates) {
-        audience.sendMessage(parseMessage(plugin.getPluginLang().getString(key), templates));
+    public void sendMessage(Audience audience, String key, TagResolver... tagResolvers) {
+        audience.sendMessage(parseMessage(plugin.getPluginLang().getString(key), tagResolvers));
     }
 
-    public void sendMessage(Player player, String key) {
+    public void sendMessage(Player player, String key, TagResolver... tagResolvers) {
         Audience audience = plugin.adventure().player(player);
-        sendMessage(audience, key, new ArrayList<>());
+        sendMessage(audience, key, tagResolvers);
     }
 
-    public void sendMessage(Player player, String key, List<Template> templates) {
-        Audience audience = plugin.adventure().player(player);
-        sendMessage(audience, key, templates);
-    }
-
-    public void sendMessage(CommandSender sender, String key) {
+    public void sendMessage(CommandSender sender, String key, TagResolver... tagResolvers) {
         Audience audience = plugin.adventure().sender(sender);
-        sendMessage(audience, key, new ArrayList<>());
+        sendMessage(audience, key, tagResolvers);
     }
 
-    public void sendMessage(CommandSender sender, String key, List<Template> templates) {
-        Audience audience = plugin.adventure().sender(sender);
-        sendMessage(audience, key, templates);
+    public void sendActionBar(Audience audience, String key, TagResolver... tagResolvers) {
+        audience.sendActionBar(parseMessage(plugin.getPluginLang().getString(key), tagResolvers));
     }
 
-    public void sendActionBar(Audience audience, String key, List<Template> templates) {
-        audience.sendActionBar(parseMessage(plugin.getPluginLang().getString(key)));
-    }
-
-    public void sendActionBar(Player player, String key) {
+    public void sendActionBar(Player player, String key, TagResolver... tagResolvers) {
         Audience audience = plugin.adventure().player(player);
-        sendActionBar(audience, key, new ArrayList<>());
-    }
-
-    public void sendActionBar(Player player, String key, List<Template> templates) {
-        Audience audience = plugin.adventure().player(player);
-        sendActionBar(audience, key, templates);
+        sendActionBar(audience, key, tagResolvers);
     }
 
     public void sendNewLine(CommandSender sender, boolean sendPrefix){
         Audience audience = plugin.adventure().sender(sender);
 
         if (sendPrefix){
-            sendMessage(audience, "petmaster-prefix", new ArrayList<>());
+            sendMessage(audience, "petmaster-prefix");
         } else {
             audience.sendMessage(Component.newline());
         }
